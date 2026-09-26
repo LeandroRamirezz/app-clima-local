@@ -1,0 +1,9 @@
+.geolocation-control { width: min(100%, 42rem); margin: 0 auto 2rem; padding: 1.25rem clamp(1.25rem, 4vw, 2rem); border: 1px solid #d7e2e9; border-radius: .75rem; background: #fff; }
+.geolocation-control h2 { margin: 0 0 .75rem; font-size: 1.1rem; }
+.geolocation-control__button { min-height: 2.9rem; padding: .65rem 1rem; border: 0; border-radius: .5rem; color: #fff; background: #145d7c; font: inherit; font-weight: 650; cursor: pointer; }
+.geolocation-control__button:hover:not(:disabled) { background: #0d4963; }
+.geolocation-control__button:focus-visible { outline: 3px solid #287ca4; outline-offset: 3px; }
+.geolocation-control__button:disabled { cursor: wait; opacity: .7; }
+.geolocation-control__message { margin: .75rem 0 0; overflow-wrap: anywhere; }
+.geolocation-control [role="alert"] { color: #8d2020; }
+.geolocation-control__privacy { margin: .75rem 0 0; color: #526b7b; font-size: .9rem; overflow-wrap: anywhere; }

@@ -1,0 +1,21 @@
+.forecast-panel { min-width: 0; margin-top: 1rem; }
+.forecast-panel > h2 { margin: 0 0 .75rem; font-size: 1.2rem; }
+.forecast-panel__days { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: .75rem; }
+.forecast-panel__day, .forecast-panel__hour { min-width: 0; padding: .9rem; border: 1px solid #d7e2e9; border-radius: .75rem; background: #fff; overflow-wrap: anywhere; }
+.forecast-panel__day h3, .forecast-panel__hour-day h3 { margin: 0 0 .65rem; font-size: 1rem; }
+.forecast-panel__condition, .forecast-panel__hour-condition { display: flex; align-items: center; gap: .5rem; margin: 0 0 .75rem; color: #29485a; font-weight: 650; }
+.forecast-panel__condition .current-weather__icon { width: 2rem; height: 2rem; font-size: 1.1rem; }
+.forecast-panel__metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; margin: 0; }
+.forecast-panel__metrics > div { min-width: 0; }
+.forecast-panel__metrics dt { color: #526b7b; font-size: .82rem; }
+.forecast-panel__metrics dd { margin: .15rem 0 0; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.forecast-panel__solar { display: grid; gap: .45rem; margin: .8rem 0 0; padding-top: .7rem; border-top: 1px solid #d7e2e9; }
+.forecast-panel__solar > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; }
+.forecast-panel__solar dt { color: #526b7b; font-size: .82rem; }
+.forecast-panel__solar dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.forecast-panel__empty { margin: 0; padding: 1rem; border-radius: .65rem; background: #f3f7fa; }
+.forecast-panel__hour-day + .forecast-panel__hour-day { margin-top: 1rem; }
+.forecast-panel__hours { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: .65rem; }
+.forecast-panel__hour h4 { margin: 0 0 .5rem; font-variant-numeric: tabular-nums; }
+.forecast-panel__hour-condition .current-weather__icon { width: 1.8rem; height: 1.8rem; font-size: 1rem; }
+@media (max-width: 380px) { .forecast-panel__metrics { grid-template-columns: minmax(0, 1fr); } }

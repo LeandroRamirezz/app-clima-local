@@ -1,0 +1,66 @@
+.air-quality {
+  min-width: 0;
+  margin-top: 1.5rem;
+  padding: clamp(1rem, 4vw, 1.4rem);
+  border: 1px solid #d7e2e9;
+  border-radius: 1rem;
+  background: #fff;
+  overflow-wrap: anywhere;
+}
+
+.air-quality__header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; }
+.air-quality__header h2,
+.air-quality__trend h3 { margin: 0; }
+.air-quality__eyebrow { margin: 0 0 .25rem; color: #145d7c; font-size: .78rem; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+.air-quality__location { margin: .4rem 0 0; color: #405a6a; font-weight: 650; }
+.air-quality__empty,
+.air-quality__status,
+.air-quality__unavailable,
+.air-quality__note { margin: .85rem 0; color: #405a6a; }
+.air-quality__status { padding: .65rem 0; }
+.air-quality__current { display: grid; grid-template-columns: minmax(12rem, .85fr) minmax(0, 2fr); gap: 1rem; margin-top: 1rem; }
+.air-quality__aqi { display: grid; align-content: start; gap: .25rem; min-width: 0; padding: 1.1rem; border-left: .35rem solid #357a53; border-radius: .65rem; background: #edf6ef; color: #183d29; }
+.air-quality__aqi--moderate { border-color: #936c0b; background: #fff6dc; color: #4d3900; }
+.air-quality__aqi--unhealthy-sensitive { border-color: #bd5a20; background: #fff0e7; color: #57260a; }
+.air-quality__aqi--unhealthy { border-color: #a63333; background: #fff0f0; color: #581b1b; }
+.air-quality__aqi--very-unhealthy { border-color: #754487; background: #f7effa; color: #3e224a; }
+.air-quality__aqi--hazardous { border-color: #72342b; background: #f6e9e6; color: #401b15; }
+.air-quality__aqi--unavailable { border-color: #627480; background: #f3f7fa; color: #29485a; }
+.air-quality__aqi-label { color: inherit; font-size: .88rem; font-weight: 650; }
+.air-quality__aqi strong { font-size: clamp(2.1rem, 8vw, 3.2rem); line-height: 1.05; font-variant-numeric: tabular-nums; }
+.air-quality__category { width: fit-content; padding: .2rem .55rem; border: 1px solid currentColor; border-radius: 999px; font-weight: 750; }
+.air-quality__aqi p { margin: .25rem 0 0; color: inherit; font-size: .9rem; }
+.air-quality__pollutants { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .65rem; margin: 0; }
+.air-quality__pollutant { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: .35rem .75rem; min-width: 0; padding: .75rem; border-radius: .6rem; background: #f3f7fa; }
+.air-quality__pollutant dt { display: grid; min-width: 0; gap: .1rem; }
+.air-quality__pollutant-code { color: #29485a; font-weight: 700; }
+.air-quality__pollutant-name { color: #526b7b; font-size: .8rem; }
+.air-quality__pollutant dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.air-quality__note { font-size: .82rem; }
+.air-quality__trend { margin-top: 1.15rem; }
+.air-quality__hours { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .6rem; margin: .75rem 0 0; padding: 0; list-style: none; }
+.air-quality__hour { min-width: 0; padding: .7rem; border: 1px solid #d7e2e9; border-radius: .65rem; background: #fbfdfe; }
+.air-quality__hour h4 { margin: 0; color: #29485a; font-size: .95rem; }
+.air-quality__hour p { margin: .3rem 0; color: #405a6a; font-size: .85rem; }
+.air-quality__hour .air-quality__hour-aqi { color: #173847; font-size: 1rem; font-weight: 750; font-variant-numeric: tabular-nums; }
+.air-quality__hour dl { display: grid; gap: .2rem; margin: .45rem 0 0; }
+.air-quality__hour dl div { display: flex; justify-content: space-between; gap: .35rem; font-size: .78rem; }
+.air-quality__hour dt { color: #526b7b; }
+.air-quality__hour dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.air-quality__error { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin: .8rem 0; color: #8d2020; }
+.air-quality__retry { min-height: 2.75rem; padding: .5rem .9rem; border: 0; border-radius: .5rem; color: #fff; background: #145d7c; font: inherit; font-weight: 650; cursor: pointer; }
+.air-quality__retry:hover { background: #0d4963; }
+.air-quality__retry:focus-visible,
+.air-quality__attribution a:focus-visible { outline: 3px solid #287ca4; outline-offset: 3px; }
+.air-quality__attribution { margin-top: 1rem; padding-top: .75rem; border-top: 1px solid #d7e2e9; color: #526b7b; font-size: .8rem; line-height: 1.5; }
+.air-quality__attribution a { color: #145d7c; text-underline-offset: .15em; }
+
+@media (max-width: 700px) {
+  .air-quality__current { grid-template-columns: minmax(0, 1fr); }
+  .air-quality__hours { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 420px) {
+  .air-quality__pollutants { grid-template-columns: minmax(0, 1fr); }
+  .air-quality__hours { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

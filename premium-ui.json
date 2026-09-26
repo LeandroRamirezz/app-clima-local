@@ -1,0 +1,8 @@
+{
+  "profile": "weather-app",
+  "sourceRoots": ["src"],
+  "ownership": {
+    "Date": "native",
+    "Select/Listbox": "native"
+  }
+}

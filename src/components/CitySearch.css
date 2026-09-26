@@ -1,0 +1,22 @@
+.city-search { width: min(100%, 42rem); margin: 3rem auto; padding: clamp(1.25rem, 4vw, 2rem); border: 1px solid #d7e2e9; border-radius: 1rem; background: #fff; box-shadow: 0 1rem 2.5rem rgb(20 43 59 / 7%); }
+.city-search h1 { margin-top: 0; font-size: clamp(1.75rem, 5vw, 2.25rem); }
+.city-search__label { display: block; margin-bottom: .5rem; font-weight: 650; }
+.city-search__input { width: 100%; min-height: 3rem; padding: .65rem .8rem; border: 1px solid #9db1bf; border-radius: .5rem; color: inherit; background: #fff; font: inherit; }
+.city-search__input:focus-visible, .city-search__retry:focus-visible { outline: 3px solid #287ca4; outline-offset: 3px; }
+.city-search__help, .city-search__validation { margin: .45rem 0 0; color: #526b7b; font-size: .92rem; }
+.city-search__validation { color: #8a4a00; }
+.city-search__status { margin: 1rem 0 0; }
+.city-search__listbox { max-height: 20rem; margin: .5rem 0 0; padding: .25rem; overflow-y: auto; list-style: none; border: 1px solid #cad8e1; border-radius: .6rem; }
+.city-search__option { display: grid; gap: .15rem; padding: .7rem .75rem; border-radius: .4rem; cursor: pointer; overflow-wrap: anywhere; }
+.city-search__option:hover, .city-search__option[data-active="true"] { background: #e8f3f8; }
+.city-search__option[data-active="true"] { outline: 2px solid #287ca4; outline-offset: -2px; }
+.city-search__option-name { font-weight: 700; }
+.city-search__option-region { color: #405a6a; }
+.city-search__option-coordinates { color: #526b7b; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.city-search__error { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin-top: 1rem; color: #8d2020; }
+.city-search__retry { min-height: 2.75rem; padding: .5rem .9rem; border: 0; border-radius: .5rem; color: #fff; background: #145d7c; font: inherit; font-weight: 650; cursor: pointer; }
+.city-search__retry:hover { background: #0d4963; }
+.active-location { width: min(100%, 42rem); margin: 1rem auto 3rem; padding: 1.25rem clamp(1.25rem, 4vw, 2rem); border-left: .25rem solid #287ca4; border-radius: .5rem; background: #e8f3f8; overflow-wrap: anywhere; }
+.active-location h2 { margin: 0 0 .5rem; font-size: 1.2rem; }
+.active-location p { margin: .25rem 0; }
+.active-location__name { font-weight: 700; }

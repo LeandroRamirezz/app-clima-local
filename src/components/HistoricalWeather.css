@@ -1,0 +1,51 @@
+.historical-weather {
+  min-width: 0;
+  margin-top: 1.5rem;
+  padding: clamp(1rem, 4vw, 1.4rem);
+  border: 1px solid #d7e2e9;
+  border-radius: 1rem;
+  background: #fff;
+}
+
+.historical-weather__header h2,
+.historical-weather__results h3 { margin: 0; }
+.historical-weather__header p:last-child { margin: .35rem 0 0; color: #526b7b; }
+.historical-weather__eyebrow { margin: 0 0 .25rem; color: #145d7c; font-size: .78rem; font-weight: 750; letter-spacing: .06em; text-transform: uppercase; }
+.historical-weather__empty,
+.historical-weather__status,
+.historical-weather__result-status { margin: .85rem 0; color: #405a6a; }
+.historical-weather__form { display: flex; flex-wrap: wrap; align-items: end; gap: .8rem; margin-top: 1rem; }
+.historical-weather__date-field { display: grid; flex: 1 1 12rem; min-width: 0; gap: .35rem; }
+.historical-weather__date-field label { color: #29485a; font-weight: 650; }
+.historical-weather__date-field input { width: 100%; min-width: 0; min-height: 2.75rem; padding: .45rem .65rem; border: 1px solid #9eb3bf; border-radius: .5rem; background: #fff; color: #173847; font: inherit; }
+.historical-weather__date-field input:focus-visible,
+.historical-weather__submit:focus-visible,
+.historical-weather__retry:focus-visible,
+.historical-weather__table-scroll:focus-visible { outline: 3px solid #287ca4; outline-offset: 2px; }
+.historical-weather__format-help { min-height: 1.2em; color: #526b7b; font-size: .82rem; }
+.historical-weather__submit,
+.historical-weather__retry { min-height: 2.75rem; padding: .5rem .9rem; border: 0; border-radius: .5rem; color: #fff; background: #145d7c; font: inherit; font-weight: 650; cursor: pointer; }
+.historical-weather__submit:hover,
+.historical-weather__retry:hover { background: #0d4963; }
+.historical-weather__submit:disabled { cursor: not-allowed; opacity: .55; }
+.historical-weather__validation,
+.historical-weather__error { margin: .7rem 0; color: #8d2020; }
+.historical-weather__error { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; }
+.historical-weather__results { min-width: 0; margin-top: 1.2rem; }
+.historical-weather__results-header { display: flex; flex-wrap: wrap; align-items: start; justify-content: space-between; gap: .7rem; }
+.historical-weather__results-header p { margin: .3rem 0 0; color: #526b7b; }
+.historical-weather__units { color: #526b7b; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.historical-weather__result-status { font-size: .9rem; }
+.historical-weather__table-scroll { max-width: 100%; overflow-x: auto; border: 1px solid #d7e2e9; border-radius: .65rem; }
+.historical-weather__table { width: 100%; min-width: 44rem; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.historical-weather__table caption { padding: .75rem; color: #526b7b; text-align: left; }
+.historical-weather__table th,
+.historical-weather__table td { padding: .7rem .75rem; border-top: 1px solid #d7e2e9; text-align: left; white-space: nowrap; }
+.historical-weather__table thead th { color: #29485a; background: #f3f7fa; font-size: .88rem; }
+.historical-weather__table tbody th { font-weight: 650; }
+
+@media (max-width: 520px) {
+  .historical-weather__form { align-items: stretch; }
+  .historical-weather__date-field { flex-basis: 100%; }
+  .historical-weather__submit { width: 100%; }
+}
