@@ -64,6 +64,7 @@ describe('HistoricalWeather', () => {
     expect(screen.getByRole('heading', { name: 'Históricos' })).toBeTruthy();
     expect(screen.getByLabelText('Fecha inicial')).toBeTruthy();
     expect(screen.getByLabelText('Fecha final')).toBeTruthy();
+    expect(screen.getAllByText('Formato: DD/MM/AAAA')).toHaveLength(2);
     expect(screen.getByText('Seleccione una ubicación antes de consultar datos históricos.')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Consultar histórico' }).hasAttribute('disabled')).toBe(true);
     expect(mockGetHistoricalWeather).not.toHaveBeenCalled();

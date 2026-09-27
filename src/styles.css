@@ -33,7 +33,7 @@
 
 * { box-sizing: border-box; }
 html { scroll-padding-top: 1rem; }
-body { min-width: 320px; min-height: 100vh; margin: 0; }
+body { min-width: 0; min-height: 100vh; margin: 0; }
 button, input, select { font: inherit; }
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; }
@@ -147,9 +147,10 @@ button:disabled { cursor: not-allowed; }
   margin: 0 0 1.25rem; border-bottom: 1px solid var(--border);
 }
 .current-weather__mode-buttons button {
-  min-width: 0; min-height: 3.3rem; padding: .7rem .5rem;
+  min-width: 0; min-height: 3.3rem; padding: .7rem .5rem; line-height: 1.3;
   border: 0; border-bottom: 3px solid transparent; border-radius: 0;
   color: var(--muted); background: transparent; font-weight: 600; text-align: center;
+  white-space: normal; overflow-wrap: anywhere; hyphens: auto;
 }
 .current-weather__mode-buttons button:hover { color: var(--accent); background: var(--soft); }
 .current-weather__mode-buttons button[aria-pressed="true"] { color: var(--ink); border-color: var(--accent); background: transparent; font-weight: 700; }
@@ -169,14 +170,17 @@ button:disabled { cursor: not-allowed; }
 .current-weather__view-buttons button:hover { background: var(--soft); }
 .current-weather__view-buttons button[aria-pressed="true"] { color: #fff; background: var(--accent); }
 .current-weather__preferences { display: block; margin: 0 0 1rem; padding: 0; border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface); }
-.current-weather__preferences > summary { min-height: 2.75rem; padding: .7rem 1rem; color: var(--muted); font-size: .85rem; font-weight: 700; cursor: pointer; }
+.current-weather__preferences > summary { min-height: 2.75rem; padding: .7rem 1rem; color: var(--muted); font-size: .85rem; font-weight: 700; line-height: 1.35; cursor: pointer; overflow-wrap: anywhere; }
 .current-weather__preferences > summary:hover { color: var(--accent); background: var(--soft); }
-.current-weather__preferences-content { display: flex; flex-wrap: wrap; align-items: start; gap: 1rem 1.5rem; padding: 1rem; border-top: 1px solid var(--border); }
-.current-weather__unit-settings { min-width: 0; margin: 0; padding: 0; border: 0; }
+.current-weather__preferences-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); align-items: start; gap: 1rem; min-width: 0; padding: 1rem; border-top: 1px solid var(--border); }
+.current-weather__unit-settings { min-width: 0; max-width: 100%; margin: 0; padding: 0; border: 0; }
 .current-weather__unit-settings legend { margin-bottom: .55rem; font-size: .9rem; font-weight: 700; }
-.current-weather__unit-grid { display: flex; flex-wrap: wrap; gap: .7rem; }
-.current-weather__advanced { min-width: min(100%, 13rem); }
-.current-weather__advanced summary { min-height: 2.4rem; color: var(--accent); font-weight: 700; cursor: pointer; }
+.current-weather__unit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 5rem), 1fr)); gap: .7rem; }
+.current-weather__unit-grid .current-weather__forecast-setting,
+.current-weather__preferences-content > * { min-width: 0; max-width: 100%; }
+.current-weather__preferences-content select { width: 100%; min-width: 0; }
+.current-weather__advanced { min-width: 0; max-width: 100%; }
+.current-weather__advanced summary { min-height: 2.4rem; color: var(--accent); font-weight: 700; cursor: pointer; overflow-wrap: anywhere; }
 .current-weather__advanced[open] .current-weather__forecast-setting { margin-top: .4rem; }
 .current-weather__model-label { flex-basis: 100%; margin: 0; color: var(--muted); font-size: .83rem; }
 .current-weather__range-error, .current-weather__model-fallback, .current-weather__error, .city-search__error, .historical-weather__validation, .historical-weather__error, .air-quality__error { color: var(--error); }

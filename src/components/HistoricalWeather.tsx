@@ -88,7 +88,7 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
             aria-invalid={Boolean(validationMessage)}
             aria-describedby={validationMessage ? 'historical-date-error' : 'historical-start-date-format'}
           />
-          <span id="historical-start-date-format" className="historical-weather__format-help">{formatHistoricalDate(startDate)} · DD/MM/AAAA</span>
+          <span id="historical-start-date-format" className="historical-weather__format-help">Formato: DD/MM/AAAA</span>
         </div>
         <div className="historical-weather__date-field">
           <label htmlFor="historical-end-date">Fecha final</label>
@@ -103,7 +103,7 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
             aria-invalid={Boolean(validationMessage)}
             aria-describedby={validationMessage ? 'historical-date-error' : 'historical-end-date-format'}
           />
-          <span id="historical-end-date-format" className="historical-weather__format-help">{formatHistoricalDate(endDate)} · DD/MM/AAAA</span>
+          <span id="historical-end-date-format" className="historical-weather__format-help">Formato: DD/MM/AAAA</span>
         </div>
         <button className="historical-weather__submit" type="submit" disabled={!locationIsValid}>Consultar histórico</button>
       </form>
