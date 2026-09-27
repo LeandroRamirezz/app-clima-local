@@ -190,9 +190,25 @@ El esquema JSON Schema draft-07 hace **obligatorio por reglas condicionales** (`
 ## 5. Información general para ejecutar cualquier caso (no específica de JC/JS/SS)
 
 ### Puesta a punto inicial del entorno (Prerrequisitos)
-Antes de ejecutar cualquier prueba por primera vez en local o CI:
+Para asegurar que todos los evaluadores utilicen las mismas versiones homogéneas:
+
+| Herramienta / Paquete | Versión Estándar Homologada | Tipo |
+|---|---|---|
+| **Node.js** | `>= 20.x` (probado en `v26.1.0`) | Runtime |
+| **npm** | `>= 10.x` (probado en `11.13.0`) | Gestor de paquetes |
+| **@playwright/test** | `1.63.0` | npm (fijado en `package.json`) |
+| **Playwright Chromium** | `145.0.7634.0` (build `v1243`) | Binario navegador |
+| **@axe-core/playwright** | `4.13.0` | npm (fijado en `package.json`) |
+| **msw** | `2.15.0` | npm (fijado en `package.json`) |
+| **ajv** | `8.20.0` | npm (fijado en `package.json`) |
+| **ajv-formats** | `3.0.1` | npm (fijado en `package.json`) |
+| **newman** | `6.2.2` | npm (fijado en `package.json`) |
+| **@lhci/cli** | `0.15.1` | npm (fijado en `package.json`) |
+| **k6** | `v2.2.0` (o `v0.54.0+`) | Binario OS |
+| **OWASP ZAP** | `zaproxy/zap-stable` | Contenedor Docker |
+
 ```bash
-# 1. Instalar dependencias del proyecto y de QA
+# 1. Instalar dependencias fijadas del proyecto y de QA
 npm install
 
 # 2. Descargar los navegadores requeridos por Playwright

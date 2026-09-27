@@ -1,8 +1,25 @@
 # Guía de Instalación de Herramientas QA Externas (No-npm)
 
-Este documento detalla exclusivamente la instalación y configuración de las herramientas de prueba que **NO** se gestionan a través de `npm` / `package.json`.
+Este documento detalla la instalación y configuración de las herramientas de prueba necesarias para que todo el equipo trabaje con las **mismas versiones homologadas**.
 
-> **Nota previa:** Las dependencias del proyecto y herramientas basadas en Node.js (`@playwright/test`, `@axe-core/playwright`, `msw`, `ajv`, `newman`, `@lhci/cli`) se instalan con:
+## Matriz de Versiones Homologadas del Equipo QA
+
+| Herramienta / Paquete | Versión Estándar | Método de Instalación | Verificación |
+|---|---|---|---|
+| **Node.js** | `>= 20.x` (probado `v26.1.0`) | Binario / NVM | `node -v` |
+| **npm** | `>= 10.x` (probado `11.13.0`) | Con Node.js | `npm -v` |
+| **@playwright/test** | `1.63.0` | `npm install` | `npx playwright --version` |
+| **Playwright Chromium** | `145.0.7634.0` (build `v1243`) | `npx playwright install chromium` | Instalado en caché local |
+| **@axe-core/playwright** | `4.13.0` | `npm install` | `npm list @axe-core/playwright` |
+| **msw** | `2.15.0` | `npm install` | `npm list msw` |
+| **ajv** | `8.20.0` | `npm install` | `npm list ajv` |
+| **ajv-formats** | `3.0.1` | `npm install` | `npm list ajv-formats` |
+| **newman** | `6.2.2` | `npm install` | `npx newman --version` |
+| **@lhci/cli** | `0.15.1` | `npm install` | `npx lhci --version` |
+| **k6** | `v2.2.0` (o `v0.54.0+`) | Binario OS / Winget / Brew | `k6 version` |
+| **OWASP ZAP** | Docker `zaproxy/zap-stable` | `docker pull zaproxy/zap-stable` | `docker images zaproxy/zap-stable` |
+
+> **Nota previa:** Las dependencias del proyecto y herramientas basadas en Node.js se instalan fijadas en `package.json` con:
 > ```bash
 > npm install
 > npx playwright install chromium

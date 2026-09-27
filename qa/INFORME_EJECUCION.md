@@ -54,14 +54,14 @@ scripts/
 
 Se consultaron en el registro oficial de npm las versiones estables más recientes de las herramientas requeridas y se agregaron en `devDependencies` y `scripts` sin alterar ninguna dependencia o script preexistente:
 
-### Paquetes fijados en `devDependencies`
-- `@playwright/test`: `^1.63.0` (Motor de ejecución E2E y pruebas de interfaz/accesibilidad)
-- `@axe-core/playwright`: `^4.13.0` (Integración de accesibilidad Axe para Playwright)
-- `msw`: `^2.15.0` (Mock Service Worker para intercepción de red Open-Meteo)
-- `ajv`: `^8.20.0` (Validador de JSON Schema para resultados)
-- `ajv-formats`: `^3.0.1` (Soporte de validación para formatos `date` y `uri` en Ajv)
-- `newman`: `^6.2.2` (Ejecutor CLI para colecciones de Postman)
-- `@lhci/cli`: `^0.15.1` (Lighthouse CI CLI para auditorías de rendimiento y calidad)
+### Paquetes fijados en `devDependencies` (versiones exactas sin rangos)
+- `@playwright/test`: `1.63.0` (Motor de ejecución E2E y pruebas de interfaz/accesibilidad)
+- `@axe-core/playwright`: `4.13.0` (Integración de accesibilidad Axe para Playwright)
+- `msw`: `2.15.0` (Mock Service Worker para intercepción de red Open-Meteo)
+- `ajv`: `8.20.0` (Validador de JSON Schema para resultados)
+- `ajv-formats`: `3.0.1` (Soporte de validación para formatos `date` y `uri` en Ajv)
+- `newman`: `6.2.2` (Ejecutor CLI para colecciones de Postman)
+- `@lhci/cli`: `0.15.1` (Lighthouse CI CLI para auditorías de rendimiento y calidad)
 
 ### Scripts añadidos en `package.json`
 - `"qa:test"`: Ejecución global de Playwright con configuración `qa/playwright.config.ts`.
