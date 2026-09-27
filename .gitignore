@@ -7,3 +7,6 @@ coverage/
 !.env.example
 *.pem
 *.key
+test-results/
+playwright-report/
+qa/playwright-report/
