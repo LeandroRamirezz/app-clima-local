@@ -2,6 +2,12 @@
 
 Este documento detalla exclusivamente la instalación y configuración de las herramientas de prueba que **NO** se gestionan a través de `npm` / `package.json`.
 
+> **Nota previa:** Las dependencias del proyecto y herramientas basadas en Node.js (`@playwright/test`, `@axe-core/playwright`, `msw`, `ajv`, `newman`, `@lhci/cli`) se instalan con:
+> ```bash
+> npm install
+> npx playwright install chromium
+> ```
+
 ---
 
 ## 1. k6 (Pruebas de Rendimiento y Carga)

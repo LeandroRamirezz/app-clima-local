@@ -189,6 +189,19 @@ El esquema JSON Schema draft-07 hace **obligatorio por reglas condicionales** (`
 
 ## 5. Información general para ejecutar cualquier caso (no específica de JC/JS/SS)
 
+### Puesta a punto inicial del entorno (Prerrequisitos)
+Antes de ejecutar cualquier prueba por primera vez en local o CI:
+```bash
+# 1. Instalar dependencias del proyecto y de QA
+npm install
+
+# 2. Descargar los navegadores requeridos por Playwright
+npx playwright install chromium
+```
+
+---
+
+### Configuración y entorno
 - **URL del ambiente QA:** `https://app-clima-local.vercel.app`
 - **Catálogo de errores E-01 a E-05** (transversal a cualquier caso que golpee la API):
 
