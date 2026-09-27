@@ -181,10 +181,13 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
             <div className="current-weather__forecast-setting"><label htmlFor="precipitation-unit">Precipitación</label><select id="precipitation-unit" value={preferences.units.precipitation} onChange={(event) => preferences.setPrecipitationUnit(event.currentTarget.value as PrecipitationUnit)}><option value="mm">mm</option><option value="inch">in</option></select></div>
           </div>
         </fieldset>
-        <details className="current-weather__advanced">
-          <summary>Opciones avanzadas <span className="current-weather__model-label">Modelo: {FORECAST_MODELS.find((option) => option.value === model)?.label ?? 'Automático'}</span></summary>
-          <div className="current-weather__forecast-setting"><label htmlFor="forecast-model">Modelo numérico</label><select id="forecast-model" value={model} onChange={(event) => { setModelFallbackError(null); setModel(event.currentTarget.value as ForecastModel); }}>{FORECAST_MODELS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></div>
-        </details>
+        <div className="current-weather__advanced-group">
+          <details className="current-weather__advanced">
+            <summary>Opciones avanzadas</summary>
+            <div className="current-weather__forecast-setting"><label htmlFor="forecast-model">Modelo numérico</label><select id="forecast-model" value={model} onChange={(event) => { setModelFallbackError(null); setModel(event.currentTarget.value as ForecastModel); }}>{FORECAST_MODELS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></div>
+          </details>
+          <p className="current-weather__model-label">Modelo: {FORECAST_MODELS.find((option) => option.value === model)?.label ?? 'Automático'}</p>
+        </div>
         </div>
       </details>}
       {activeArea === 'climate' && activeLocation && state.status === 'loading' && (
