@@ -21,6 +21,8 @@ rounded:
   control: "0.375rem"
 spacing:
   page: "clamp(1rem, 3vw, 2.5rem)"
+  bodyLeading: 1.5
+  section: "1.5rem"
 components:
   primaryControl:
     backgroundColor: "#0f6675"
