@@ -135,13 +135,13 @@ button:disabled { cursor: not-allowed; }
 .current-weather { width: 100%; margin: 1.4rem 0 0; }
 .current-weather[data-area="climate"] { display: flex; flex-direction: column; }
 .current-weather[data-area="climate"] .current-weather__mode-buttons { order: 0; }
+.current-weather[data-area="climate"] .current-weather__preferences { order: 1; margin: 0 0 .75rem; }
 .current-weather[data-area="climate"] .current-weather__card,
 .current-weather[data-area="climate"] .current-weather__prompt,
 .current-weather[data-area="climate"] .current-weather__status,
-.current-weather[data-area="climate"] .current-weather__error { order: 1; }
-.current-weather[data-area="climate"] .current-weather__forecast-controls { order: 2; margin-top: 1.5rem; }
-.current-weather[data-area="climate"] .forecast-panel { order: 3; margin-top: .8rem; }
-.current-weather[data-area="climate"] .current-weather__preferences { order: 4; margin-top: 1.4rem; }
+.current-weather[data-area="climate"] .current-weather__error { order: 2; }
+.current-weather[data-area="climate"] .current-weather__forecast-controls { order: 3; margin-top: 1.5rem; }
+.current-weather[data-area="climate"] .forecast-panel { order: 4; margin-top: .8rem; }
 .current-weather__mode-buttons {
   display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0;
   margin: 0 0 1.25rem; border-bottom: 1px solid var(--border);
