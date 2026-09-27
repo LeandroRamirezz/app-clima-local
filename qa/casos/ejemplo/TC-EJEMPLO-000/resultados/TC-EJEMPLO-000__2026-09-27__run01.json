@@ -1,0 +1,38 @@
+{
+  "id_caso": "TC-EJEMPLO-000",
+  "bloque_qa": "ejemplo",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-01",
+  "evaluador": {
+    "nombre": "Equipo QA",
+    "rol": "ejemplo"
+  },
+  "fecha_ejecucion": "2026-09-27",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "main-preview"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Caso de prueba ilustrativo para verificar la carga inicial de la aplicación web en el ambiente de QA.",
+  "precondiciones": "Ambiente de QA accesible y conexión a internet disponible.",
+  "pasos_ejecutados": [
+    "1. Abrir el navegador e ingresar a la URL de QA https://app-clima-local.vercel.app",
+    "2. Esperar a que los componentes principales de la interfaz carguen",
+    "3. Validar el título del documento y visibilidad del contenedor de la aplicación"
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test qa/casos/ejemplo/TC-EJEMPLO-000/TC-EJEMPLO-000.spec.ts --project=ejemplo"
+  ],
+  "resultado_esperado": "La página carga correctamente sin errores de consola y se visualiza el observatorio meteorológico.",
+  "resultado_obtenido": "La página cargó con el título esperado y el contenedor de interfaz completamente renderizado.",
+  "tiempo_respuesta_ms": 420,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-EJEMPLO-000__2026-09-27__run01/.gitkeep"
+  ],
+  "observaciones": "Ejecución de demostración del estándar de pruebas QA."
+}

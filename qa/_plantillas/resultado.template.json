@@ -1,0 +1,27 @@
+{
+  "id_caso": "TC-XX-000",
+  "bloque_qa": "jc",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "",
+  "evaluador": { "nombre": "", "rol": "jc" },
+  "fecha_ejecucion": "AAAA-MM-DD",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": ""
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "",
+  "precondiciones": "",
+  "pasos_ejecutados": [],
+  "comandos_ejecucion": [],
+  "resultado_esperado": "",
+  "resultado_obtenido": "",
+  "tiempo_respuesta_ms": null,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [],
+  "observaciones": ""
+}

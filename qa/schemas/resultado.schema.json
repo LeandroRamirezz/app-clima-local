@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "resultado-caso-prueba.schema.json",
+  "type": "object",
+  "required": [
+    "id_caso", "bloque_qa", "tipo_prueba", "evaluador", "fecha_ejecucion",
+    "numero_ejecucion", "ambiente", "herramienta", "pasos_ejecutados",
+    "resultado_esperado", "resultado_obtenido", "estado", "evidencias"
+  ],
+  "properties": {
+    "id_caso": { "type": "string", "pattern": "^TC-(JC|JS|SS|EJEMPLO)-[0-9]{3}$" },
+    "bloque_qa": { "type": "string", "enum": ["jc", "js", "ss", "ejemplo"] },
+    "tipo_prueba": { "type": "string", "enum": ["Funcional", "Integración", "Contrato", "Rendimiento", "Accesibilidad", "Seguridad"] },
+    "evaluador": {
+      "type": "object",
+      "required": ["nombre", "rol"],
+      "properties": { "nombre": { "type": "string" }, "rol": { "type": "string" } }
+    },
+    "fecha_ejecucion": { "type": "string", "format": "date" },
+    "numero_ejecucion": { "type": "integer", "minimum": 1 },
+    "ambiente": {
+      "type": "object",
+      "required": ["nombre", "url"],
+      "properties": {
+        "nombre": { "type": "string" },
+        "url": { "type": "string", "format": "uri" },
+        "commit_o_version": { "type": "string" }
+      }
+    },
+    "herramienta": { "type": "string", "enum": ["Playwright", "k6", "Lighthouse CI", "Postman/Newman", "OWASP ZAP", "npm audit", "NVDA", "VoiceOver", "Manual"] },
+    "pasos_ejecutados": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "comandos_ejecucion": { "type": "array", "items": { "type": "string" } },
+    "resultado_esperado": { "type": "string", "minLength": 1 },
+    "resultado_obtenido": { "type": "string" },
+    "tiempo_respuesta_ms": { "type": ["number", "null"] },
+    "estado": { "type": "string", "enum": ["Aprobado", "Fallido", "Bloqueado"] },
+    "bug_id": { "type": ["string", "null"] },
+    "incidente_id": { "type": ["string", "null"] },
+    "evidencias": { "type": "array", "items": { "type": "string" } },
+    "observaciones": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "estado": { "const": "Fallido" } } },
+      "then": { "required": ["bug_id"], "properties": { "bug_id": { "type": "string", "minLength": 1 } } }
+    },
+    {
+      "if": { "properties": { "estado": { "const": "Bloqueado" } } },
+      "then": {
+        "required": ["incidente_id", "observaciones"],
+        "properties": {
+          "incidente_id": { "type": "string", "minLength": 1 },
+          "observaciones": { "type": "string", "minLength": 10 }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "estado": { "const": "Aprobado" } } },
+      "then": { "properties": { "evidencias": { "type": "array", "minItems": 1 } } }
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "ciudades_validas": [
+    {
+      "nombre": "Bogotá",
+      "pais": "Colombia",
+      "codigo_pais": "CO",
+      "latitud": 4.6097,
+      "longitud": -74.0817,
+      "zona_horaria": "America/Bogota"
+    },
+    {
+      "nombre": "Medellín",
+      "pais": "Colombia",
+      "codigo_pais": "CO",
+      "latitud": 6.2518,
+      "longitud": -75.5636,
+      "zona_horaria": "America/Bogota"
+    },
+    {
+      "nombre": "Tokio",
+      "pais": "Japón",
+      "codigo_pais": "JP",
+      "latitud": 35.6895,
+      "longitud": 139.6917,
+      "zona_horaria": "Asia/Tokyo"
+    },
+    {
+      "nombre": "Londres",
+      "pais": "Reino Unido",
+      "codigo_pais": "GB",
+      "latitud": 51.5085,
+      "longitud": -0.1257,
+      "zona_horaria": "Europe/London"
+    }
+  ],
+  "casos_borde": [
+    {
+      "tipo": "nombre_vacio",
+      "query": ""
+    },
+    {
+      "tipo": "nombre_inexistente",
+      "query": "CiudadInexistenteXyZ999"
+    },
+    {
+      "tipo": "coordenadas_polo_norte",
+      "latitud": 90.0,
+      "longitud": 0.0
+    },
+    {
+      "tipo": "coordenadas_invalidas",
+      "latitud": 95.0,
+      "longitud": -190.0
+    },
+    {
+      "tipo": "caracteres_especiales",
+      "query": "<script>alert('xss')</script>"
+    }
+  ]
+}
