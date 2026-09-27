@@ -8,9 +8,10 @@ import { APP_ERROR_MESSAGES, AppError, RequestAbortedError, type AppErrorCode } 
 import type { Location } from '../types/location';
 import { CurrentWeather } from './CurrentWeather';
 
-const { mockGetForecast, mockGetAirQuality } = vi.hoisted(() => ({ mockGetForecast: vi.fn(), mockGetAirQuality: vi.fn() }));
+const { mockGetForecast, mockGetAirQuality, mockSearchCities } = vi.hoisted(() => ({ mockGetForecast: vi.fn(), mockGetAirQuality: vi.fn(), mockSearchCities: vi.fn() }));
 vi.mock('../services/forecast', () => ({ getForecast: mockGetForecast }));
 vi.mock('../services/air-quality', () => ({ getAirQuality: mockGetAirQuality }));
+vi.mock('../services/geocoding', () => ({ searchCities: mockSearchCities }));
 
 const neiva: Location = { id: 1, name: 'Neiva', admin1: 'Huila', country: 'Colombia', latitude: 2.93, longitude: -75.28 };
 const bogota: Location = { id: 2, name: 'Bogotá', admin1: 'Bogotá D.C.', country: 'Colombia', latitude: 4.71, longitude: -74.07 };
@@ -66,6 +67,7 @@ beforeEach(() => {
   localStorage.clear();
   mockGetForecast.mockReset().mockResolvedValue(forecast());
   mockGetAirQuality.mockReset().mockResolvedValue(airQuality());
+  mockSearchCities.mockReset().mockResolvedValue([]);
 });
 afterEach(() => { cleanup(); localStorage.clear(); vi.restoreAllMocks(); });
 
@@ -183,6 +185,23 @@ describe('CurrentWeather', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Agregar ubicación seleccionada (Mi ubicación)' }));
     expect(screen.getByRole('button', { name: 'Quitar Mi ubicación de la comparación' })).toBeTruthy();
     expect(screen.getByText('Agregue al menos dos ciudades para comparar.')).toBeTruthy();
+  });
+
+  it('confirma la ciudad agregada, actualiza el contador y limpia el buscador', async () => {
+    mockSearchCities.mockResolvedValue([bogota]);
+    renderWeather(neiva);
+    await flushPromises();
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar ciudades' }));
+
+    const search = screen.getByRole('combobox', { name: 'Nombre de la ciudad' });
+    fireEvent.change(search, { target: { value: 'Bogotá' } });
+    const option = await screen.findByRole('option', { name: /Bogotá.*Bogotá D\.C\., Colombia/ }, { timeout: 1500 });
+    fireEvent.click(option);
+
+    expect(await screen.findByText('Bogotá se agregó a la comparación (1 de 4).')).toBeTruthy();
+    expect(screen.getByText('1 de 4 ubicaciones agregadas')).toBeTruthy();
+    expect((screen.getByRole('combobox', { name: 'Nombre de la ciudad' }) as HTMLInputElement).value).toBe('');
+    expect(screen.getByText('Bogotá', { selector: '.city-comparison__locations li span' })).toBeTruthy();
   });
 
   it('usa unidades normalizadas para Fahrenheit, mph e pulgadas', async () => {

@@ -226,7 +226,7 @@ button:disabled { cursor: not-allowed; }
 .forecast-panel__solar dd { margin: 0; font: 600 .76rem var(--font-data); }
 .forecast-panel__hour-day { margin: .4rem 0 1rem; }
 .forecast-panel__hour-day h3 { margin: 0 0 .6rem; text-transform: capitalize; }
-.forecast-panel__hours { display: grid; gap: .35rem; }
+.forecast-panel__hours { display: grid; grid-template-columns: minmax(0, 1fr); gap: .35rem; }
 .forecast-panel__hour { display: grid; grid-template-columns: 4.5rem minmax(10rem, 1.1fr) minmax(0, 3fr); align-items: center; gap: .5rem .8rem; padding-block: .55rem; }
 .forecast-panel__hour h4 { margin: 0; font: 600 1rem var(--font-data); font-variant-numeric: tabular-nums; }
 .forecast-panel__empty { padding: 1.5rem; border: 1px dashed var(--border); background: var(--surface); }
@@ -237,6 +237,7 @@ button:disabled { cursor: not-allowed; }
 .current-weather__comparison-setup > .city-search { width: 100%; margin: 0 0 .8rem; padding: 1rem; border: 1px solid var(--border); border-radius: var(--radius-control); background: var(--surface); box-shadow: none; }
 .current-weather__comparison-setup .city-search h3 { margin: 0 0 .5rem; }
 .current-weather__add-active, .city-comparison__locations button, .city-comparison__error button { min-height: 2.5rem; padding: .45rem .7rem; border: 1px solid var(--border); border-radius: var(--radius-control); color: var(--accent); background: var(--surface); font-weight: 700; }
+.current-weather__comparison-count { margin: .25rem 0 .55rem; color: var(--muted); font-size: .85rem; font-weight: 600; }
 .current-weather__add-active:hover, .city-comparison__locations button:hover, .city-comparison__error button:hover { border-color: var(--accent); background: var(--soft); }
 .city-comparison { min-width: 0; margin: 1rem 0 0; padding: clamp(1rem, 2vw, 1.5rem); border: 1px solid var(--border); border-radius: var(--radius-panel); background: var(--surface); }
 .city-comparison__header h2 { font-family: var(--font-display); font-weight: 600; }

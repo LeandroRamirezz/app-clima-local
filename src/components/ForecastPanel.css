@@ -15,7 +15,7 @@
 .forecast-panel__solar dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
 .forecast-panel__empty { margin: 0; padding: 1rem; border-radius: .65rem; background: #f3f7fa; }
 .forecast-panel__hour-day + .forecast-panel__hour-day { margin-top: 1rem; }
-.forecast-panel__hours { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: .65rem; }
+.forecast-panel__hours { display: grid; grid-template-columns: minmax(0, 1fr); gap: .35rem; }
 .forecast-panel__hour h4 { margin: 0 0 .5rem; font-variant-numeric: tabular-nums; }
 .forecast-panel__hour-condition .current-weather__icon { width: 1.8rem; height: 1.8rem; font-size: 1rem; }
 @media (max-width: 380px) { .forecast-panel__metrics { grid-template-columns: minmax(0, 1fr); } }

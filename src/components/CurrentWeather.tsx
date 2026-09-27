@@ -98,6 +98,7 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
   const [activeArea, setActiveArea] = useState<'climate' | 'compare' | 'history' | 'air'>('climate');
   const comparisonMode = activeArea === 'compare';
   const [comparisonLocations, setComparisonLocations] = useState<Location[]>([]);
+  const [comparisonSearchKey, setComparisonSearchKey] = useState(0);
   const [comparisonFeedback, setComparisonFeedback] = useState<{ message: string; kind: 'error' | 'status' } | null>(null);
   const [model, setModel] = useState<ForecastModel>(DEFAULT_FORECAST_MODEL);
   const [modelFallbackError, setModelFallbackError] = useState<AppError | null>(null);
@@ -120,7 +121,8 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
       return;
     }
     setComparisonLocations((previous) => [...previous, location]);
-    setComparisonFeedback({ message: `${location.name} se agregó a la comparación.`, kind: 'status' });
+    setComparisonSearchKey((current) => current + 1);
+    setComparisonFeedback({ message: `${location.name} se agregó a la comparación (${comparisonLocations.length + 1} de 4).`, kind: 'status' });
   }
 
   function removeComparisonLocation(location: Location) {
@@ -205,7 +207,8 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
       {comparisonMode && (
         <section className="current-weather__comparison-setup" aria-labelledby="comparison-setup-title">
           <h2 id="comparison-setup-title">Agregar ciudades</h2>
-          <CitySearch activeLocation={null} title="Buscar una ciudad para comparar" headingLevel={3} onSelectLocation={addComparisonLocation} />
+          <p className="current-weather__comparison-count" aria-live="polite">{comparisonLocations.length} de 4 ubicaciones agregadas</p>
+          <CitySearch key={comparisonSearchKey} activeLocation={null} title="Buscar una ciudad para comparar" headingLevel={3} onSelectLocation={addComparisonLocation} />
           {activeLocation && <button className="current-weather__add-active" type="button" onClick={() => addComparisonLocation(activeLocation)}>Agregar ubicación seleccionada ({activeLocation.name})</button>}
           {comparisonFeedback && <p className={`current-weather__comparison-feedback current-weather__comparison-feedback--${comparisonFeedback.kind}`} role={comparisonFeedback.kind === 'error' ? 'alert' : 'status'}>{comparisonFeedback.message}</p>}
           <CityComparison
