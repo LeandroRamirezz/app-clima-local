@@ -2,7 +2,7 @@
 
 ## Datos del evaluador
 - Nombre:
-- Rol / bloque: jc | js | ss
+- Rol / bloque: <bloque>
 - Fecha de ejecución: AAAA-MM-DD
 - N.º de ejecución (run): 01
 
@@ -25,7 +25,7 @@
 
 ## Comando(s) de ejecución
 ```
-(comando exacto usado, ej: npx playwright test qa/casos/jc/TC-JC-001 --project=jc)
+(comando exacto usado, ej: npx playwright test qa/casos/<bloque>/<TC-ID> --project=<bloque>)
 ```
 
 ## Resultado esperado

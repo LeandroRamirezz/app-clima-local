@@ -99,7 +99,7 @@ El campo `estado` de un resultado solo puede tomar uno de estos 3 valores (un ar
 
 ## Datos del evaluador
 - Nombre:
-- Rol / bloque: jc | js | ss
+- Rol / bloque: <bloque>
 - Fecha de ejecución: AAAA-MM-DD
 - N.º de ejecución (run): 01
 
@@ -122,7 +122,7 @@ El campo `estado` de un resultado solo puede tomar uno de estos 3 valores (un ar
 
 ## Comando(s) de ejecución
 ```
-(comando exacto usado, ej: npx playwright test qa/casos/jc/TC-JC-001 --project=jc)
+(comando exacto usado, ej: npx playwright test qa/casos/<bloque>/<TC-ID> --project=<bloque>)
 ```
 
 ## Resultado esperado
@@ -150,11 +150,11 @@ Aprobado / Fallido / Bloqueado
 
 ```json
 {
-  "id_caso": "TC-XX-000",
-  "bloque_qa": "jc",
+  "id_caso": "TC-<BLOQUE>-<NNN>",
+  "bloque_qa": "<bloque>",
   "tipo_prueba": "Funcional",
   "rf_relacionado": "",
-  "evaluador": { "nombre": "", "rol": "jc" },
+  "evaluador": { "nombre": "", "rol": "" },
   "fecha_ejecucion": "AAAA-MM-DD",
   "numero_ejecucion": 1,
   "ambiente": {

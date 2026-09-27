@@ -1,9 +1,9 @@
 {
-  "id_caso": "TC-XX-000",
-  "bloque_qa": "jc",
+  "id_caso": "TC-<BLOQUE>-<NNN>",
+  "bloque_qa": "<bloque>",
   "tipo_prueba": "Funcional",
   "rf_relacionado": "",
-  "evaluador": { "nombre": "", "rol": "jc" },
+  "evaluador": { "nombre": "", "rol": "" },
   "fecha_ejecucion": "AAAA-MM-DD",
   "numero_ejecucion": 1,
   "ambiente": {
