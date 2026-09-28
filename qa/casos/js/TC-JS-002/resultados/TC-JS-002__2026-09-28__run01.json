@@ -1,0 +1,44 @@
+{
+  "id_caso": "TC-JS-002",
+  "bloque_qa": "js",
+  "tipo_prueba": "Funcional",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "2ebd149"
+  },
+  "herramienta": "Playwright",
+  "pasos_ejecutados": [
+    "1. Simular permiso concedido con coordenadas (lat=2.93, lon=-75.28), accionar «Usar mi ubicación» y verificar clima.",
+    "2. Simular permiso denegado (code 1), validar mensaje con role alert y comprobar operatividad de búsqueda manual.",
+    "3. Simular tiempo agotado (code 3), validar mensaje con role alert, botón de reintento y búsqueda manual.",
+    "4. Simular posición no disponible (code 2), validar mensaje con role alert y búsqueda manual.",
+    "5. Simular navegador sin soporte (navigator.geolocation ausente), validar mensaje, botón deshabilitado y búsqueda manual.",
+    "6. Simular contexto no seguro (window.isSecureContext = false), validar mensaje, botón deshabilitado y búsqueda manual.",
+    "7. Verificar ausencia de errores no controlados en la consola del navegador en todos los escenarios."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/js/TC-JS-002/TC-JS-002.spec.ts --project=js"
+  ],
+  "resultado_esperado": "1. Concedido: muestra clima de ubicación detectada. 2. Denegado: mensaje «No se pudo acceder a su ubicación porque el permiso fue denegado. Puede buscar su ciudad manualmente o habilitar el permiso en la configuración del navegador.»; búsqueda manual operativa. 3. Timeout: mensaje «Se agotó el tiempo para obtener su ubicación. Intente de nuevo o busque su ciudad manualmente.»; búsqueda manual operativa. 4. Posición no disponible: mensaje «No fue posible determinar su ubicación en este momento.»; búsqueda manual operativa. 5. Sin soporte: botón deshabilitado/oculto; mensaje «La geolocalización no está disponible en este navegador.»; búsqueda manual operativa. 6. Contexto no seguro: mismo mensaje de no disponible; búsqueda manual operativa. 7. Sin errores no controlados en consola en ningún escenario.",
+  "resultado_obtenido": "Los 6 escenarios evaluados pasaron satisfactoriamente (6/6). La aplicación responde de forma controlada a cada desenlace de la API de Geolocalización, muestra con precisión los mensajes requeridos según RF-03 con accesibilidad (role alert), gestiona correctamente los botones de reintento y deshabilitación, mantiene la búsqueda manual siempre operativa y no generó ningún error no controlado en consola.",
+  "tiempo_respuesta_ms": 4100,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JS-002__2026-09-28__run01/escenario1-concedido.png",
+    "evidencias/TC-JS-002__2026-09-28__run01/escenario2-denegado.png",
+    "evidencias/TC-JS-002__2026-09-28__run01/escenario3-timeout.png",
+    "evidencias/TC-JS-002__2026-09-28__run01/escenario4-posicion-no-disponible.png",
+    "evidencias/TC-JS-002__2026-09-28__run01/escenario5-sin-soporte.png",
+    "evidencias/TC-JS-002__2026-09-28__run01/escenario6-contexto-no-seguro.png"
+  ],
+  "observaciones": "Comportamiento conforme al 100% con la especificación de requerimientos de geolocalización (RF-03). Las coordenadas simuladas se presentaron redondeadas a 2 decimales en el encabezado «Mi ubicación (2.93, -75.28)» y la consulta del clima se activó de inmediato."
+}

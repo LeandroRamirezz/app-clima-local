@@ -1,0 +1,37 @@
+{
+  "id_caso": "TC-JS-010",
+  "bloque_qa": "js",
+  "tipo_prueba": "Rendimiento",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "2ebd149"
+  },
+  "herramienta": "Playwright",
+  "pasos_ejecutados": [
+    "1. Navegar al modo «Comparar ciudades» y agregar sucesivamente 4 ciudades (Bogotá, Medellín, Cali y Barranquilla).",
+    "2. Medir el tiempo con marcas de performance.now() desde la finalización de la última respuesta HTTP de /v1/forecast hasta que la tabla comparativa y todas sus celdas están completamente pintadas y estables en el DOM.",
+    "3. Repetir el ciclo de medición 5 veces consecutivas para obtener una muestra estadísticamente representativa.",
+    "4. Calcular el tiempo promedio, mínimo y máximo de renderizado, y validar contra el umbral de RNF-03 (< 2.000 ms)."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/js/TC-JS-010/TC-JS-010.spec.ts --project=js"
+  ],
+  "resultado_esperado": "Tiempo de render < 2 s",
+  "resultado_obtenido": "La prueba de rendimiento de renderizado pasó satisfactoriamente (1/1). El tiempo promedio de renderizado de la tabla con 4 ciudades tras 5 iteraciones fue de 28.56 ms (mínimo: 25.50 ms, máximo: 31.00 ms), situándose ampliamente por debajo del límite estipulado de 2.000 ms (2 s) exigido por RNF-03. La cuadrícula de 4 columnas se renderizó de forma fluida, reactiva y sin congelamiento de la interfaz de usuario.",
+  "tiempo_respuesta_ms": 28.56,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "app-clima-local/qa/casos/js/TC-JS-010/evidencias/TC-JS-010__2026-09-28__run01/renderizado-comparacion-cuatro-ciudades.png",
+    "app-clima-local/qa/casos/js/TC-JS-010/evidencias/TC-JS-010__2026-09-28__run01/resumen-metricas-renderizado.png"
+  ],
+  "observaciones": "El componente de React optimiza eficientemente el ciclo de render de la tabla comparativa, generando las columnas y filas de métricas en menos de 32 ms. Se superó con holgura el criterio no funcional RNF-03 (< 2 s)."
+}

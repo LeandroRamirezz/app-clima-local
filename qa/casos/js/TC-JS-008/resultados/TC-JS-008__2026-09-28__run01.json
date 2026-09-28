@@ -1,0 +1,39 @@
+{
+  "id_caso": "TC-JS-008",
+  "bloque_qa": "js",
+  "tipo_prueba": "Contrato",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "2ebd149"
+  },
+  "herramienta": "Playwright",
+  "pasos_ejecutados": [
+    "1. Realizar petición HTTP GET a /v1/search para la query «Bogotá» y validar contra esquema JSON Schema con Ajv.",
+    "2. Realizar petición HTTP GET a /v1/search para la query con homónimos «San» y validar contra esquema JSON Schema con Ajv.",
+    "3. Realizar petición HTTP GET a /v1/search para la query sin coincidencias «Xyzabc123» y validar contra esquema con Ajv.",
+    "4. Comprobar que mutaciones o rupturas del esquema JSON son detectadas y rechazadas por el validador Ajv como alerta temprana de regresión en el pipeline CI."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/js/TC-JS-008/TC-JS-008.spec.ts --project=js"
+  ],
+  "resultado_esperado": "Para queries con resultados, la respuesta cumple el esquema. Para queries sin resultados, la respuesta no contiene \"results\" o es un array vacío, y también cumple el esquema esperado. Si el esquema real difiere, el pipeline falla con alerta temprana.",
+  "resultado_obtenido": "Las 4 pruebas de contrato pasaron satisfactoriamente (4/4). La respuesta de la Geocoding API de Open-Meteo cumplió al 100% con el esquema JSON Schema (Draft-07): para «Bogotá» y «San» se validaron todos los tipos y restricciones de los campos requeridos (id integer, name string, latitude y longitude en rangos geográficos válidos, admin1, country, timezone), mientras que para «Xyzabc123» se validó la estructura sin resultados. El validador Ajv confirmó además la detección inmediata de violaciones de contrato.",
+  "tiempo_respuesta_ms": 2800,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "app-clima-local/qa/casos/js/TC-JS-008/evidencias/TC-JS-008__2026-09-28__run01/contrato-bogota-valido.json",
+    "app-clima-local/qa/casos/js/TC-JS-008/evidencias/TC-JS-008__2026-09-28__run01/contrato-san-valido.json",
+    "app-clima-local/qa/casos/js/TC-JS-008/evidencias/TC-JS-008__2026-09-28__run01/contrato-vacio-valido.json",
+    "app-clima-local/qa/casos/js/TC-JS-008/evidencias/TC-JS-008__2026-09-28__run01/resumen-validacion-contrato.png"
+  ],
+  "observaciones": "El contrato del endpoint de geocodificación (/v1/search) se encuentra íntegro y estable. Las respuestas reales de Open-Meteo corresponden con exactitud a la tipificación que consume el servicio geocoding.ts de la aplicación."
+}

@@ -1,0 +1,40 @@
+{
+  "id_caso": "TC-JS-007",
+  "bloque_qa": "js",
+  "tipo_prueba": "Integración",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "2ebd149"
+  },
+  "herramienta": "Playwright",
+  "pasos_ejecutados": [
+    "1. Realizar consulta individual para cada una de las 4 ciudades (Bogotá, Medellín, Cali, Barranquilla) con parámetros estándar (7 días, unidades métricas, modelo automático) y registrar temperatura, humedad y viento.",
+    "2. Navegar a la pestaña «Comparar ciudades» y agregar sucesivamente las 4 ciudades a la comparación.",
+    "3. Esperar la carga de la tabla comparativa actual y mapear las columnas correspondientes a cada ciudad.",
+    "4. Comparar celda por celda los valores de Temperatura, Humedad y Viento de cada columna frente a los valores registrados en la consulta individual.",
+    "5. Validar que las unidades compartidas (°C, %, km/h) y el modelo numérico son idénticos para todas las columnas.",
+    "6. Verificar la ausencia de errores no controlados en la consola del navegador a lo largo de toda la ejecución."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/js/TC-JS-007/TC-JS-007.spec.ts --project=js"
+  ],
+  "resultado_esperado": "Coincidencia 100% en todos los valores (salvo redondeo de presentación a 1 decimal). Las unidades y el modelo son los mismos para todas las columnas.",
+  "resultado_obtenido": "La prueba de consistencia pasó satisfactoriamente (1/1). Hubo coincidencia del 100% en todas las variables meteorológicas evaluadas (Temperatura, Humedad relativa y Velocidad del viento) entre las consultas individuales y las columnas correspondientes en la tabla de comparación múltiple. Los formatos numéricos, símbolos de unidad y reglas de redondeo se mantuvieron uniformes y sincronizados para las 4 ciudades sin discrepancias de estado ni errores en consola.",
+  "tiempo_respuesta_ms": 16300,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "app-clima-local/qa/casos/js/TC-JS-007/evidencias/TC-JS-007__2026-09-28__run01/paso1-consulta-individual-bogota.png",
+    "app-clima-local/qa/casos/js/TC-JS-007/evidencias/TC-JS-007__2026-09-28__run01/paso2-comparacion-cuatro-ciudades.png",
+    "app-clima-local/qa/casos/js/TC-JS-007/evidencias/TC-JS-007__2026-09-28__run01/paso3-verificacion-consistencia.png"
+  ],
+  "observaciones": "Se comprobó la integridad de datos entre los módulos de vista individual (RF-01) y comparación multicriterio (RF-04). Al compartir la misma configuración de unidades y modelo numérico, las consultas paralelas a Open-Meteo reflejan exactamente los mismos datos meteorológicos que la consulta directa por ciudad."
+}

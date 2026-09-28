@@ -1,0 +1,38 @@
+{
+  "id_caso": "TC-JS-006",
+  "bloque_qa": "js",
+  "tipo_prueba": "Integración",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "2ebd149"
+  },
+  "herramienta": "Playwright",
+  "pasos_ejecutados": [
+    "1. Buscar «Bogotá» mediante búsqueda manual, seleccionar resultado y verificar disparo de GET /v1/forecast y renderizado de clima actual y pronóstico.",
+    "2. Simular permiso de geolocalización concedido con coordenadas lat=2.93, lon=-75.28, accionar «Usar mi ubicación» y verificar consulta y renderizado del clima detectado.",
+    "3. Cambiar al modo «Comparar ciudades», agregar Bogotá y Medellín, y verificar llamadas concurrentes a /v1/forecast y renderizado de la tabla comparativa lado a lado.",
+    "4. Validar consistencia de datos renderizados frente a las respuestas HTTP de Open-Meteo y ausencia de errores en la consola del navegador."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/js/TC-JS-006/TC-JS-006.spec.ts --project=js"
+  ],
+  "resultado_esperado": "En todos los casos, los datos mostrados coinciden con la respuesta de la API y la interfaz se renderiza correctamente.",
+  "resultado_obtenido": "Las 3 pruebas del flujo de integración pasaron satisfactoriamente (3/3). La integración entre los componentes de ubicación (búsqueda geocodificada y geolocalización del navegador) y los servicios de pronóstico meteorológico (vista individual y comparación multicriterio) opera de manera sincronizada y coherente; las coordenadas obtenidas disparan inmediatamente las consultas correspondientes a /v1/forecast y renderizan con precisión las condiciones actuales, las métricas y los pronósticos sin incongruencias visuales ni errores no controlados en la consola.",
+  "tiempo_respuesta_ms": 9300,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "app-clima-local/qa/casos/js/TC-JS-006/evidencias/TC-JS-006__2026-09-28__run01/flujo1-busqueda-pronostico-bogota.png",
+    "app-clima-local/qa/casos/js/TC-JS-006/evidencias/TC-JS-006__2026-09-28__run01/flujo2-geolocalizacion-pronostico.png",
+    "app-clima-local/qa/casos/js/TC-JS-006/evidencias/TC-JS-006__2026-09-28__run01/flujo3-comparacion-paralela.png"
+  ],
+  "observaciones": "Flujo de integración end-to-end verificado en su totalidad. Se constató la correcta transición de datos desde los endpoints de Open-Meteo (/v1/search y /v1/forecast) hacia el estado de React y la presentación en el DOM para ubicación manual, geolocalización simulada y comparación multiciudad concurrente."
+}
