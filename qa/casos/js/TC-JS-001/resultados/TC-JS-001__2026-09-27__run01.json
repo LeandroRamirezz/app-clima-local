@@ -1,0 +1,41 @@
+{
+  "id_caso": "TC-JS-001",
+  "bloque_qa": "js",
+  "tipo_prueba": "Funcional",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-27",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed"
+  },
+  "herramienta": "Playwright",
+  "pasos_ejecutados": [
+    "1. Escribir «Bogotá» y validar selección y carga de clima actual.",
+    "2. Escribir «San» y validar lista de homónimos múltiples con región y país.",
+    "3. Escribir «Xyzabc123» y validar mensaje de ausencia de resultados.",
+    "4. Escribir «a» y validar mensaje de mínimo 2 caracteres.",
+    "5. Escribir «!!!» y validar mensaje de caracteres válidos.",
+    "6. Limpiar campo o enviar vacío y validar mensaje de ayuda/estabilidad.",
+    "7. Ejecutar ciclo de búsquedas consecutivas y validar operabilidad general."
+  ],
+  "comandos_ejecucion": [
+    "npm run qa:test:js"
+  ],
+  "resultado_esperado": "1. «Bogotá»: muestra resultados y clima. 2. «San»: lista de homónimos con región y país. 3. «Xyzabc123»: mensaje exacto «No se encontraron ubicaciones para «Xyzabc123». Verifique la ortografía o pruebe con otro nombre.». 4. «a» o «!!!»: mensaje «Ingrese al menos 2 caracteres válidos.». 5. Campo vacío: mensaje «Escriba el nombre de una ciudad.» / texto de ayuda. 6. La interfaz permanece operativa.",
+  "resultado_obtenido": "5 de 6 pruebas pasaron. Falló el paso con la entrada «!!!»: la aplicación no valida si los caracteres son válidos/alfanuméricos; en su lugar, envió la solicitud a la API de Geocoding y mostró el estado «No se encontraron ubicaciones para «!!!». Verifique la ortografía o pruebe con otro nombre.» en vez del mensaje de validación esperado «Ingrese al menos 2 caracteres válidos.».",
+  "tiempo_respuesta_ms": 10400,
+  "estado": "Fallido",
+  "bug_id": "BUG-JS-001",
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JS-001__2026-09-27__run01/test-failed-1.png",
+    "evidencias/TC-JS-001__2026-09-27__run01/video.webm",
+    "evidencias/TC-JS-001__2026-09-27__run01/error-context.md"
+  ],
+  "observaciones": "El validador de query en cliente (validateCityQuery) solo comprueba la longitud de la cadena recortada (...normalized.length < 2) sin verificar si contiene caracteres válidos o solo símbolos. Al ingresar «!!!», la longitud es 3, por lo que el sistema dispara la consulta a Open-Meteo y muestra mensaje de sin resultados en lugar de advertir sobre caracteres inválidos."
+}
