@@ -1,0 +1,46 @@
+{
+  "id_caso": "TC-SS-001",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-05 (Datos históricos), RNF-11 (Precisión de datos)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Consulta histórica de un día válido (camino feliz) y coincidencia con la API. Verificar que, para una fecha pasada válida, el sistema consulte /v1/archive con los parámetros correctos y muestre temperatura máxima/mínima/media, precipitación acumulada, viento máximo y humedad con valores 100 % iguales a los de la respuesta de la API, la fecha en formato DD/MM/AAAA y un indicador de carga mientras la respuesta está pendiente.",
+  "precondiciones": "Ubicación activa Neiva, Huila (vía RF-02). Unidades por defecto °C, km/h, mm. Sección de históricos abierta. Ambiente QA operativo con Open-Meteo real; respuesta cruda capturada por interceptación de red de Playwright (equivalente a DevTools > Network).",
+  "pasos_ejecutados": [
+    "0. Buscar «Neiva» y seleccionar «Neiva, Huila, Colombia» como ubicación activa.",
+    "1. Abrir la pestaña «Históricos».",
+    "2. Seleccionar 15/09/2026 como fecha inicial y final y pulsar «Consultar histórico» (retraso artificial de 2 000 ms en la respuesta).",
+    "3. Verificar el indicador de carga «Consultando datos históricos…» sin tabla ni datos de consultas anteriores.",
+    "4. Verificar en la petición capturada start_date=2026-09-15, end_date=2026-09-15, timezone=auto, coordenadas, variables daily y unidades; verificar HTTP 200 y daily.time = [\"2026-09-15\"].",
+    "5. Verificar que la fecha mostrada sea 15/09/2026 (encabezado y fila).",
+    "6. Comparar los 6 valores mostrados contra daily.*[0] del JSON crudo.",
+    "7. Verificar la unidad visible en cada valor (°C, mm, km/h, %) y la ausencia de «null», «NaN» o «undefined»."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-001 --project=ss"
+  ],
+  "resultado_esperado": "HTTP 200. daily.time = [\"2026-09-15\"]. Mientras carga se ve un indicador de carga, sin datos vacíos ni de una consulta anterior. La interfaz muestra la fecha 15/09/2026 y los 6 valores coinciden exactamente con daily.*[0] de la respuesta (salvo redondeo de presentación a 1 decimal). Cada valor lleva su unidad visible. No aparecen \"null\", \"NaN\" ni \"undefined\".",
+  "resultado_obtenido": "1/1 test aprobado. Se mostró el indicador «Consultando datos históricos…» sin tabla previa durante la espera. La petición fue GET /v1/archive con latitude=2.93001, longitude=-75.27973, start_date=end_date=2026-09-15, las 6 variables daily, timezone=auto, temperature_unit=celsius, wind_speed_unit=kmh y precipitation_unit=mm; respondió HTTP 200 con daily.time = [\"2026-09-15\"]. La UI mostró «Histórico — 15/09/2026» y la fila 15/09/2026 con: máx. 37,8 °C, mín. 26,8 °C, media 32,6 °C, precipitación 0 mm, viento máx. 16,3 km/h y humedad 40 %, idénticos a la API (37.8, 26.8, 32.6, 0, 16.3, 40). Todas las celdas tienen unidad y no aparecen null/NaN/undefined. Sin errores de consola.",
+  "tiempo_respuesta_ms": 1118,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-001__2026-09-28__run01/paso3-indicador-carga.png",
+    "evidencias/TC-SS-001__2026-09-28__run01/paso5-7-resultado-historico.png",
+    "evidencias/TC-SS-001__2026-09-28__run01/respuesta-cruda-archive.json",
+    "evidencias/TC-SS-001__2026-09-28__run01/comparacion-ui-vs-api.json"
+  ],
+  "observaciones": "1) Las coordenadas enviadas (2.93001, -75.27973) son las que devuelve Geocoding para Neiva y difieren ~0,003° de las del diseño del caso (2.9273, -75.2819); se validaron con tolerancia de 2 decimales. Se recomienda actualizar el dato de entrada del caso. 2) tiempo_respuesta_ms (1 118 ms) es la respuesta real de Open-Meteo medida desde Playwright sin el retraso artificial de 2 000 ms; es una única muestra y no sustituye la medición p95 de RNF-01."
+}

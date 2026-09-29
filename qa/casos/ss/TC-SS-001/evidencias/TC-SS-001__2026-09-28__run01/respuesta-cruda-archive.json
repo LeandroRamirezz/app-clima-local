@@ -1,0 +1,46 @@
+{
+  "url": "https://archive-api.open-meteo.com/v1/archive?latitude=2.93001&longitude=-75.27973&start_date=2026-09-15&end_date=2026-09-15&daily=temperature_2m_max%2Ctemperature_2m_min%2Ctemperature_2m_mean%2Cprecipitation_sum%2Cwind_speed_10m_max%2Crelative_humidity_2m_mean&timezone=auto&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+  "status": 200,
+  "tiempo_respuesta_ms": 1118,
+  "body": {
+    "latitude": 2.917399,
+    "longitude": -75.3017,
+    "generationtime_ms": 0.5699396133422852,
+    "utc_offset_seconds": -18000,
+    "timezone": "America/Bogota",
+    "timezone_abbreviation": "GMT-5",
+    "elevation": 458,
+    "daily_units": {
+      "time": "iso8601",
+      "temperature_2m_max": "°C",
+      "temperature_2m_min": "°C",
+      "temperature_2m_mean": "°C",
+      "precipitation_sum": "mm",
+      "wind_speed_10m_max": "km/h",
+      "relative_humidity_2m_mean": "%"
+    },
+    "daily": {
+      "time": [
+        "2026-09-15"
+      ],
+      "temperature_2m_max": [
+        37.8
+      ],
+      "temperature_2m_min": [
+        26.8
+      ],
+      "temperature_2m_mean": [
+        32.6
+      ],
+      "precipitation_sum": [
+        0
+      ],
+      "wind_speed_10m_max": [
+        16.3
+      ],
+      "relative_humidity_2m_mean": [
+        40
+      ]
+    }
+  }
+}

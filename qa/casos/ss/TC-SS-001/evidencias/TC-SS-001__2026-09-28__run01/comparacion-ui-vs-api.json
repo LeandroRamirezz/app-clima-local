@@ -1,0 +1,44 @@
+[
+  {
+    "variable": "temperature_2m_max",
+    "api": 37.8,
+    "esperado_en_ui": "37,8 °C",
+    "mostrado_en_ui": "37,8 °C",
+    "coincide": true
+  },
+  {
+    "variable": "temperature_2m_min",
+    "api": 26.8,
+    "esperado_en_ui": "26,8 °C",
+    "mostrado_en_ui": "26,8 °C",
+    "coincide": true
+  },
+  {
+    "variable": "temperature_2m_mean",
+    "api": 32.6,
+    "esperado_en_ui": "32,6 °C",
+    "mostrado_en_ui": "32,6 °C",
+    "coincide": true
+  },
+  {
+    "variable": "precipitation_sum",
+    "api": 0,
+    "esperado_en_ui": "0 mm",
+    "mostrado_en_ui": "0 mm",
+    "coincide": true
+  },
+  {
+    "variable": "wind_speed_10m_max",
+    "api": 16.3,
+    "esperado_en_ui": "16,3 km/h",
+    "mostrado_en_ui": "16,3 km/h",
+    "coincide": true
+  },
+  {
+    "variable": "relative_humidity_2m_mean",
+    "api": 40,
+    "esperado_en_ui": "40 %",
+    "mostrado_en_ui": "40 %",
+    "coincide": true
+  }
+]
