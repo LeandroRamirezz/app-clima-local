@@ -1,0 +1,45 @@
+{
+  "id_caso": "TC-JC-002",
+  "bloque_qa": "jc",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-01",
+  "evaluador": {
+    "nombre": "Juan Camilo La Rotta",
+    "rol": "QA Lead / Tester JC"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "v1.0.0"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar que el usuario pueda configurar el rango del pronóstico entre 1 y 16 días (7 por defecto) y que un valor fuera de ese rango se corrija automáticamente al límite permitido.",
+  "precondiciones": "Ubicación activa válida (Neiva). Ambiente QA operativo. Mock dinámico de /v1/forecast capaz de responder con la cantidad de días solicitados.",
+  "pasos_ejecutados": [
+    "1. Cargar la aplicación y establecer Neiva como ubicación activa.",
+    "2. Verificar que por defecto el input 'Días de pronóstico' contenga el valor 7 y se muestren exactamente 7 días en el panel.",
+    "3. Cambiar el valor del rango a 1 día y verificar que la interfaz muestre solo el día actual.",
+    "4. Cambiar el valor del rango a 16 días y verificar que la interfaz muestre los 16 días de pronóstico.",
+    "5. Ingresar un valor de 0 en el campo de entrada y verificar que aparezca el mensaje 'El pronóstico admite entre 1 y 16 días.' y que el valor se reajuste a 1 día.",
+    "6. Ingresar un valor de 17 en el campo de entrada y verificar que aparezca el mensaje 'El pronóstico admite entre 1 y 16 días.' y que el valor se reajuste a 16 días."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test qa/casos/jc/TC-JC-002/TC-JC-002.spec.ts --config=qa/playwright.config.ts --project=jc"
+  ],
+  "resultado_esperado": "Con 1 y 16 días la API responde 200 y la interfaz muestra exactamente esa cantidad de días. Con valores <1 o >16, el sistema restablece el valor al límite permitido (1 o 16) y muestra: 'El pronóstico admite entre 1 y 16 días.' Por defecto se cargan 7 días.",
+  "resultado_obtenido": "La prueba se ejecutó con éxito. Se verificó que por defecto la aplicación carga 7 días de pronóstico. Al cambiar el input a 1 día y a 16 días, la aplicación consultó la API con el parámetro forecast_days correspondiente y renderizó exactamente 1 y 16 tarjetas de días. Al intentar ingresar 0 y 17 días, la interfaz mostró el mensaje de error de validación 'El pronóstico admite entre 1 y 16 días.' y reajustó automáticamente el valor a los límites 1 y 16 respectivamente.",
+  "tiempo_respuesta_ms": 5700,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JC-002__2026-09-28__run01/01_pronostico_7_dias_defecto.png",
+    "evidencias/TC-JC-002__2026-09-28__run01/02_pronostico_1_dia.png",
+    "evidencias/TC-JC-002__2026-09-28__run01/03_pronostico_16_dias.png",
+    "evidencias/TC-JC-002__2026-09-28__run01/04_limite_inferior_0_mensaje_error.png",
+    "evidencias/TC-JC-002__2026-09-28__run01/05_limite_superior_17_mensaje_error.png"
+  ],
+  "observaciones": "Prueba automatizada con Playwright Chromium. Se validó la reactividad del componente ante cambios en el input de rango de días y la correctitud de las validaciones de límites."
+}

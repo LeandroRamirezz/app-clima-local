@@ -1,0 +1,10 @@
+{
+  "ejecuciones_ms": [
+    3676,
+    760,
+    788
+  ],
+  "promedio_ms": 1741.3333333333333,
+  "promedio_s": 1.7413333333333332,
+  "cumple_criterio": true
+}

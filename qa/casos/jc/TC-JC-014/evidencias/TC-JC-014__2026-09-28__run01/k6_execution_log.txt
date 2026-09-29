@@ -1,0 +1,40 @@
+﻿=== K6 LOAD TEST RESULT SUMMARY (TC-JC-014) ===
+
+--- 1. MOCK LOAD TEST (100 VUs - 5 Minutos) ---
+Script: qa/casos/jc/TC-JC-014/k6_mock_load_test.js
+VUs: 100 constantes
+Duracion: 5m 00s
+Endpoint: http://127.0.0.1:3456/v1/forecast
+
+Resultados:
+- Total Peticiones (http_reqs): 30,000 requests (99.80 req/s)
+- Tasa de Error (http_req_failed): 0.00% (0 / 30,000)
+- Tasa de HTTP 429 (http_429_rate): 0.00% (0 / 30,000)
+- Latencia Promedio (http_req_duration avg): 1.13 ms
+- Latencia p95 (http_req_duration p95): 3.57 ms
+- Latencia Maxima: 33.49 ms
+- Checks exitosos: 100.00% (90,000 / 90,000)
+
+Thresholds:
+✓ http_429_rate: 'rate==0' (0.00%)
+✓ http_req_duration: 'p(95)<500' (3.57ms)
+✓ http_req_failed: 'rate<0.01' (0.00%)
+
+--- 2. REAL API CALIBRATION TEST (5 VUs - 20 Segundos) ---
+Script: qa/casos/jc/TC-JC-014/k6_real_calibration_test.js
+VUs: 5 constantes
+Duracion: 20s
+Endpoint: https://api.open-meteo.com/v1/forecast
+
+Resultados:
+- Total Peticiones (http_reqs): 45 requests
+- Tasa de Error (http_req_failed): 0.00% (0 / 45)
+- Tasa de HTTP 429 (real_api_429_rate): 0.00% (0 / 45)
+- Latencia Promedio (http_req_duration avg): 196.04 ms
+- Latencia p95 (http_req_duration p95): 211.27 ms
+- Checks exitosos: 100.00% (135 / 135)
+
+Calibracion de Cuota Open-Meteo:
+- Limite gratuito documentado: 600 req/minuto, 5,000 req/hora, 10,000 req/dia
+- Con 100 VUs y peticiones espaciadas (ej. 1 req cada 10-15s en SPA), el consumo estimado es de 400-600 req/min.
+- Confirmado 0% HTTP 429 durante la calibracion real.

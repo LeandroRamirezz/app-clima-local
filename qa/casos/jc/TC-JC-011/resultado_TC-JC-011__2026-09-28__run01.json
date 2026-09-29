@@ -1,0 +1,61 @@
+﻿{
+  "caso_id": "TC-JC-011",
+  "nombre": "Amanecer, atardecer y duración del día (valores válidos)",
+  "tipo": "Funcional",
+  "prioridad": "Media",
+  "tester": "Juan Camilo La Rotta",
+  "fecha_ejecucion": "2026-09-28",
+  "ubicacion_activa": "Neiva, Huila",
+  "estado_global": "APROBADO",
+  "duracion_total_s": 6.4,
+  "resumen": {
+    "total_escenarios": 2,
+    "pasados": 2,
+    "fallidos": 0
+  },
+  "escenarios": [
+    {
+      "id": "ESC-A",
+      "nombre": "Datos controlados (Mock) — Neiva 3 días",
+      "resultado": "APROBADO",
+      "datos_prueba": {
+        "ciudad": "Neiva",
+        "dias_pronostico": [
+          { "dia": 0, "sunrise": "2026-09-27T05:47", "sunset": "2026-09-27T18:02", "daylight_duration_s": 44100, "esperado_duracion": "12 h 15 min" },
+          { "dia": 1, "sunrise": "2026-09-28T05:48", "sunset": "2026-09-28T18:01", "daylight_duration_s": 43980, "esperado_duracion": "12 h 13 min" },
+          { "dia": 2, "sunrise": "2026-09-29T05:48", "sunset": "2026-09-29T18:00", "daylight_duration_s": 43200, "esperado_duracion": "12 h" }
+        ]
+      },
+      "resultado_esperado": "Amanecer y atardecer en HH:mm (formato 24h), duración en 'X h Y min' / 'X h' y presencia de etiquetas textuales explicitas ('Amanecer', 'Atardecer', 'Duración del día').",
+      "resultado_obtenido": "Coincidencia exacta de 05:47 / 18:02 / '12 h 15 min' en clima actual y día 0, 05:48 / 18:01 / '12 h 13 min' en día 1 y 05:48 / 18:00 / '12 h' en día 2. Todas las etiquetas <dt> presentes.",
+      "evidencia": "evidencias/TC-JC-011__2026-09-28__run01/01_valores_validos_mock.png"
+    },
+    {
+      "id": "ESC-B",
+      "nombre": "API Real — Neiva (Validación de formato 24h y duración)",
+      "resultado": "APROBADO",
+      "datos_prueba": {
+        "ciudad": "Neiva",
+        "fuente": "Open-Meteo Live API (/v1/forecast)"
+      },
+      "resultado_esperado": "Para todos los días del pronóstico retornado por la API, las horas deben estar en 24h (HH:mm) y la duración en formato 'X h Y min', con sus etiquetas textuales.",
+      "resultado_obtenido": "Todos los días del pronóstico cumplieron los patrones de expresión regular HH:mm (^\\d{2}:\\d{2}$) y 'X h Y min' (^\\d+\\s*h(\\s+\\d+\\s*min)?$).",
+      "evidencia": "evidencias/TC-JC-011__2026-09-28__run01/02_valores_validos_api_real.png"
+    }
+  ],
+  "criterios_aceptacion": [
+    {
+      "criterio": "Las horas de amanecer y atardecer se muestran en formato 24 h (HH:mm), en la hora local de la ubicación, coincidiendo exactamente con los valores de la API.",
+      "estado": "CUMPLE"
+    },
+    {
+      "criterio": "La duración del día se presenta como 'X h Y min', calculada correctamente desde daylight_duration.",
+      "estado": "CUMPLE"
+    },
+    {
+      "criterio": "Cada dato incluye una etiqueta textual ('Amanecer' / 'Atardecer' / 'Duración del día'), no solo un ícono.",
+      "estado": "CUMPLE"
+    }
+  ],
+  "observaciones": "Prueba ejecutada exitosamente con 2 escenarios (mock y API real). La función formatDaylightDuration convierte correctamente segundos a formato legible 'X h Y min' (o 'X h' si los minutos son 0)."
+}

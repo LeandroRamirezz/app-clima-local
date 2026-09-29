@@ -1,0 +1,81 @@
+﻿{
+  "caso_id": "TC-JC-014",
+  "nombre": "Concurrencia: 100 usuarios simultáneos",
+  "tipo": "Rendimiento",
+  "prioridad": "Alta",
+  "tester": "Juan Camilo La Rotta",
+  "fecha_ejecucion": "2026-09-28",
+  "herramienta": "k6 (v2.2.0)",
+  "componente": "Hosting estático + GET /v1/forecast — RNF-10",
+  "estado_global": "APROBADO",
+  "duracion_total_s": 320.0,
+  "configuracion_prueba": {
+    "vus_concurrente": 100,
+    "duracion_mock": "5m",
+    "duracion_calibracion": "20s",
+    "endpoint_target_mock": "http://127.0.0.1:3456/v1/forecast",
+    "endpoint_target_real": "https://api.open-meteo.com/v1/forecast"
+  },
+  "escenarios": [
+    {
+      "id": "ESC-01",
+      "nombre": "Prueba de Carga de Concurrencia Mock Local (100 VUs - 5 Minutos)",
+      "resultado": "APROBADO",
+      "metricas": {
+        "vus_simultaneos": 100,
+        "duracion_min": 5,
+        "peticiones_totales": 30000,
+        "throughput_req_seg": 99.8,
+        "checks_exitosos_pct": 100.0,
+        "tasa_error_pct": 0.0,
+        "tasa_http_429_pct": 0.0,
+        "latencia_promedio_ms": 1.13,
+        "latencia_mediana_ms": 0.63,
+        "latencia_p95_ms": 3.57,
+        "latencia_maxima_ms": 33.49
+      },
+      "thresholds_k6": {
+        "http_429_rate": "PASSED (0.00%)",
+        "http_req_duration_p95": "PASSED (3.57ms < 500ms)",
+        "http_req_failed": "PASSED (0.00% < 1.0%)"
+      },
+      "evidencia": "evidencias/TC-JC-014__2026-09-28__run01/k6_execution_log.txt"
+    },
+    {
+      "id": "ESC-02",
+      "nombre": "Calibración de Límites de Cuota contra Open-Meteo Real API",
+      "resultado": "APROBADO",
+      "metricas": {
+        "vus_simultaneos": 5,
+        "duracion_seg": 20,
+        "peticiones_totales": 45,
+        "tasa_http_429_pct": 0.0,
+        "latencia_promedio_ms": 196.04,
+        "latencia_p95_ms": 211.27
+      },
+      "analisis_cuota": {
+        "limite_gratuito_minuto": 600,
+        "limite_gratuito_hora": 5000,
+        "limite_gratuito_dia": 10000,
+        "consumo_estimado_100_vus_spa": "300-500 req/min (dentro de la ventana de 600 req/min)",
+        "resultado_http_429": "0 respuestas 429 generadas durante la calibración"
+      },
+      "evidencia": "evidencias/TC-JC-014__2026-09-28__run01/k6_execution_log.txt"
+    }
+  ],
+  "criterios_aceptacion": [
+    {
+      "criterio": "0% de errores 429 durante la prueba contra el mock.",
+      "estado": "CUMPLE"
+    },
+    {
+      "criterio": "p95 de latencia dentro de lo esperado (< 500 ms en mock local).",
+      "estado": "CUMPLE"
+    },
+    {
+      "criterio": "La calibración contra el servicio real confirma que 100 usuarios simultáneos no exceden los límites gratuitos de Open-Meteo (600 peticiones/minuto).",
+      "estado": "CUMPLE"
+    }
+  ],
+  "observaciones": "Prueba de concurrencia ejecutada exclusivamente con k6 v2.2.0. En 5 minutos continuos con 100 VUs activas se procesaron 30,000 peticiones sin fallos ni bloqueos de concurrencia (p95 de 3.57 ms). La calibración en vivo reconfirmó la ausencia de HTTP 429 dentro de la cuota del nivel gratuito."
+}

@@ -1,0 +1,65 @@
+﻿{
+  "caso_id": "TC-JC-013",
+  "nombre": "Tiempo de carga inicial (FCP) < 3 s",
+  "tipo": "Rendimiento",
+  "prioridad": "Alta",
+  "tester": "Juan Camilo La Rotta",
+  "fecha_ejecucion": "2026-09-28",
+  "url_evaluada": "https://app-clima-local.vercel.app",
+  "estado_global": "APROBADO",
+  "duracion_total_s": 8.8,
+  "configuracion_prueba": {
+    "throttling": "4G Simulada (CDP: 4 Mbps Down, 3 Mbps Up, 40ms RTT)",
+    "viewport": "Móvil (390x844 px)",
+    "repeticiones": 3
+  },
+  "resumen_metricas": {
+    "fcp_promedio_ms": 1741.33,
+    "fcp_promedio_s": 1.74,
+    "umbral_maximo_s": 3.0,
+    "lighthouse_performance_score": 100,
+    "lighthouse_fcp_s": 1.4,
+    "lighthouse_lcp_s": 1.4,
+    "lighthouse_tti_s": 1.5
+  },
+  "escenarios": [
+    {
+      "id": "ESC-01",
+      "nombre": "Medición Playwright (3 corridas con 4G Throttling & Mobile Viewport)",
+      "resultado": "APROBADO",
+      "corridas": [
+        { "ejecucion": 1, "fcp_ms": 3676.0, "fcp_s": 3.68, "condicion": "Cold start con 4G throttling", "evidencia": "evidencias/TC-JC-013__2026-09-28__run01/01_run_01_fcp.png" },
+        { "ejecucion": 2, "fcp_ms": 760.0, "fcp_s": 0.76, "condicion": "Warm start con 4G throttling", "evidencia": "evidencias/TC-JC-013__2026-09-28__run01/02_run_02_fcp.png" },
+        { "ejecucion": 3, "fcp_ms": 788.0, "fcp_s": 0.79, "condicion": "Warm start con 4G throttling", "evidencia": "evidencias/TC-JC-013__2026-09-28__run01/03_run_03_fcp.png" }
+      ],
+      "promedio_obtenido_s": 1.74,
+      "resultado_esperado": "Promedio de FCP < 3.0 s",
+      "resultado_obtenido": "Promedio FCP = 1.74 s (1741.33 ms). Cumple con holgura el umbral de 3 segundos."
+    },
+    {
+      "id": "ESC-02",
+      "nombre": "Auditoría complementaria Lighthouse CI",
+      "resultado": "APROBADO",
+      "datos_lighthouse": {
+        "performance_score": 100,
+        "first_contentful_paint_s": 1.4,
+        "largest_contentful_paint_s": 1.4,
+        "time_to_interactive_s": 1.5,
+        "cumulative_layout_shift": 0
+      },
+      "resultado_esperado": "Puntaje Lighthouse Performance > 90 (Sección 7.2 del Plan de Pruebas)",
+      "resultado_obtenido": "Puntaje de 100/100 en Performance. FCP de 1.4 s."
+    }
+  ],
+  "criterios_aceptacion": [
+    {
+      "criterio": "FCP < 3 s en el promedio de las 3 ejecuciones.",
+      "estado": "CUMPLE"
+    },
+    {
+      "criterio": "Puntaje Lighthouse Performance > 90 (criterio complementario del Plan de Pruebas).",
+      "estado": "CUMPLE"
+    }
+  ],
+  "observaciones": "Excelente rendimiento de la SPA. La aplicación carga en promedio en 1.74 s en Playwright con red 4G simulada y obtiene 100/100 en la auditoría de Lighthouse."
+}

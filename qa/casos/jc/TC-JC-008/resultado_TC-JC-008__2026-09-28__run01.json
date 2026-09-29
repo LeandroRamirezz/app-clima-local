@@ -1,0 +1,54 @@
+{
+  "caso_id": "TC-JC-008",
+  "nombre": "Visualización de la elevación de la ubicación",
+  "requerimiento": "RF-08",
+  "tipo_prueba": "Funcional",
+  "prioridad": "Media",
+  "disenado_por": "jc",
+  "fecha_diseno": "2026-09-28",
+  "ejecutado_por": "jc",
+  "fecha_ejecucion": "2026-09-28",
+  "ejecucion_id": "TC-JC-008__2026-09-28__run01",
+  "estado_global": "APROBADO",
+  "escenarios": [
+    {
+      "id": "ESC-A",
+      "nombre": "Elevación presente en la respuesta de /v1/forecast",
+      "datos_prueba": {
+        "latitude": 2.9273,
+        "longitude": -75.2819,
+        "elevation_mock": 442
+      },
+      "resultado_esperado": "Se muestra 'Elevación: 442 m s. n. m.' en .current-weather__elevation",
+      "resultado_obtenido": "La interfaz mostró 'Elevación: 442 m s. n. m.' exactamente coincidente con el campo elevation de la respuesta mockeada",
+      "estado": "APROBADO",
+      "duracion_ms": 2800,
+      "evidencia": "qa/casos/jc/TC-JC-008/evidencias/TC-JC-008__2026-09-28__run01/01_elevacion_442m_neiva.png"
+    },
+    {
+      "id": "ESC-B",
+      "nombre": "Elevación nula (null) en la respuesta de /v1/forecast",
+      "datos_prueba": {
+        "elevation_mock": null
+      },
+      "resultado_esperado": "Se muestra 'Elevación: no disponible' y el resto del panel sigue funcionando",
+      "resultado_obtenido": "La interfaz mostró 'Elevación: no disponible' y la temperatura (32,5 °C) fue visible correctamente",
+      "estado": "APROBADO",
+      "duracion_ms": 2800,
+      "evidencia": "qa/casos/jc/TC-JC-008/evidencias/TC-JC-008__2026-09-28__run01/02_elevacion_nula_no_disponible.png"
+    }
+  ],
+  "observaciones": "Ambos escenarios aprobados. El componente .current-weather__elevation muestra el valor de la API formateado con Intl.NumberFormat('es-CO') y sufijo 'm s. n. m.'. Cuando el campo elevation es null o no numérico, renderiza 'no disponible' sin afectar el resto del panel. No se detectaron bugs.",
+  "bugs": [],
+  "metadatos_ejecucion": {
+    "runner": "Playwright",
+    "browser": "Chromium (Desktop Chrome)",
+    "base_url": "https://app-clima-local.vercel.app",
+    "config": "qa/playwright.config.ts",
+    "proyecto": "jc",
+    "total_tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "duracion_total_ms": 4900
+  }
+}

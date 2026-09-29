@@ -1,0 +1,56 @@
+﻿{
+  "caso_id": "TC-JC-010",
+  "nombre": "Nota informativa por diferencia de elevacion > 300 m en comparacion de ciudades",
+  "requerimiento": "RF-08 + RF-04",
+  "tipo_prueba": "Funcional",
+  "prioridad": "Media",
+  "disenado_por": "jc",
+  "fecha_diseno": "2026-09-27",
+  "ejecutado_por": "jc",
+  "fecha_ejecucion": "2026-09-28",
+  "ejecucion_id": "TC-JC-010__2026-09-28__run01",
+  "estado_global": "APROBADO",
+  "escenarios": [
+    {
+      "id": "ESC-A",
+      "nombre": "Bogota (2640 m) vs Neiva (442 m) — diferencia ~2198 m (> 300 m)",
+      "datos_prueba": {
+        "ciudad_1": { "nombre": "Bogota", "elevation_mock": 2640 },
+        "ciudad_2": { "nombre": "Neiva", "elevation_mock": 442 },
+        "diferencia_m": 2198
+      },
+      "resultado_esperado": "La nota informativa '.city-comparison__elevation-note[role=note]' es visible y contiene el texto 'altitud'. La elevacion de cada ciudad se muestra en su columna de la tabla de comparacion.",
+      "resultado_obtenido": "La nota aparecio con el texto 'Existe una diferencia importante de altitud entre las ciudades comparadas; la altitud puede influir en la temperatura.' Columnas con '2.640 m s. n. m.' y '442 m s. n. m.' visibles.",
+      "estado": "APROBADO",
+      "duracion_ms": 6200,
+      "evidencia": "qa/casos/jc/TC-JC-010/evidencias/TC-JC-010__2026-09-28__run01/01_bogota_vs_neiva_nota_visible.png"
+    },
+    {
+      "id": "ESC-B",
+      "nombre": "Barranquilla (18 m) vs Valledupar (169 m) — diferencia ~151 m (<= 300 m)",
+      "datos_prueba": {
+        "ciudad_1": { "nombre": "Barranquilla", "elevation_mock": 18 },
+        "ciudad_2": { "nombre": "Valledupar", "elevation_mock": 169 },
+        "diferencia_m": 151
+      },
+      "resultado_esperado": "La nota informativa NO es visible. La elevacion de cada ciudad se muestra en su columna.",
+      "resultado_obtenido": "La nota no aparecio (expect(note).not.toBeVisible() paso). Columnas con '18 m s. n. m.' y '169 m s. n. m.' visibles.",
+      "estado": "APROBADO",
+      "duracion_ms": 6200,
+      "evidencia": "qa/casos/jc/TC-JC-010/evidencias/TC-JC-010__2026-09-28__run01/02_barranquilla_vs_valledupar_nota_ausente.png"
+    }
+  ],
+  "observaciones": "Ambos escenarios aprobados. La logica reside en CityComparison.tsx (linea 182): la nota se renderiza cuando elevationDifference !== null && elevationDifference > 300. El calculo lo realiza getElevationDifference() en location-identity.ts, que filtra solo valores numericos finitos y devuelve max - min. Los mocks de /v1/forecast son discriminados por latitud para servir el payload correcto a cada ciudad en la misma ronda de requests paralelos. RF-04 esta implementado y funcional (modo comparacion disponible via boton 'Comparar ciudades').",
+  "bugs": [],
+  "metadatos_ejecucion": {
+    "runner": "Playwright",
+    "browser": "Chromium (Desktop Chrome)",
+    "base_url": "https://app-clima-local.vercel.app",
+    "config": "qa/playwright.config.ts",
+    "proyecto": "jc",
+    "total_tests": 2,
+    "passed": 2,
+    "failed": 0,
+    "duracion_total_ms": 10300
+  }
+}

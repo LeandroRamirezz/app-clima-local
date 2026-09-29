@@ -1,0 +1,59 @@
+﻿{
+  "caso_id": "TC-JC-012",
+  "nombre": "Amanecer/atardecer no disponibles en latitud polar",
+  "tipo": "Funcional",
+  "prioridad": "Media",
+  "tester": "Juan Camilo La Rotta",
+  "fecha_ejecucion": "2026-09-28",
+  "ubicacion_activa": "Longyearbyen, Svalbard (Latitud 78.22, Longitud 15.64)",
+  "estado_global": "APROBADO",
+  "duracion_total_s": 6.6,
+  "resumen": {
+    "total_escenarios": 2,
+    "pasados": 2,
+    "fallidos": 0
+  },
+  "escenarios": [
+    {
+      "id": "ESC-A",
+      "nombre": "Todos los días con sunrise/sunset nulos (Noche polar en Longyearbyen)",
+      "resultado": "APROBADO",
+      "datos_prueba": {
+        "ciudad": "Longyearbyen",
+        "coordenadas": { "lat": 78.22, "lon": 15.64 },
+        "daily_sunrise": [null, null, null],
+        "daily_sunset": [null, null, null],
+        "daylight_duration": [null, null, null]
+      },
+      "resultado_esperado": "Se muestra 'No disponible' en los campos de amanecer, atardecer y duración del día sin romper la interfaz ni ocultar el resto de métricas de la tarjeta (temperatura, precipitación, viento).",
+      "resultado_obtenido": "Amanecer, Atardecer y Duración del día mostraron 'No disponible' en el clima actual y en las 3 tarjetas del pronóstico diario. La temperatura (-5.2 °C), sensación térmica, viento y precipitación se desplegaron con normalidad.",
+      "evidencia": "evidencias/TC-JC-012__2026-09-28__run01/01_latitud_polar_null_solar.png"
+    },
+    {
+      "id": "ESC-B",
+      "nombre": "Transición mixta — Día 1 con datos solares, Días 2 y 3 con datos nulos",
+      "resultado": "APROBADO",
+      "datos_prueba": {
+        "ciudad": "Longyearbyen",
+        "coordenadas": { "lat": 78.22, "lon": 15.64 },
+        "daily_sunrise": ["2026-10-25T08:15", null, null],
+        "daily_sunset": ["2026-10-25T15:30", null, null],
+        "daylight_duration": [26100, null, null]
+      },
+      "resultado_esperado": "El Día 0 debe mostrar '08:15', '15:30' y '7 h 15 min'. Los Días 1 y 2 deben degradar a 'No disponible' sin afectar la presentación visual.",
+      "resultado_obtenido": "El Día 0 mostró correctamente la hora solar. Los Días 1 y 2 mostraron 'No disponible' únicamente en los datos solares, manteniendo íntegras todas sus métricas climáticas.",
+      "evidencia": "evidencias/TC-JC-012__2026-09-28__run01/02_latitud_polar_mixto.png"
+    }
+  ],
+  "criterios_aceptacion": [
+    {
+      "criterio": "Se muestra 'Sin salida o puesta del sol en esta fecha' (o 'No disponible', según corresponda) en el campo de amanecer/atardecer.",
+      "estado": "CUMPLE"
+    },
+    {
+      "criterio": "El resto de los datos del día (temperaturas, viento, precipitación, UV) se presenta sin verse afectado.",
+      "estado": "CUMPLE"
+    }
+  ],
+  "observaciones": "Prueba exitosa. La aplicación degrada elegantemente los campos solares nulos devolviendo 'No disponible' a través de formatForecastTime y formatDaylightDuration, asegurando la continuidad de la experiencia de usuario en latitudes extremas o estaciones polares."
+}

@@ -1,0 +1,41 @@
+{
+  "id_caso": "TC-JC-003",
+  "bloque_qa": "jc",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-01",
+  "evaluador": {
+    "nombre": "Juan Camilo La Rotta",
+    "rol": "QA Lead / Tester JC"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "v1.0.0"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar que un valor nulo en una variable meteorológica se muestre como 'N/D' sin romper el resto del panel, y que un weather_code no documentado se represente como 'Condición no disponible' con ícono neutro.",
+  "precondiciones": "Mock de Playwright configurado para interceptar /v1/forecast. Ubicación activa válida (Neiva).",
+  "pasos_ejecutados": [
+    "1. Interceptar /v1/forecast para devolver temperature_2m: null en el bloque current (Escenario A).",
+    "2. Verificar que el campo principal de Temperatura en el panel 'Clima actual' muestre 'N/D'.",
+    "3. Confirmar que el resto de los datos (sensación térmica, humedad, viento) se visualicen con normalidad y sin texto 'null' o 'NaN'.",
+    "4. Interceptar /v1/forecast para devolver weather_code: 999 en el bloque current (Escenario B).",
+    "5. Verificar que la condición del clima muestre el texto 'Condición no disponible' y el ícono neutro con atributo data-icon-key='unavailable'."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test qa/casos/jc/TC-JC-003/TC-JC-003.spec.ts --config=qa/playwright.config.ts --project=jc"
+  ],
+  "resultado_esperado": "Escenario A: se muestra 'N/D' únicamente en el campo de temperatura; los demás datos se visualizan correctamente. Escenario B: se muestra 'Condición no disponible' junto a un ícono neutro; el resto del panel no se ve afectado. En ningún caso la aplicación muestra 'null', 'NaN' o se rompe visualmente.",
+  "resultado_obtenido": "La prueba se ejecutó con éxito en ambos escenarios. En el Escenario A, al recibir temperature_2m: null, el panel mostró 'N/D' en el campo de temperatura conservando los valores y unidades del resto del panel (sensación térmica 35,1 °C, humedad 65 %). En el Escenario B, al recibir weather_code: 999, la interfaz presentó la etiqueta 'Condición no disponible' junto con el ícono neutro (data-icon-key='unavailable').",
+  "tiempo_respuesta_ms": 3200,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JC-003__2026-09-28__run01/01_escenario_A_temperatura_nula.png",
+    "evidencias/TC-JC-003__2026-09-28__run01/02_escenario_B_weather_code_desconocido.png"
+  ],
+  "observaciones": "Prueba automatizada con Playwright Chromium evaluando resiliencia ante datos atípicos o nulos provenientes de la API de Open-Meteo."
+}

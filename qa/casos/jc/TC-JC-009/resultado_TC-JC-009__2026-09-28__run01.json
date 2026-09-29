@@ -1,0 +1,64 @@
+{
+  "caso_id": "TC-JC-009",
+  "nombre": "Elevación ausente o no numérica",
+  "requerimiento": "RF-08",
+  "tipo_prueba": "Funcional",
+  "prioridad": "Media",
+  "disenado_por": "jc",
+  "fecha_diseno": "2026-09-28",
+  "ejecutado_por": "jc",
+  "fecha_ejecucion": "2026-09-28",
+  "ejecucion_id": "TC-JC-009__2026-09-28__run01",
+  "estado_global": "APROBADO",
+  "escenarios": [
+    {
+      "id": "ESC-A1",
+      "nombre": "elevation omitida (campo ausente en la respuesta JSON)",
+      "datos_prueba": {
+        "elevation": "(campo no presente en el body de /v1/forecast)"
+      },
+      "resultado_esperado": "Se muestra 'Elevación: no disponible'; el resto del panel funciona con normalidad",
+      "resultado_obtenido": "La interfaz mostró 'Elevación: no disponible'. Temperatura 32,5 °C visible correctamente.",
+      "estado": "APROBADO",
+      "duracion_ms": 6200,
+      "evidencia": "qa/casos/jc/TC-JC-009/evidencias/TC-JC-009__2026-09-28__run01/01_elevation_ausente.png"
+    },
+    {
+      "id": "ESC-A2",
+      "nombre": "elevation = null",
+      "datos_prueba": {
+        "elevation": null
+      },
+      "resultado_esperado": "Se muestra 'Elevación: no disponible'; el resto del panel funciona con normalidad",
+      "resultado_obtenido": "La interfaz mostró 'Elevación: no disponible'. Temperatura 32,5 °C visible correctamente.",
+      "estado": "APROBADO",
+      "duracion_ms": 6300,
+      "evidencia": "qa/casos/jc/TC-JC-009/evidencias/TC-JC-009__2026-09-28__run01/02_elevation_null.png"
+    },
+    {
+      "id": "ESC-B",
+      "nombre": "elevation = \"abc\" (valor no numérico)",
+      "datos_prueba": {
+        "elevation": "abc"
+      },
+      "resultado_esperado": "Se muestra 'Elevación: no disponible'; el resto del panel funciona con normalidad",
+      "resultado_obtenido": "La interfaz mostró 'Elevación: no disponible'. Temperatura 32,5 °C visible correctamente.",
+      "estado": "APROBADO",
+      "duracion_ms": 6200,
+      "evidencia": "qa/casos/jc/TC-JC-009/evidencias/TC-JC-009__2026-09-28__run01/03_elevation_no_numerica_abc.png"
+    }
+  ],
+  "observaciones": "Todos los escenarios aprobados. El servicio forecast.ts normaliza el campo elevation con nullableNumber(), que rechaza cualquier valor que no sea un número finito (undefined → null, 'abc' → null). El componente CurrentWeather.tsx renderiza 'no disponible' cuando elevation no es un número finito, sin afectar el resto del panel. No se detectaron bugs.",
+  "bugs": [],
+  "metadatos_ejecucion": {
+    "runner": "Playwright",
+    "browser": "Chromium (Desktop Chrome)",
+    "base_url": "https://app-clima-local.vercel.app",
+    "config": "qa/playwright.config.ts",
+    "proyecto": "jc",
+    "total_tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "duracion_total_ms": 9100
+  }
+}

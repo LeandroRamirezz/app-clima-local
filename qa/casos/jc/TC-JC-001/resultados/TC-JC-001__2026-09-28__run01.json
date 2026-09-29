@@ -1,0 +1,44 @@
+{
+  "id_caso": "TC-JC-001",
+  "bloque_qa": "jc",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-01",
+  "evaluador": {
+    "nombre": "Juan Camilo La Rotta",
+    "rol": "QA Lead / Tester JC"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "v1.0.0"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar que, para una ubicación válida (Neiva), el sistema muestre correctamente las condiciones actuales y el pronóstico horario y diario, coincidentes al 100% con la API (RF-01), y que mientras la respuesta está pendiente se muestre un indicador de carga.",
+  "precondiciones": "Ubicación activa establecida: Neiva, Huila (vía RF-02/RF-03). Unidades por defecto: °C, km/h, mm. Rango por defecto: 7 días. Mock con respuesta fija y retraso artificial de 2500 ms.",
+  "pasos_ejecutados": [
+    "1. Establecer Neiva como ubicación activa buscando la ciudad en el combobox.",
+    "2. Disparar la solicitud a /v1/forecast (interceptada con un retraso artificial de 2,5 segundos).",
+    "3. Mientras la respuesta estuvo pendiente, verificar que se mostró el estado 'Consultando clima…' en la interfaz.",
+    "4. Esperar a que la respuesta se resolviera y verificar que el mensaje de carga desapareció.",
+    "5. Verificar que el panel 'Clima actual' mostró temperatura (32,5 °C), sensación térmica (35,1 °C), humedad (65 %), viento (12,3 km/h), dirección (180°), precipitación (0 mm) y condición 'Despejado'.",
+    "6. Verificar que el UV actual (7) se mostró junto a su categoría correspondiente ('Alto').",
+    "7. Verificar que el pronóstico diario desplegó exactamente 7 días.",
+    "8. Alternar a la vista horaria y verificar la visualización correcta de las tarjetas por hora."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test qa/casos/jc/TC-JC-001/TC-JC-001.spec.ts --config=qa/playwright.config.ts --project=jc"
+  ],
+  "resultado_esperado": "Mientras la solicitud está pendiente, se muestra un indicador de carga. Al resolverse, se muestran los datos coincidentes al 100% con la API, el UV se acompaña de la categoría 'Alto' para UV 7 y el weather_code 0 muestra 'Despejado' en español.",
+  "resultado_obtenido": "La prueba se ejecutó exitosamente. Se verificó la visibilidad del estado de carga ('Consultando clima…') durante el retraso de 2,5 s. Al resolverse la petición, todos los datos mostrados en el panel 'Ahora' (temperatura 32,5 °C, sensación térmica 35,1 °C, humedad 65 %, viento 12,3 km/h, elevación 442 m s. n. m., UV 7 — Alto y condición Despejado) y en los paneles diario/horario coincidieron 100% con la respuesta de la API.",
+  "tiempo_respuesta_ms": 4900,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JC-001__2026-09-28__run01/01_clima_actual_neiva.png",
+    "evidencias/TC-JC-001__2026-09-28__run01/02_vista_horaria_neiva.png"
+  ],
+  "observaciones": "Ejecución automatizada con Playwright Chromium. Respuesta de la API interceptada y simulada con un retraso artificial de 2,5 segundos para validar el comportamiento del estado intermedio de carga."
+}

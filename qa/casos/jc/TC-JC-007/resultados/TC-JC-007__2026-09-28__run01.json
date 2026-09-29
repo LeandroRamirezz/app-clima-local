@@ -1,0 +1,40 @@
+{
+  "id_caso": "TC-JC-007",
+  "bloque_qa": "jc",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-07",
+  "evaluador": {
+    "nombre": "Juan Camilo La Rotta",
+    "rol": "QA Lead / Tester JC"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "v1.0.0"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar que, si la API responde HTTP 400 por un modelo no soportado, la aplicación muestre el mensaje E-04 y restablezca automáticamente el modelo activo a 'Automático' (best_match).",
+  "precondiciones": "Interceptación de red configurada para responder HTTP 400 con body {error:true, reason:'...'} ante un parámetro models no soportado (icon_seamless).",
+  "pasos_ejecutados": [
+    "1. Seleccionar el modelo numérico ICON (icon_seamless) en las Opciones Avanzadas para forzar la consulta con el parámetro models=icon_seamless.",
+    "2. Interceptar la solicitud de la API y devolver un error HTTP 400 (parámetros/modelo no soportado).",
+    "3. Verificar que el modelo activo en la interfaz y en la variable de estado se restablezca automáticamente a 'Automático' (best_match).",
+    "4. Verificar la visibilidad del mensaje de error E-04 ('No fue posible procesar la consulta. Verifique los datos ingresados.') en una región role='alert'."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test qa/casos/jc/TC-JC-007/TC-JC-007.spec.ts --config=qa/playwright.config.ts --project=jc"
+  ],
+  "resultado_esperado": "Se muestra 'No fue posible procesar la consulta. Verifique los datos ingresados.' (E-04) en una región role='alert'. El modelo activo vuelve automáticamente a 'Automático' / best_match.",
+  "resultado_obtenido": "La prueba falló. Al recibir HTTP 400 para icon_seamless, la aplicación activó el fallback restableciendo el modelo a 'best_match' y realizando inmediatamente una nueva consulta a la API con éxito. Sin embargo, al completarse exitosamente la recarga de 'best_match', el handler onSuccess ejecutó setModelFallbackError(null), lo que provocó que el mensaje de error E-04 se borrara instantáneamente de la pantalla sin permitir que el usuario lo visualice.",
+  "tiempo_respuesta_ms": 7200,
+  "estado": "Fallido",
+  "bug_id": "BUG-JC-007",
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JC-007__2026-09-28__run01/01_modelo_automatico_inicial.png",
+    "evidencias/TC-JC-007__2026-09-28__run01/02_e04_borrado_instantaneo_tras_fallback.png"
+  ],
+  "observaciones": "Defecto de concurrencia de estado en React: handleForecastSuccess limpia modelFallbackError en cuanto la consulta de fallback a 'best_match' termina con éxito, desapareciendo el mensaje E-04 antes de que sea percibido por el usuario."
+}

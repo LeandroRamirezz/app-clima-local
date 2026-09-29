@@ -1,0 +1,43 @@
+{
+  "id_caso": "TC-JC-005",
+  "bloque_qa": "jc",
+  "tipo_prueba": "Integración",
+  "rf_relacionado": "RF-07",
+  "evaluador": {
+    "nombre": "Juan Camilo La Rotta",
+    "rol": "QA Lead / Tester JC"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "v1.0.0"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar que el usuario pueda elegir cada uno de los 4 modelos numéricos disponibles y que el parámetro models se envíe correctamente, reflejándose en los datos mostrados y en el indicador de modelo activo.",
+  "precondiciones": "Ubicación activa válida (Neiva). Sección 'Opciones avanzadas' colapsada por defecto con 'Automático' (best_match) seleccionado.",
+  "pasos_ejecutados": [
+    "1. Abrir 'Opciones avanzadas' y confirmar que el modelo por defecto es 'Automático' (best_match).",
+    "2. Seleccionar ICON y verificar que la solicitud incluya models=icon_seamless y el indicador cambie a 'Modelo: ICON'.",
+    "3. Seleccionar GFS y verificar que la solicitud incluya models=ncep_gfs_seamless y el indicador cambie a 'Modelo: GFS'.",
+    "4. Seleccionar ECMWF y verificar que la solicitud incluya models=ecmwf_ifs025 y el indicador cambie a 'Modelo: ECMWF'.",
+    "5. Confirmar que los datos mostrados en pantalla se actualizan y responden a la respuesta de la API para cada modelo."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test qa/casos/jc/TC-JC-005/TC-JC-005.spec.ts --config=qa/playwright.config.ts --project=jc"
+  ],
+  "resultado_esperado": "En los 4 casos, la solicitud incluye el parámetro models correcto. El indicador de modelo activo se actualiza visiblemente en cada selección. Los datos mostrados coinciden 100% con la respuesta de la API para el modelo elegido.",
+  "resultado_obtenido": "La prueba se ejecutó con éxito. Se verificó que al cargar la aplicación el modelo seleccionado por defecto es 'Automático' (best_match). Al seleccionar secuencialmente ICON, GFS y ECMWF desde las Opciones Avanzadas, la aplicación realizó en cada caso la petición GET /v1/forecast con los parámetros de modelo correspondientes (icon_seamless, ncep_gfs_seamless, ecmwf_ifs025), actualizando en pantalla el indicador de modelo activo y refrescando los datos del clima.",
+  "tiempo_respuesta_ms": 3500,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JC-005__2026-09-28__run01/01_modelo_automatico_best_match.png",
+    "evidencias/TC-JC-005__2026-09-28__run01/02_modelo_icon_seamless.png",
+    "evidencias/TC-JC-005__2026-09-28__run01/03_modelo_gfs_seamless.png",
+    "evidencias/TC-JC-005__2026-09-28__run01/04_modelo_ecmwf_ifs025.png"
+  ],
+  "observaciones": "Prueba de integración automatizada con Playwright Chromium validando la interacción del control select de modelos con el servicio API de pronósticos."
+}
