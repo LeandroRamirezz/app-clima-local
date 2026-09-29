@@ -1,0 +1,31 @@
+{
+  "escenario": "E-05b",
+  "descripcion": "HTTP 200 con cuerpo malformado \"<html>\"",
+  "mensaje_esperado": "El servicio meteorológico no está disponible en este momento. Intente más tarde.",
+  "mensaje_mostrado": "El servicio meteorológico no está disponible en este momento. Intente más tarde.",
+  "dentro_de_role_alert": true,
+  "boton_reintentar": true,
+  "tiempo_hasta_error_ms": 56,
+  "texto_crudo_detectado": null,
+  "reintentos_automaticos_en_10s": null,
+  "clima_antes": {
+    "ubicacion": "Neiva, Huila, Colombia",
+    "tarjeta_clima_visible": true,
+    "dias_pronostico": 7,
+    "error_clima": 0
+  },
+  "clima_durante_fallo": {
+    "ubicacion": "Neiva, Huila, Colombia",
+    "tarjeta_clima_visible": true,
+    "dias_pronostico": 7,
+    "error_clima": 0
+  },
+  "respuestas_forecast": [
+    200,
+    200
+  ],
+  "solicitudes_tras_reintentar": 1,
+  "aqi_tras_reintentar": "22",
+  "contaminantes_tras_reintentar": 6,
+  "errores_consola": []
+}

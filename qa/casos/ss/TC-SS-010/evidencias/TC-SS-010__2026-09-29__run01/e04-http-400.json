@@ -1,0 +1,31 @@
+{
+  "escenario": "E-04",
+  "descripcion": "HTTP 400 con reason de la API",
+  "mensaje_esperado": "No fue posible procesar la consulta. Verifique los datos ingresados.",
+  "mensaje_mostrado": "No fue posible procesar la consulta. Verifique los datos ingresados.",
+  "dentro_de_role_alert": true,
+  "boton_reintentar": true,
+  "tiempo_hasta_error_ms": 470,
+  "texto_crudo_detectado": null,
+  "reintentos_automaticos_en_10s": null,
+  "clima_antes": {
+    "ubicacion": "Neiva, Huila, Colombia",
+    "tarjeta_clima_visible": true,
+    "dias_pronostico": 7,
+    "error_clima": 0
+  },
+  "clima_durante_fallo": {
+    "ubicacion": "Neiva, Huila, Colombia",
+    "tarjeta_clima_visible": true,
+    "dias_pronostico": 7,
+    "error_clima": 0
+  },
+  "respuestas_forecast": [
+    200,
+    200
+  ],
+  "solicitudes_tras_reintentar": 1,
+  "aqi_tras_reintentar": "22",
+  "contaminantes_tras_reintentar": 6,
+  "errores_consola": []
+}

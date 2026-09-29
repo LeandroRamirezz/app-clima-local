@@ -1,0 +1,65 @@
+{
+  "id_caso": "TC-SS-010",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-06 (Calidad del aire), RNF-12 (Resiliencia)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-29",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Manejo de errores E-01 a E-05 en la consulta de calidad del aire. Verificar que, ante cada escenario del catálogo E-01 a E-05 aplicado a /v1/air-quality, la sección muestre el mensaje exacto en role=\"alert\" con botón Reintentar, sin texto crudo, y que el fallo no afecte al pronóstico ni a los demás módulos.",
+  "precondiciones": "Ubicación activa: Neiva, con clima actual (RF-01) ya cargado. Interceptación de red en Playwright solo sobre /v1/air-quality (las demás llamadas pasan normalmente).",
+  "pasos_ejecutados": [
+    "0. Seleccionar Neiva, Huila como ubicación activa y verificar que el clima actual y el pronóstico (RF-01) están cargados.",
+    "1. Para cada escenario (en una ejecución aislada), activar la interceptación solo sobre /v1/air-quality y abrir la pestaña «Calidad del aire».",
+    "2. Verificar el texto exacto del mensaje dentro del elemento role=\"alert\".",
+    "3. Verificar el botón «Reintentar» (visible y habilitado) y la ausencia de texto crudo (reason, código HTTP, trazas).",
+    "4. En E-03, esperar 10 s sin interactuar y contar las solicitudes a /v1/air-quality (reintentos automáticos).",
+    "5. Ir a la pestaña «Clima» y verificar que el clima actual de Neiva y los 7 días de pronóstico siguen visibles, sin error, y que /v1/forecast respondió HTTP 200.",
+    "6. Volver a «Calidad del aire», quitar la interceptación, pulsar «Reintentar» y verificar que se carga la calidad del aire."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-010 --project=ss"
+  ],
+  "resultado_esperado": "E-01 a E-05 muestran exactamente los mensajes del catálogo (sección 1.1 de la Especificación) en role=\"alert\", con botón Reintentar funcional y sin texto crudo de la API. E-03 no genera reintentos automáticos en los 10 s siguientes. El fallo queda aislado a la sección de calidad del aire: el clima actual y el pronóstico permanecen visibles.",
+  "resultado_obtenido": "Los 6 escenarios cumplieron (6/6 tests aprobados). En todos, el mensaje exacto del catálogo apareció dentro de role=\"alert\" con el botón «Reintentar» visible y habilitado, sin mostrar el reason de la API, códigos HTTP, «<html>» ni trazas técnicas. E-01 (fallo de red solo en /v1/air-quality): mensaje E-01 en 188 ms. E-02 (retraso 11 s): mensaje E-02 a los 10887 ms (corte por el timeout de 10 s). E-03 (HTTP 429): mensaje E-03 y 0 solicitudes automáticas en los 10 s siguientes. E-04 (HTTP 400 con reason): mensaje E-04, sin mostrar «Cannot initialize AirQualityVariable…». E-05a (HTTP 500) y E-05b (HTTP 200 con «<html>»): mensaje E-05. Durante el fallo, la pestaña «Clima» siguió mostrando el clima actual de Neiva y los 7 días de pronóstico, sin error, con /v1/forecast respondiendo HTTP 200. Tras quitar la interceptación, «Reintentar» envió 1 solicitud y cargó la calidad del aire (AQI 22 y 6 contaminantes) en los 6 escenarios. Sin errores de consola.",
+  "tiempo_respuesta_ms": null,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-010__2026-09-29__run01/e01-fallo-de-red.json",
+    "evidencias/TC-SS-010__2026-09-29__run01/e01-fallo-de-red__error.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e01-fallo-de-red__clima-y-pronostico.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e01-fallo-de-red__reintento.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e02-timeout-11s.json",
+    "evidencias/TC-SS-010__2026-09-29__run01/e02-timeout-11s__error.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e02-timeout-11s__clima-y-pronostico.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e02-timeout-11s__reintento.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e03-http-429.json",
+    "evidencias/TC-SS-010__2026-09-29__run01/e03-http-429__error.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e03-http-429__clima-y-pronostico.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e03-http-429__reintento.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e04-http-400.json",
+    "evidencias/TC-SS-010__2026-09-29__run01/e04-http-400__error.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e04-http-400__clima-y-pronostico.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e04-http-400__reintento.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e05a-http-500.json",
+    "evidencias/TC-SS-010__2026-09-29__run01/e05a-http-500__error.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e05a-http-500__clima-y-pronostico.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e05a-http-500__reintento.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e05b-cuerpo-html.json",
+    "evidencias/TC-SS-010__2026-09-29__run01/e05b-cuerpo-html__error.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e05b-cuerpo-html__clima-y-pronostico.png",
+    "evidencias/TC-SS-010__2026-09-29__run01/e05b-cuerpo-html__reintento.png"
+  ],
+  "observaciones": "Ejecutado el 29/09/2026. Cada escenario se ejecutó como un test independiente. E-01 se simuló abortando solo la solicitud a /v1/air-quality con route.abort(\"internetdisconnected\") (fallo de fetch) en lugar de context.setOffline(true), para cumplir la precondición de que las demás llamadas pasen normalmente y poder verificar el aislamiento del fallo. En E-02 la respuesta se retuvo 11 000 ms y la app cortó la solicitud a los ~10 s. Como la calidad del aire y el clima están en pestañas distintas, el aislamiento se verificó cambiando a la pestaña «Clima» durante el fallo. No se midió tiempo de respuesta de la API porque las respuestas son simuladas."
+}
