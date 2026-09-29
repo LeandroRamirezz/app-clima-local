@@ -42,7 +42,7 @@ button:disabled { cursor: not-allowed; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .app-shell :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .skip-link { position: absolute; z-index: 100; inset: .7rem auto auto .7rem; padding: .65rem .9rem; background: var(--ink); color: var(--surface); border-radius: var(--radius-control); transform: translateY(-160%); }
-.skip-link:focus-visible { transform: translateY(0); outline: 3px solid var(--focus); outline-offset: 2px; }
+.skip-link:focus, .skip-link:focus-visible { transform: translateY(0); outline: 3px solid var(--focus); outline-offset: 2px; }
 .current-weather__model-description { margin: .45rem 0 0; max-width: 36rem; color: var(--muted); font-size: .82rem; line-height: 1.5; }
 ::selection { background: #c9e5e4; color: var(--ink); }
 ::-webkit-scrollbar { width: 12px; height: 12px; }

@@ -109,6 +109,20 @@ test('accesibilidad automática y layout a 320 px', async ({ page }) => {
   expect(audit.violations, JSON.stringify(audit.violations, null, 2)).toEqual([]);
 });
 
+test('BUG-005: el primer Tab revela el enlace para saltar al contenido principal', async ({ page }) => {
+  await mockApis(page);
+  await page.goto('/');
+  const skipLink = page.getByRole('link', { name: 'Saltar al contenido principal' });
+  await page.keyboard.press('Tab');
+  await expect(skipLink).toBeFocused();
+  await expect(skipLink).toBeVisible();
+  await expect(skipLink).toBeInViewport();
+  await expect(skipLink).toHaveAttribute('href', '#main-content');
+  await page.keyboard.press('Enter');
+  await expect(page.getByRole('main')).toBeFocused();
+  await expect(page).toHaveURL(/#main-content$/);
+});
+
 test('BUG-002: Forecast HTTP 429 muestra E-03 sin botón Reintentar', async ({ page }) => {
   await mockApis(page);
   let forecastRequests = 0;

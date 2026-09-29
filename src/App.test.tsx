@@ -8,7 +8,7 @@ afterEach(cleanup);
 describe('estructura principal', () => {
   it('ofrece un enlace de salto al contenido principal con un destino existente', () => {
     render(<App />);
-    const link = screen.getByRole('link', { name: 'Saltar al contenido' });
+    const link = screen.getByRole('link', { name: 'Saltar al contenido principal' });
     expect(link.getAttribute('href')).toBe('#main-content');
     const main = screen.getByRole('main');
     expect(main.id).toBe('main-content');

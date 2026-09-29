@@ -1,7 +1,7 @@
 /** Textos visibles de la aplicación. Mantener aquí la redacción; los componentes solo interpolan datos. */
 export const es = {
   app: {
-    skipToContent: 'Saltar al contenido',
+    skipToContent: 'Saltar al contenido principal',
     kicker: 'Open-Meteo · Datos en tiempo local',
     title: 'Observatorio del clima',
     description: 'Consulta condiciones, pronósticos y registros de una ubicación.',
