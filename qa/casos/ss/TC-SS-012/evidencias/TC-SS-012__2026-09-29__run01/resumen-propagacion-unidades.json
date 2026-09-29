@@ -1,0 +1,94 @@
+{
+  "precondiciones": {
+    "clima_celsius": "24,6 °C",
+    "historico_celsius": [
+      "37,8 °C",
+      "26,8 °C",
+      "32,6 °C",
+      "0 mm",
+      "16,3 km/h",
+      "40 %"
+    ],
+    "ciudades_comparadas": [
+      "Neiva",
+      "Bogotá"
+    ]
+  },
+  "comparacion": {
+    "ciudades": [
+      "Neiva",
+      "Bogotá"
+    ],
+    "temperatura": [
+      "76,2 °F",
+      "53,3 °F"
+    ],
+    "sensacion": [
+      "82,9 °F",
+      "51,9 °F"
+    ],
+    "precipitacion": [
+      "0 in",
+      "0 in"
+    ],
+    "viento": [
+      "1,1 mph",
+      "3,6 mph"
+    ],
+    "esperado_por_solicitud": [
+      {
+        "lat": "2.93001",
+        "temperatura": "76,2 °F",
+        "viento": "1,1 mph",
+        "precipitacion": "0 in"
+      },
+      {
+        "lat": "4.60971",
+        "temperatura": "53,3 °F",
+        "viento": "3,6 mph",
+        "precipitacion": "0 in"
+      }
+    ],
+    "solicitudes_fahrenheit": [
+      "2.93001",
+      "4.60971"
+    ],
+    "tiempo_actualizacion_ms": 1122
+  },
+  "clima": {
+    "ubicacion": "UBICACIÓN SELECCIONADA Neiva, Huila, Colombia Latitud: 2.93 Longitud: -75.28",
+    "temperatura": "76,2 °F",
+    "esperado_temperatura": "76,2 °F",
+    "pronostico_max": "94,9 °F",
+    "esperado_pronostico_max": "94,9 °F",
+    "unidades_celsius_visibles": false,
+    "tiempo_actualizacion_ms": 259,
+    "solicitud": "https://api.open-meteo.com/v1/forecast?latitude=2.93001&longitude=-75.27973&current=temperature_2m%2Capparent_temperature%2Crelative_humidity_2m%2Cprecipitation%2Cweather_code%2Cwind_speed_10m%2Cwind_direction_10m&hourly=temperature_2m%2Capparent_temperature%2Cprecipitation_probability%2Cprecipitation%2Cwind_speed_10m%2Cuv_index%2Cweather_code&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_sum%2Cprecipitation_probability_max%2Cwind_speed_10m_max%2Cuv_index_max%2Csunrise%2Csunset%2Cdaylight_duration&timezone=auto&forecast_days=7&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&models=best_match"
+  },
+  "historico": {
+    "fecha_inicial": "2026-09-18",
+    "fecha_final": "2026-09-24",
+    "resultados_visibles": false,
+    "encabezado": null,
+    "valores": [],
+    "solicitudes_archive_tras_cambio": [],
+    "tiempo_desde_apertura_ms": 2105
+  },
+  "error_reconsulta": {
+    "tiempo_hasta_error_ms": 41,
+    "solicitud_fallida": [
+      {
+        "unidades": "fahrenheit/kmh/mm",
+        "http": 500
+      }
+    ],
+    "mensaje": "El servicio meteorológico no está disponible en este momento. Intente más tarde.",
+    "boton_reintentar": true,
+    "tarjeta_clima_visible": false,
+    "pronostico_visible": false,
+    "temperatura_visible": null,
+    "ultima_temperatura_en_celsius": "24,6 °C",
+    "selector_temperatura": "fahrenheit"
+  },
+  "errores_consola": []
+}

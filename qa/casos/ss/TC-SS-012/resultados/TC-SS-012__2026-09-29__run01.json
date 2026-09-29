@@ -1,0 +1,49 @@
+{
+  "id_caso": "TC-SS-012",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Integración",
+  "rf_relacionado": "RF-10 (Conversión de unidades), RF-04 (Comparación), RF-05 (Históricos), RF-01 (Clima actual)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-29",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Propagación del cambio de unidades a todos los módulos sin perder la ubicación, y error al reconsultar. Verificar que un cambio de unidad se aplique de inmediato a todos los módulos (clima actual, pronóstico, comparación e histórico), conservando la ubicación y el contexto (fecha histórica, ciudades comparadas); y que, si la reconsulta falla, se conserven los últimos datos con su unidad anterior claramente rotulada.",
+  "precondiciones": "Ubicación activa: Neiva, con clima actual y pronóstico cargados. Histórico consultado con la fecha 15/09/2026. Comparación activa con Neiva y Bogotá (RF-04 disponible). Unidades iniciales: °C / km/h / mm. Solicitudes capturadas con Playwright.",
+  "pasos_ejecutados": [
+    "0. Precondiciones (°C/km/h/mm): seleccionar Neiva, Huila con clima actual y pronóstico cargados; en «Históricos» consultar 15/09/2026; en «Comparar ciudades» agregar Neiva (ubicación seleccionada) y Bogotá.",
+    "1. Desde la pestaña visible («Comparar ciudades»), cambiar las unidades a °F / mph / in.",
+    "2. Verificar en las solicitudes capturadas que se reconsulta /v1/forecast para cada ciudad de la comparación y para el clima actual/pronóstico, y /v1/archive, con los nuevos parámetros de unidad.",
+    "3. Verificar que los valores y etiquetas cambian en cada módulo (comparando con las respuestas de la API) y medir el tiempo de actualización (< 2 s).",
+    "4. Verificar que la ubicación activa sigue siendo Neiva, que la comparación conserva Neiva y Bogotá y que el histórico sigue en 15/09/2026.",
+    "5. En «Clima», volver a °C / km/h / mm, activar HTTP 500 solo para la reconsulta de /v1/forecast con temperature_unit=fahrenheit y cambiar la temperatura a °F.",
+    "6. Verificar el mensaje E-05 en role=\"alert\" con «Reintentar» y que los datos anteriores siguen visibles, rotulados en °C."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-012 --project=ss"
+  ],
+  "resultado_esperado": "Tras el cambio, los 4 módulos muestran °F / mph / in con valores iguales a las respuestas de la API, en menos de 2 s. La ubicación, la fecha histórica y las ciudades comparadas se conservan. En la reconsulta fallida: mensaje E-05 en role=\"alert\" con Reintentar; los últimos datos siguen visibles con su unidad anterior (°C) claramente rotulada. Ningún valor aparece con una etiqueta de unidad que no le corresponde.",
+  "resultado_obtenido": "Cumple: la comparación se reconsultó para Neiva y Bogotá con °F/mph/in, conservó sus 2 ciudades y mostró valores iguales a la API (temperatura 76,2 °F / 53,3 °F, viento 1,1 mph / 3,6 mph, precipitación 0 in / 0 in) en 1122 ms. El clima actual y el pronóstico se reconsultaron con °F/mph/in al abrir «Clima» y mostraron 76,2 °F (máx. día 1: 94,9 °F), iguales a la API, sin etiquetas en °C, en 259 ms; la ubicación activa siguió siendo Neiva, Huila, Colombia. DEFECTO 1 (BUG-SS-004): al volver a «Históricos», las fechas se restablecieron al rango por defecto (18/09/2026 – 24/09/2026) en lugar de 15/09/2026, desapareció el resultado consultado y no se envió ninguna solicitud a /v1/archive con las nuevas unidades. DEFECTO 2 (BUG-SS-005): en la reconsulta con HTTP 500 se mostró «El servicio meteorológico no está disponible en este momento. Intente más tarde.» en role=\"alert\" con «Reintentar», pero el panel de clima actual y el pronóstico desaparecieron por completo: no se conservaron los últimos datos en °C (24,6 °C); además el selector quedó en °F sin datos que lo respalden. 1/1 test fallido por estos dos puntos. Sin errores de consola.",
+  "tiempo_respuesta_ms": null,
+  "estado": "Fallido",
+  "bug_id": "BUG-SS-004, BUG-SS-005",
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-012__2026-09-29__run01/resumen-propagacion-unidades.json",
+    "evidencias/TC-SS-012__2026-09-29__run01/pre-comparacion-celsius.png",
+    "evidencias/TC-SS-012__2026-09-29__run01/paso1-3-comparacion-fahrenheit.png",
+    "evidencias/TC-SS-012__2026-09-29__run01/paso1-3-clima-y-pronostico-fahrenheit.png",
+    "evidencias/TC-SS-012__2026-09-29__run01/paso4-historico-tras-cambio.png",
+    "evidencias/TC-SS-012__2026-09-29__run01/paso5-6-error-500-reconsulta.png",
+    "evidencias/TC-SS-012__2026-09-29__run01/video.webm",
+    "evidencias/TC-SS-012__2026-09-29__run01/error-context.md"
+  ],
+  "observaciones": "La app muestra un solo módulo a la vez (pestañas), y el selector de unidades solo aparece en «Clima» y «Comparar ciudades»; por eso el cambio se aplicó desde la pestaña visible y los demás módulos se verificaron al abrirlos. Clima y comparación se reconsultan al abrirse con las unidades vigentes. El histórico guarda su estado (fechas y resultado) dentro del propio componente y lo pierde al cambiar de pestaña, por lo que no es posible cambiar la unidad sin perder el contexto histórico. En el error, la app pasa a estado de carga al cambiar la unidad y, si falla, solo muestra el mensaje, contrario al flujo alterno de RF-10 («se conservan los últimos datos y su unidad anterior claramente rotulada»). RF-04 estaba disponible, así que la parte de comparación no se marca como Bloqueada. No se midió tiempo de respuesta de la API: los tiempos reportados son de actualización visible en la interfaz."
+}
