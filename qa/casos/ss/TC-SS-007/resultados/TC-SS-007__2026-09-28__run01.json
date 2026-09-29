@@ -1,0 +1,49 @@
+{
+  "id_caso": "TC-SS-007",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-06 (Calidad del aire), RNF-11 (Precisión de datos)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Consulta de calidad del aire con datos completos (camino feliz) y coincidencia con la API. Verificar que, para una ubicación con cobertura, el sistema muestre AQI (us_aqi) con su categoría, PM2.5, PM10, ozono, NO₂, SO₂ y CO con unidad µg/m³ y la tendencia de las próximas 24 horas, con valores 100 % iguales a la respuesta de la API.",
+  "precondiciones": "Ubicación activa: Bogotá, Colombia. Ambiente QA con Open-Meteo real; respuesta cruda capturada por interceptación de red de Playwright. Unidades en °F / mph / in.",
+  "pasos_ejecutados": [
+    "0. Seleccionar Bogotá, Bogotá D.C., Colombia y cambiar las preferencias de unidades a °F / mph / in.",
+    "1. Abrir la pestaña «Calidad del aire».",
+    "2. Verificar en la solicitud capturada current, hourly, timezone=auto y la ausencia de parámetros de unidades.",
+    "3. Comparar el AQI mostrado con current.us_aqi y verificar la categoría según la tabla de RF-06, el mensaje, el color y el ícono del indicador.",
+    "4. Comparar PM2.5, PM10, O₃, NO₂, SO₂ y CO con current.* y verificar la unidad µg/m³ en cada uno.",
+    "5. Verificar que la tendencia muestre 24 puntos horarios desde la hora actual y que coincidan con hourly.us_aqi.",
+    "6. Cambiar las unidades a °C / km/h / mm, volver a «Calidad del aire» y verificar que la solicitud sigue sin parámetros de unidades y que los valores no cambian."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-007 --project=ss"
+  ],
+  "resultado_esperado": "HTTP 200. AQI igual a current.us_aqi, acompañado de su categoría, mensaje de salud breve, color e ícono. Los 6 contaminantes coinciden con la API (salvo redondeo a 1 decimal) y se muestran en µg/m³. La tendencia muestra 24 horas con valores iguales a hourly.us_aqi. Los valores de calidad del aire no se ven afectados por la preferencia de unidades.",
+  "resultado_obtenido": "HTTP 200 (928 ms). La solicitud incluye current y hourly con las 7 variables, forecast_hours=24 y timezone=auto, sin parámetros de unidades. AQI mostrado 58 = current.us_aqi (58); categoría «Moderada» correcta según la tabla; mensaje «La escala US AQI clasifica esta lectura dentro del rango moderado.»; color por clase CSS (air-quality__aqi--moderate). Contaminantes iguales a la API y en µg/m³: pm2_5 42,3 μg/m³ · pm10 42,6 μg/m³ · ozone 12 μg/m³ · nitrogen_dioxide 37,7 μg/m³ · sulphur_dioxide 32,3 μg/m³ · carbon_monoxide 1.457 μg/m³. Tendencia: 24 puntos desde 2026-09-28T23:00 hasta 2026-09-29T22:00, iguales a hourly.us_aqi. Con °F/mph/in y con °C/km/h/mm los valores fueron idénticos y ninguna solicitud llevó parámetros de unidades. DEFECTO: el indicador de AQI no muestra ningún ícono (0 elementos svg/img/role=\"img\" y ningún pseudo-elemento gráfico); la categoría solo se comunica con texto y color, incumpliendo RF-06 («La categoría se comunica con texto, color e ícono»). El test falló únicamente en esa verificación.",
+  "tiempo_respuesta_ms": 928,
+  "estado": "Fallido",
+  "bug_id": "BUG-SS-002",
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-007__2026-09-28__run01/paso3-indicador-aqi.png",
+    "evidencias/TC-SS-007__2026-09-28__run01/paso1-5-calidad-aire-unidades-imperiales.png",
+    "evidencias/TC-SS-007__2026-09-28__run01/paso6-calidad-aire-unidades-metricas.png",
+    "evidencias/TC-SS-007__2026-09-28__run01/resumen-calidad-aire.json",
+    "evidencias/TC-SS-007__2026-09-28__run01/respuesta-cruda-air-quality.json",
+    "evidencias/TC-SS-007__2026-09-28__run01/test-failed-1.png",
+    "evidencias/TC-SS-007__2026-09-28__run01/video.webm",
+    "evidencias/TC-SS-007__2026-09-28__run01/error-context.md"
+  ],
+  "observaciones": "Todas las verificaciones de datos (AQI, categoría, 6 contaminantes, tendencia de 24 h e independencia de unidades) pasaron; el único incumplimiento es la ausencia de ícono en el indicador de categoría. Para revisión de la evaluadora: el texto bajo la categoría («La escala US AQI clasifica esta lectura dentro del rango moderado.») interpreta la categoría pero no da una recomendación de salud; RF-06 pide un «mensaje de salud breve y en lenguaje simple». La app usa forecast_hours=24 y pide las 7 variables en hourly, en lugar de forecast_days=2 con 3 variables del diseño; no afecta el resultado (la tendencia muestra 24 h correctas). La API devuelve la unidad como «μg/m³» (mu griega U+03BC), visualmente igual a «µg/m³». Coordenadas enviadas: las de Geocoding para Bogotá (4.60971, -74.08175)."
+}

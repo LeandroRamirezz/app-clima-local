@@ -1,0 +1,422 @@
+{
+  "solicitud": {
+    "url": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=4.60971&longitude=-74.08175&current=us_aqi%2Cpm2_5%2Cpm10%2Cozone%2Cnitrogen_dioxide%2Csulphur_dioxide%2Ccarbon_monoxide&hourly=us_aqi%2Cpm2_5%2Cpm10%2Cozone%2Cnitrogen_dioxide%2Csulphur_dioxide%2Ccarbon_monoxide&forecast_hours=24&timezone=auto",
+    "http": 200,
+    "tiempo_respuesta_ms": 928,
+    "current": [
+      "us_aqi",
+      "pm2_5",
+      "pm10",
+      "ozone",
+      "nitrogen_dioxide",
+      "sulphur_dioxide",
+      "carbon_monoxide"
+    ],
+    "hourly": [
+      "us_aqi",
+      "pm2_5",
+      "pm10",
+      "ozone",
+      "nitrogen_dioxide",
+      "sulphur_dioxide",
+      "carbon_monoxide"
+    ],
+    "timezone": "auto",
+    "parametros_de_unidades": []
+  },
+  "aqi": {
+    "api": 58,
+    "mostrado": "58",
+    "categoria_esperada": "Moderada",
+    "categoria_mostrada": "Moderada",
+    "mensaje_mostrado": "La escala US AQI clasifica esta lectura dentro del rango moderado.",
+    "clase_color": "air-quality__aqi air-quality__aqi--moderate",
+    "colores_calculados": {
+      "fondo": "rgb(255, 246, 220)",
+      "borde": "rgb(147, 108, 11)",
+      "texto": "rgb(77, 57, 0)"
+    },
+    "aria_label": "Índice de calidad del aire: 58, categoría Moderada.",
+    "icono": {
+      "elementos_icono": 0,
+      "pseudo_elementos_con_contenido": [],
+      "presente": false
+    }
+  },
+  "contaminantes": [
+    {
+      "variable": "pm2_5",
+      "api": 42.3,
+      "unidad_api": "μg/m³",
+      "esperado": "42,3 μg/m³",
+      "mostrado": "42,3 μg/m³",
+      "coincide": true
+    },
+    {
+      "variable": "pm10",
+      "api": 42.6,
+      "unidad_api": "μg/m³",
+      "esperado": "42,6 μg/m³",
+      "mostrado": "42,6 μg/m³",
+      "coincide": true
+    },
+    {
+      "variable": "ozone",
+      "api": 12,
+      "unidad_api": "μg/m³",
+      "esperado": "12 μg/m³",
+      "mostrado": "12 μg/m³",
+      "coincide": true
+    },
+    {
+      "variable": "nitrogen_dioxide",
+      "api": 37.7,
+      "unidad_api": "μg/m³",
+      "esperado": "37,7 μg/m³",
+      "mostrado": "37,7 μg/m³",
+      "coincide": true
+    },
+    {
+      "variable": "sulphur_dioxide",
+      "api": 32.3,
+      "unidad_api": "μg/m³",
+      "esperado": "32,3 μg/m³",
+      "mostrado": "32,3 μg/m³",
+      "coincide": true
+    },
+    {
+      "variable": "carbon_monoxide",
+      "api": 1457,
+      "unidad_api": "μg/m³",
+      "esperado": "1.457 μg/m³",
+      "mostrado": "1.457 μg/m³",
+      "coincide": true
+    }
+  ],
+  "tendencia": {
+    "hora_actual_api": "2026-09-28T23:00",
+    "puntos_mostrados": 24,
+    "coincide_con_hourly_us_aqi": true,
+    "mostrada": [
+      {
+        "time": "2026-09-28T23:00",
+        "aqi": "AQI: 58"
+      },
+      {
+        "time": "2026-09-29T00:00",
+        "aqi": "AQI: 59"
+      },
+      {
+        "time": "2026-09-29T01:00",
+        "aqi": "AQI: 61"
+      },
+      {
+        "time": "2026-09-29T02:00",
+        "aqi": "AQI: 63"
+      },
+      {
+        "time": "2026-09-29T03:00",
+        "aqi": "AQI: 64"
+      },
+      {
+        "time": "2026-09-29T04:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T05:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T06:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T07:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T08:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T09:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T10:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T11:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T12:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T13:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T14:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T15:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T16:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T17:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T18:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T19:00",
+        "aqi": "AQI: 66"
+      },
+      {
+        "time": "2026-09-29T20:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T21:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T22:00",
+        "aqi": "AQI: 64"
+      }
+    ],
+    "esperada": [
+      {
+        "time": "2026-09-28T23:00",
+        "aqi": "AQI: 58"
+      },
+      {
+        "time": "2026-09-29T00:00",
+        "aqi": "AQI: 59"
+      },
+      {
+        "time": "2026-09-29T01:00",
+        "aqi": "AQI: 61"
+      },
+      {
+        "time": "2026-09-29T02:00",
+        "aqi": "AQI: 63"
+      },
+      {
+        "time": "2026-09-29T03:00",
+        "aqi": "AQI: 64"
+      },
+      {
+        "time": "2026-09-29T04:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T05:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T06:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T07:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T08:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T09:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T10:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T11:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T12:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T13:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T14:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T15:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T16:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T17:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T18:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T19:00",
+        "aqi": "AQI: 66"
+      },
+      {
+        "time": "2026-09-29T20:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T21:00",
+        "aqi": "AQI: 65"
+      },
+      {
+        "time": "2026-09-29T22:00",
+        "aqi": "AQI: 64"
+      }
+    ]
+  },
+  "cambio_de_unidades": {
+    "ui_con_F_mph_in": {
+      "aqi": "58",
+      "contaminantes": [
+        "42,3 μg/m³",
+        "42,6 μg/m³",
+        "12 μg/m³",
+        "37,7 μg/m³",
+        "32,3 μg/m³",
+        "1.457 μg/m³"
+      ],
+      "tendencia": [
+        {
+          "time": "2026-09-28T23:00",
+          "aqi": "AQI: 58"
+        },
+        {
+          "time": "2026-09-29T00:00",
+          "aqi": "AQI: 59"
+        },
+        {
+          "time": "2026-09-29T01:00",
+          "aqi": "AQI: 61"
+        },
+        {
+          "time": "2026-09-29T02:00",
+          "aqi": "AQI: 63"
+        },
+        {
+          "time": "2026-09-29T03:00",
+          "aqi": "AQI: 64"
+        },
+        {
+          "time": "2026-09-29T04:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T05:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T06:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T07:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T08:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T09:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T10:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T11:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T12:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T13:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T14:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T15:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T16:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T17:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T18:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T19:00",
+          "aqi": "AQI: 66"
+        },
+        {
+          "time": "2026-09-29T20:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T21:00",
+          "aqi": "AQI: 65"
+        },
+        {
+          "time": "2026-09-29T22:00",
+          "aqi": "AQI: 64"
+        }
+      ]
+    },
+    "ui_con_C_kmh_mm": {
+      "aqi": "58",
+      "contaminantes": [
+        "42,3 μg/m³",
+        "42,6 μg/m³",
+        "12 μg/m³",
+        "37,7 μg/m³",
+        "32,3 μg/m³",
+        "1.457 μg/m³"
+      ]
+    },
+    "segunda_solicitud_sin_parametros_de_unidades": true,
+    "misma_hora_api": true,
+    "valores_iguales": true
+  }
+}
