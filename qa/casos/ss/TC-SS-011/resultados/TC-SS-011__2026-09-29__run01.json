@@ -1,0 +1,49 @@
+{
+  "id_caso": "TC-SS-011",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-10 (Conversión de unidades)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-29",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Unidades por defecto y alternancia °C/°F, km/h/mph y mm/in con coincidencia de la API. Verificar que las unidades por defecto sean °C, km/h y mm, que el usuario pueda alternar cada una, que la conversión la haga la API (parámetros de unidad en la solicitud, sin cálculo en el cliente) y que los valores y etiquetas mostrados coincidan con la respuesta; además, que la elevación (m) y los contaminantes (µg/m³) no cambien.",
+  "precondiciones": "Primera visita (contexto de navegador nuevo, sin preferencias guardadas). Ubicación activa: Neiva. Solicitudes y respuestas capturadas con Playwright (equivalente a DevTools > Network).",
+  "pasos_ejecutados": [
+    "1. Abrir la app en un contexto nuevo (sin preferencias guardadas), seleccionar Neiva, Huila y verificar que el selector indica °C, km/h y mm.",
+    "2. Cambiar solo la temperatura a °F; verificar que la nueva solicitud a /v1/forecast lleva temperature_unit=fahrenheit y que los valores y la etiqueta «°F» del panel actual y del pronóstico coinciden con la respuesta.",
+    "3. Repetir con viento (mph) y con precipitación (in), de a una (volviendo las demás a su valor por defecto).",
+    "4. Aplicar la combinación °F / mph / in y verificar todos los valores del panel actual y de los 7 días de pronóstico.",
+    "5. Verificar que la elevación sigue en «m s. n. m.» con el mismo valor y que los contaminantes siguen en µg/m³ con los mismos valores que con las unidades por defecto.",
+    "6. Operar el selector solo con teclado (Enter para abrir las preferencias, Tab para moverse y flecha abajo para cambiar) y verificar el nombre accesible y la opción anunciada de cada selector."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-011 --project=ss"
+  ],
+  "resultado_esperado": "Por defecto: °C, km/h, mm. En cada combinación, la solicitud incluye los 3 parámetros de unidad correctos y los valores mostrados coinciden con la respuesta de la API (salvo redondeo a 1 decimal); la conversión no se calcula en el cliente. Ningún valor se muestra con una unidad distinta a la seleccionada. La elevación y los contaminantes no cambian de unidad ni de valor. El selector se opera con teclado y su estado actual es perceptible.",
+  "resultado_obtenido": "1/1 test aprobado. Por defecto el selector indicó °C, km/h y mm. En las 5 combinaciones la solicitud a /v1/forecast respondió HTTP 200 e incluyó los 3 parámetros de unidad seleccionados; la temperatura, sensación térmica, precipitación y viento del panel actual y la máxima, mínima, precipitación y viento máx. de los 7 días coincidieron con la respuesta de esa solicitud, y ningún valor apareció con una unidad no seleccionada. Control de conversión: 24,7 °C → 76,5 °F (24.7 × 9/5 + 32 = 76.5); precipitación diaria 24,5 mm → 1 in; viento 17,6 km/h → 10,9 mph; los valores convertidos provienen de la respuesta de la API. La elevación se mantuvo en 458 m s. n. m. en las 5 combinaciones y los 6 contaminantes (6,8 μg/m³ · 6,9 μg/m³ · 4 μg/m³ · 16,6 μg/m³ · 1,3 μg/m³ · 484 μg/m³) y el AQI (22) fueron idénticos con °C/km/h/mm y con °F/mph/in. Con teclado, Tab enfocó cada selector en orden y la flecha abajo cambió a °F, mph e in (nueva solicitud con las 3 unidades); cada selector expone su nombre accesible («Temperatura», «Viento», «Precipitación») y la opción seleccionada. Sin errores de consola.",
+  "tiempo_respuesta_ms": null,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-011__2026-09-29__run01/resumen-unidades.json",
+    "evidencias/TC-SS-011__2026-09-29__run01/paso1-unidades-por-defecto.png",
+    "evidencias/TC-SS-011__2026-09-29__run01/c1-celsius-kmh-mm.png",
+    "evidencias/TC-SS-011__2026-09-29__run01/c2-fahrenheit-kmh-mm.png",
+    "evidencias/TC-SS-011__2026-09-29__run01/c3-celsius-mph-mm.png",
+    "evidencias/TC-SS-011__2026-09-29__run01/c4-celsius-kmh-inch.png",
+    "evidencias/TC-SS-011__2026-09-29__run01/c5-fahrenheit-mph-inch.png",
+    "evidencias/TC-SS-011__2026-09-29__run01/paso5-elevacion-con-f-mph-in.png",
+    "evidencias/TC-SS-011__2026-09-29__run01/paso6-operacion-teclado.png"
+  ],
+  "observaciones": "Ejecutado el 29/09/2026 en un contexto de navegador nuevo (sin preferencias guardadas). Que la conversión no se calcula en el cliente se verificó comparando cada valor mostrado con la respuesta de la solicitud con esos parámetros de unidad; además, el valor en °F coincide con el cálculo de control C × 9/5 + 32 hecho sobre la respuesta en °C. La API devuelve la unidad de viento como «mp/h» y la de precipitación como «inch»; la app muestra «mph» e «in». Los contaminantes se muestran como «μg/m³» (mu griega), visualmente igual a «µg/m³». La app pide más variables que las del diseño (hourly, códigos de tiempo, UV, sol) y un modelo (models=best_match); no afecta el resultado. No se midió tiempo de respuesta porque el caso es funcional."
+}
