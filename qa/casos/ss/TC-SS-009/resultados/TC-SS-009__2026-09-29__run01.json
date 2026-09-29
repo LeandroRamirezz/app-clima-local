@@ -1,0 +1,47 @@
+{
+  "id_caso": "TC-SS-009",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-06 (Calidad del aire)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-29",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Degradación controlada: ubicación sin cobertura (AQI nulo) y contaminante individual nulo. Verificar que, si la ubicación no tiene datos de calidad del aire (AQI nulo) o un contaminante llega nulo, la aplicación lo informe de forma controlada sin romper la sección ni el resto de la app.",
+  "precondiciones": "Ubicación activa: Neiva. Interceptación de /v1/air-quality con Playwright configurada para cada escenario. Panel de clima actual (RF-01) cargado.",
+  "pasos_ejecutados": [
+    "0. Seleccionar Neiva, Huila como ubicación activa y esperar que cargue el panel de clima actual (RF-01). Interceptar /v1/air-quality con Playwright según el escenario (un test por escenario).",
+    "1. Escenario A (todos los current.* = null): abrir «Calidad del aire» y verificar el mensaje.",
+    "2. Verificar que la pestaña «Clima» (clima de Neiva) y la búsqueda de ciudades siguen operativas.",
+    "3. Escenario B (current.us_aqi = 42 y current.sulphur_dioxide = null): verificar «N/D» en SO₂, AQI 42 «Buena» y los demás contaminantes iguales a la respuesta.",
+    "4. Escenario C (hourly.us_aqi nulo en 3 horas dentro de las 24 h): verificar que la tendencia se muestra completa y que las horas nulas se señalan como N/D y no como 0.",
+    "5. Revisar la consola (pageerror y console.error): sin errores no controlados."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-009 --project=ss"
+  ],
+  "resultado_esperado": "A: «La calidad del aire no está disponible para esta ubicación.» El resto de la app sigue operativa. B: «N/D» solo en SO₂; AQI 42 con categoría «Buena» y demás contaminantes normales. C: la tendencia se dibuja sin romperse; las horas nulas no se muestran como 0. En ningún escenario aparece «null», «NaN» o una sección en blanco, ni errores no controlados en consola.",
+  "resultado_obtenido": "Los 3 escenarios cumplieron (3/3 tests aprobados). A: se mostró «La calidad del aire no está disponible para esta ubicación.», sin indicador de AQI, con los 6 contaminantes en «N/D»; la pestaña «Clima» siguió mostrando el clima de Neiva y la búsqueda devolvió resultados para «Bogotá». B: AQI 42 con categoría «Buena»; «N/D» solo en SO₂; contaminantes: 6,8 μg/m³ · 6,9 μg/m³ · 4 μg/m³ · 16,6 μg/m³ · N/D · 484 μg/m³, iguales a la respuesta. C: la tendencia mostró 24 puntos; las 3 horas anuladas (02:00, 10:00, 20:00) aparecen como «AQI: N/D» y «Categoría N/D», ninguna como 0, y las 21 horas restantes con su valor. En ningún escenario apareció «null», «NaN», «undefined» ni una sección en blanco; 0 errores en consola.",
+  "tiempo_respuesta_ms": null,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-009__2026-09-29__run01/escenario-A-sin-cobertura.png",
+    "evidencias/TC-SS-009__2026-09-29__run01/escenario-A-resto-app-operativo.png",
+    "evidencias/TC-SS-009__2026-09-29__run01/escenario-A.json",
+    "evidencias/TC-SS-009__2026-09-29__run01/escenario-B-so2-nulo.png",
+    "evidencias/TC-SS-009__2026-09-29__run01/escenario-B.json",
+    "evidencias/TC-SS-009__2026-09-29__run01/escenario-C-tendencia-con-nulos.png",
+    "evidencias/TC-SS-009__2026-09-29__run01/escenario-C.json"
+  ],
+  "observaciones": "Ejecutado el 29/09/2026. Cada escenario se ejecutó como un test independiente; el mock usa la respuesta real de /v1/air-quality y solo modifica los campos indicados. En el escenario A solo se anularon los campos current.*, como indica el diseño; por eso la tendencia horaria siguió mostrando datos reales. Se revisaron tanto excepciones de página (pageerror) como mensajes console.error."
+}

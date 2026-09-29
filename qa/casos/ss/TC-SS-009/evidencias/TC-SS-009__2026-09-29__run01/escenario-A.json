@@ -1,0 +1,17 @@
+{
+  "escenario": "A",
+  "mensaje_mostrado": "La calidad del aire no está disponible para esta ubicación.",
+  "bloque_aqi_presente": false,
+  "contaminantes_mostrados": [
+    "N/D",
+    "N/D",
+    "N/D",
+    "N/D",
+    "N/D",
+    "N/D"
+  ],
+  "texto_prohibido": null,
+  "clima_actual_operativo": true,
+  "busqueda_operativa": true,
+  "errores_consola": []
+}

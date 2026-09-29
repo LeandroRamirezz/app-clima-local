@@ -1,0 +1,48 @@
+{
+  "escenario": "B",
+  "aqi_mostrado": "42",
+  "categoria_mostrada": "Buena",
+  "contaminantes": [
+    {
+      "variable": "pm2_5",
+      "api": 6.8,
+      "esperado": "6,8 μg/m³",
+      "mostrado": "6,8 μg/m³"
+    },
+    {
+      "variable": "pm10",
+      "api": 6.9,
+      "esperado": "6,9 μg/m³",
+      "mostrado": "6,9 μg/m³"
+    },
+    {
+      "variable": "ozone",
+      "api": 4,
+      "esperado": "4 μg/m³",
+      "mostrado": "4 μg/m³"
+    },
+    {
+      "variable": "nitrogen_dioxide",
+      "api": 16.6,
+      "esperado": "16,6 μg/m³",
+      "mostrado": "16,6 μg/m³"
+    },
+    {
+      "variable": "sulphur_dioxide",
+      "api": null,
+      "esperado": "N/D",
+      "mostrado": "N/D"
+    },
+    {
+      "variable": "carbon_monoxide",
+      "api": 484,
+      "esperado": "484 μg/m³",
+      "mostrado": "484 μg/m³"
+    }
+  ],
+  "celdas_nd": [
+    "sulphur_dioxide"
+  ],
+  "texto_prohibido": null,
+  "errores_consola": []
+}

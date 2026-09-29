@@ -1,0 +1,178 @@
+{
+  "escenario": "C",
+  "horas_anuladas": [
+    "2026-09-29T02:00",
+    "2026-09-29T10:00",
+    "2026-09-29T20:00"
+  ],
+  "puntos_mostrados": 24,
+  "horas_nulas_mostradas": [
+    {
+      "time": "2026-09-29T02:00",
+      "aqi": "AQI: N/D",
+      "categoria": "Categoría N/D"
+    },
+    {
+      "time": "2026-09-29T10:00",
+      "aqi": "AQI: N/D",
+      "categoria": "Categoría N/D"
+    },
+    {
+      "time": "2026-09-29T20:00",
+      "aqi": "AQI: N/D",
+      "categoria": "Categoría N/D"
+    }
+  ],
+  "alguna_hora_nula_como_cero": false,
+  "horas_validas_con_nd": 0,
+  "tendencia": [
+    {
+      "time": "2026-09-29T00:00",
+      "aqi": "AQI: 22",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T01:00",
+      "aqi": "AQI: 21",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T02:00",
+      "aqi": "AQI: N/D",
+      "categoria": "Categoría N/D"
+    },
+    {
+      "time": "2026-09-29T03:00",
+      "aqi": "AQI: 22",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T04:00",
+      "aqi": "AQI: 22",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T05:00",
+      "aqi": "AQI: 22",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T06:00",
+      "aqi": "AQI: 22",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T07:00",
+      "aqi": "AQI: 22",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T08:00",
+      "aqi": "AQI: 25",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T09:00",
+      "aqi": "AQI: 25",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T10:00",
+      "aqi": "AQI: N/D",
+      "categoria": "Categoría N/D"
+    },
+    {
+      "time": "2026-09-29T11:00",
+      "aqi": "AQI: 27",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T12:00",
+      "aqi": "AQI: 27",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T13:00",
+      "aqi": "AQI: 27",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T14:00",
+      "aqi": "AQI: 28",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T15:00",
+      "aqi": "AQI: 28",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T16:00",
+      "aqi": "AQI: 30",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T17:00",
+      "aqi": "AQI: 31",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T18:00",
+      "aqi": "AQI: 31",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T19:00",
+      "aqi": "AQI: 30",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T20:00",
+      "aqi": "AQI: N/D",
+      "categoria": "Categoría N/D"
+    },
+    {
+      "time": "2026-09-29T21:00",
+      "aqi": "AQI: 31",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T22:00",
+      "aqi": "AQI: 32",
+      "categoria": "Buena"
+    },
+    {
+      "time": "2026-09-29T23:00",
+      "aqi": "AQI: 32",
+      "categoria": "Buena"
+    }
+  ],
+  "texto_prohibido": null,
+  "errores_consola": [],
+  "hourly_us_aqi_api": [
+    22,
+    21,
+    null,
+    22,
+    22,
+    22,
+    22,
+    22,
+    25,
+    25,
+    null,
+    27,
+    27,
+    27,
+    28,
+    28,
+    30,
+    31,
+    31,
+    30,
+    null,
+    31,
+    32,
+    32
+  ]
+}
