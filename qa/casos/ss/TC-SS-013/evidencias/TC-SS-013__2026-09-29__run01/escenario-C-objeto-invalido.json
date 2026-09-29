@@ -1,0 +1,13 @@
+{
+  "valor_escrito": "{\"temperatura\":\"kelvin\",\"viento\":\"nudos\",\"precipitacion\":\"cm\"}",
+  "tras_recarga": {
+    "solicitud": "celsius/kmh/mm",
+    "http": 200,
+    "selector": "celsius/kmh/mm",
+    "temperatura_mostrada": "24,5 °C",
+    "error_visible": false
+  },
+  "clave_tras_cargar": "{\"temperature\":\"celsius\",\"windSpeed\":\"kmh\",\"precipitation\":\"mm\"}",
+  "clave_tras_cambiar_unidad": "{\"temperature\":\"fahrenheit\",\"windSpeed\":\"mph\",\"precipitation\":\"inch\"}",
+  "errores_consola": []
+}

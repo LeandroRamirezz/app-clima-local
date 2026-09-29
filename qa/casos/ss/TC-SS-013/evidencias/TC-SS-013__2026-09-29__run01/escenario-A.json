@@ -1,0 +1,36 @@
+{
+  "inicial": {
+    "solicitud": "celsius/kmh/mm",
+    "http": 200,
+    "selector": "celsius/kmh/mm",
+    "temperatura_mostrada": "24,5 °C",
+    "error_visible": false
+  },
+  "clave_tras_cambio": "{\"temperature\":\"fahrenheit\",\"windSpeed\":\"mph\",\"precipitation\":\"inch\"}",
+  "tras_recarga": {
+    "solicitud": "fahrenheit/mph/inch",
+    "http": 200,
+    "selector": "fahrenheit/mph/inch",
+    "temperatura_mostrada": "76 °F",
+    "error_visible": false
+  },
+  "pestana_nueva": {
+    "solicitud": "fahrenheit/mph/inch",
+    "http": 200,
+    "selector": "fahrenheit/mph/inch",
+    "temperatura_mostrada": "76 °F",
+    "error_visible": false
+  },
+  "almacenamiento": {
+    "localStorage": {
+      "weather-app.units": "{\"temperature\":\"fahrenheit\",\"windSpeed\":\"mph\",\"precipitation\":\"inch\"}"
+    },
+    "sessionStorage_claves": 0
+  },
+  "fugas": {
+    "coordenadas": false,
+    "nombre_de_ciudad": false,
+    "datos_de_clima": false
+  },
+  "errores_consola": []
+}

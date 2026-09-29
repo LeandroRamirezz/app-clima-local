@@ -1,0 +1,52 @@
+{
+  "id_caso": "TC-SS-013",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-10 (Conversión de unidades), RNF-07 (Privacidad)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-29",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Persistencia de la preferencia de unidades: recarga, valor corrupto y localStorage no disponible. Verificar que la preferencia de unidades se guarde en localStorage y se aplique al volver a abrir la app; que un valor alterado o inválido se ignore y se restablezcan los valores por defecto; que la app funcione sin error si localStorage no está disponible, y que solo se guarden unidades (sin coordenadas ni datos de clima).",
+  "precondiciones": "Ambiente QA. Clave de preferencias validada en el código: \"weather-app.units\". Contenido de localStorage leído con Playwright (equivalente a DevTools > Application > Local Storage). Script de inicio (addInitScript) que hace fallar localStorage.getItem y setItem para el escenario D.",
+  "pasos_ejecutados": [
+    "0. Validar en el código la clave de preferencias: FORECAST_UNITS_STORAGE_KEY = \"weather-app.units\" (src/config/forecast.ts), con formato {\"temperature\",\"windSpeed\",\"precipitation\"}.",
+    "1. Escenario A: seleccionar Neiva, cambiar a °F / mph / in, recargar la página (F5), volver a seleccionar Neiva y verificar el selector y la solicitud a /v1/forecast.",
+    "2. Cerrar la pestaña, abrir la app en una pestaña nueva (mismo navegador), seleccionar Neiva y verificar de nuevo.",
+    "3. Revisar todo el contenido de localStorage (y sessionStorage) con una ubicación y datos de clima cargados.",
+    "4. Escenario B: escribir \"abc{\" en la clave, recargar, seleccionar Neiva y verificar unidades, errores y el valor de la clave; luego cambiar de unidad y verificar que la clave se sobrescribe.",
+    "5. Escenario C: escribir {\"temperatura\":\"kelvin\",\"viento\":\"nudos\",\"precipitacion\":\"cm\"} en la clave y repetir la verificación del paso 4.",
+    "6. Escenario D: cargar la app con un script de inicio (addInitScript) que hace lanzar SecurityError a localStorage.getItem y setItem; seleccionar Neiva, cambiar a °F / mph / in y recargar.",
+    "7. En todos los escenarios revisar la consola (pageerror y console.error)."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-013 --project=ss"
+  ],
+  "resultado_esperado": "A: tras la recarga y en una pestaña nueva se aplican °F / mph / in. localStorage contiene solo la preferencia de unidades, sin coordenadas, nombres de ciudad ni datos de clima. B y C: el valor se ignora, la app carga con °C / km/h / mm sin error visible y la clave queda corregida o sobrescrita al cambiar de unidad. D: la app funciona con las unidades por defecto; el cambio de unidad funciona durante la sesión; no aparece un error visible ni una excepción no controlada en consola.",
+  "resultado_obtenido": "Los 4 escenarios cumplieron (4/4 tests aprobados). A: al cambiar a °F/mph/in la clave «weather-app.units» guardó {\"temperature\":\"fahrenheit\",\"windSpeed\":\"mph\",\"precipitation\":\"inch\"}; tras la recarga y en una pestaña nueva el selector y la solicitud a /v1/forecast usaron fahrenheit/mph/inch (temperatura mostrada 76 °F). localStorage contenía una sola clave («weather-app.units») y sessionStorage ninguna; sin coordenadas, nombres de ciudad ni datos de clima. B (\"abc{\") y C (objeto con kelvin/nudos/cm): el valor se ignoró, la app cargó con celsius/kmh/mm (24,5 °C) sin error visible, la clave quedó corregida a los valores por defecto al cargar y se sobrescribió con fahrenheit/mph/inch al cambiar de unidad. D: con localStorage lanzando SecurityError, la app cargó con celsius/kmh/mm sin error visible; el cambio a °F/mph/in funcionó durante la sesión (76 °F) y tras recargar volvió a los valores por defecto. 0 errores en consola en los 4 escenarios.",
+  "tiempo_respuesta_ms": null,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-013__2026-09-29__run01/escenario-A.json",
+    "evidencias/TC-SS-013__2026-09-29__run01/escenario-A-tras-recarga.png",
+    "evidencias/TC-SS-013__2026-09-29__run01/escenario-A-pestana-nueva.png",
+    "evidencias/TC-SS-013__2026-09-29__run01/escenario-B-json-corrupto.json",
+    "evidencias/TC-SS-013__2026-09-29__run01/escenario-B-json-corrupto.png",
+    "evidencias/TC-SS-013__2026-09-29__run01/escenario-C-objeto-invalido.json",
+    "evidencias/TC-SS-013__2026-09-29__run01/escenario-C-objeto-invalido.png",
+    "evidencias/TC-SS-013__2026-09-29__run01/escenario-D.json",
+    "evidencias/TC-SS-013__2026-09-29__run01/escenario-D-cambio-en-sesion.png",
+    "evidencias/TC-SS-013__2026-09-29__run01/escenario-D-tras-recarga.png"
+  ],
+  "observaciones": "Ejecutado el 29/09/2026; cada escenario en un contexto de navegador nuevo (A usa una segunda pestaña del mismo contexto para el paso 2). La ubicación no se persiste, por lo que después de cada recarga se vuelve a seleccionar Neiva para observar la solicitud a /v1/forecast. En B y C la app reescribe la clave con los valores por defecto al cargar (antes de cualquier cambio del usuario). El escenario D se simuló reemplazando Storage.prototype.getItem y setItem con funciones que lanzan DOMException \"SecurityError\"; la app captura el error (try/catch en useForecastPreferences) y no registra nada en consola. No aplica tiempo de respuesta."
+}

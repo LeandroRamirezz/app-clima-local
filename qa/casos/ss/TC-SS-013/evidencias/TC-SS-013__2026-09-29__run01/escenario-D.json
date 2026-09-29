@@ -1,0 +1,23 @@
+{
+  "lectura_de_prueba": "ERROR: SecurityError",
+  "inicial": {
+    "solicitud": "celsius/kmh/mm",
+    "http": 200,
+    "selector": "celsius/kmh/mm",
+    "temperatura_mostrada": "24,5 °C",
+    "error_visible": false
+  },
+  "cambio_http": 200,
+  "durante_sesion": {
+    "temperatura_mostrada": "76 °F",
+    "selector": "fahrenheit/mph/inch"
+  },
+  "tras_recarga": {
+    "solicitud": "celsius/kmh/mm",
+    "http": 200,
+    "selector": "celsius/kmh/mm",
+    "temperatura_mostrada": "24,5 °C",
+    "error_visible": false
+  },
+  "errores_consola": []
+}
