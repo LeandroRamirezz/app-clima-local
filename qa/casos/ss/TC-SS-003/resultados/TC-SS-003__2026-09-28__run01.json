@@ -1,0 +1,50 @@
+{
+  "id_caso": "TC-SS-003",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-05 (Datos históricos)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Validación de límites de una fecha: futura, hoy, reciente no disponible, última disponible y cobertura desde 1940. Verificar, con análisis de valores límite, que el sistema acepte solo fechas entre 01/01/1940 y la última fecha disponible (hoy menos el margen de 5 días), muestre el mensaje exacto para cada fecha fuera de rango y no envíe la solicitud a la API cuando la fecha es inválida.",
+  "precondiciones": "Ubicación activa: Neiva. Fecha del sistema: 28/09/2026 (día de ejecución); margen de disponibilidad de 5 días, última fecha consultable = 23/09/2026. Solicitudes de red registradas con Playwright (equivalente a DevTools > Network).",
+  "pasos_ejecutados": [
+    "0. Seleccionar Neiva, Huila como ubicación activa y abrir «Históricos». Fecha del navegador: 28/09/2026 (America/Bogota); última fecha consultable: 23/09/2026.",
+    "1. Seleccionar 29/09/2026 (futura) y consultar; verificar mensaje y 0 solicitudes a /v1/archive.",
+    "2. Repetir con 28/09/2026 (hoy), 26/09/2026 (reciente) y 24/09/2026 (un día después del límite).",
+    "3. Seleccionar 23/09/2026 (última disponible) y verificar la consulta (HTTP 200) y los datos mostrados.",
+    "4. Seleccionar 01/01/1940 (mínima) y verificar la consulta (HTTP 200) y los datos mostrados.",
+    "5. Escribir 31/12/1939 y verificar mensaje y 0 solicitudes a /v1/archive.",
+    "6. Después de cada mensaje, consultar 23/09/2026 y verificar que la sección sigue operativa y muestra datos."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-003 --project=ss"
+  ],
+  "resultado_esperado": "29/09/2026 (futura): «No es posible consultar fechas futuras. Consulte el pronóstico.» · 28/09/2026 (hoy), 26/09/2026 (reciente) y 24/09/2026 (límite + 1): «Los datos de esa fecha aún no están disponibles. La última fecha consultable es 23/09/2026.» · 23/09/2026 (última disponible) y 01/01/1940: HTTP 200 y datos mostrados · 31/12/1939: «Solo hay datos disponibles desde el 01/01/1940.» Para las fechas inválidas no se envía ninguna solicitud a /v1/archive. La interfaz sigue operativa en todos los casos.",
+  "resultado_obtenido": "Las 7 fechas límite se comportaron según lo esperado (1/1 test aprobado). Fechas inválidas: 29/09/2026 mostró «No es posible consultar fechas futuras. Consulte el pronóstico.»; 28/09/2026, 26/09/2026 y 24/09/2026 mostraron «Los datos de esa fecha aún no están disponibles. La última fecha consultable es 23/09/2026.»; 31/12/1939 mostró «Solo hay datos disponibles desde el 01/01/1940.». En las 5 fechas inválidas se enviaron 0 solicitudes a /v1/archive y, tras cada mensaje, una consulta válida (23/09/2026) respondió HTTP 200 y mostró datos, por lo que la sección siguió operativa. Fechas válidas: 23/09/2026 → HTTP 200 (37,8 °C · 25,1 °C · 31,7 °C · 2,4 mm · 12,1 km/h · 53 %); 01/01/1940 → HTTP 200 (28,2 °C · 22,1 °C · 24,3 °C · N/D · 7,7 km/h · 81 %), con start_date = end_date = la fecha seleccionada y timezone=auto. Sin errores de consola.",
+  "tiempo_respuesta_ms": null,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-003__2026-09-28__run01/resumen-limites-fecha.json",
+    "evidencias/TC-SS-003__2026-09-28__run01/futura__2026-09-29.png",
+    "evidencias/TC-SS-003__2026-09-28__run01/hoy__2026-09-28.png",
+    "evidencias/TC-SS-003__2026-09-28__run01/reciente__2026-09-26.png",
+    "evidencias/TC-SS-003__2026-09-28__run01/limite-mas-1__2026-09-24.png",
+    "evidencias/TC-SS-003__2026-09-28__run01/ultima-disponible__2026-09-23.png",
+    "evidencias/TC-SS-003__2026-09-28__run01/minima-1940__1940-01-01.png",
+    "evidencias/TC-SS-003__2026-09-28__run01/antes-minima-1939__1939-12-31.png",
+    "evidencias/TC-SS-003__2026-09-28__run01/respuesta-directa-1940-01-01.json"
+  ],
+  "observaciones": "Por indicación de la evaluadora, se usó la fecha real del día de ejecución (28/09/2026, reloj del navegador en America/Bogota) en lugar de la fecha del diseño (27/09/2026). Las fechas se desplazaron con los mismos offsets del diseño: futura 29/09/2026, hoy 28/09/2026, reciente 26/09/2026, límite + 1 24/09/2026 y última disponible 23/09/2026. En 01/01/1940 la precipitación se muestra como «N/D» porque la API devuelve precipitation_sum = [null] para esa fecha (verificado con una consulta directa, ver respuesta-directa-1940-01-01.json); es el manejo correcto de nulos, no un defecto."
+}

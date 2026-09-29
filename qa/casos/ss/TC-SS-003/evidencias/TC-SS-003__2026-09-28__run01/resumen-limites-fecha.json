@@ -1,0 +1,120 @@
+{
+  "fecha_ejecucion_navegador": "2026-09-28",
+  "zona_navegador": "America/Bogota",
+  "ultima_fecha_consultable": "2026-09-23",
+  "escenarios": [
+    {
+      "escenario": "Futura (hoy + 1)",
+      "fecha": "29/09/2026",
+      "fecha_iso": "2026-09-29",
+      "esperado_valida": false,
+      "mensaje_esperado": "No es posible consultar fechas futuras. Consulte el pronóstico.",
+      "mensaje_mostrado": "No es posible consultar fechas futuras. Consulte el pronóstico.",
+      "solicitudes_archive": 0,
+      "recuperacion": {
+        "fecha": "23/09/2026",
+        "http": 200,
+        "datos_mostrados": true
+      },
+      "cumple": true
+    },
+    {
+      "escenario": "Hoy",
+      "fecha": "28/09/2026",
+      "fecha_iso": "2026-09-28",
+      "esperado_valida": false,
+      "mensaje_esperado": "Los datos de esa fecha aún no están disponibles. La última fecha consultable es 23/09/2026.",
+      "mensaje_mostrado": "Los datos de esa fecha aún no están disponibles. La última fecha consultable es 23/09/2026.",
+      "solicitudes_archive": 0,
+      "recuperacion": {
+        "fecha": "23/09/2026",
+        "http": 200,
+        "datos_mostrados": true
+      },
+      "cumple": true
+    },
+    {
+      "escenario": "Reciente dentro del margen (hoy − 2)",
+      "fecha": "26/09/2026",
+      "fecha_iso": "2026-09-26",
+      "esperado_valida": false,
+      "mensaje_esperado": "Los datos de esa fecha aún no están disponibles. La última fecha consultable es 23/09/2026.",
+      "mensaje_mostrado": "Los datos de esa fecha aún no están disponibles. La última fecha consultable es 23/09/2026.",
+      "solicitudes_archive": 0,
+      "recuperacion": {
+        "fecha": "23/09/2026",
+        "http": 200,
+        "datos_mostrados": true
+      },
+      "cumple": true
+    },
+    {
+      "escenario": "Un día después del límite (hoy − 4)",
+      "fecha": "24/09/2026",
+      "fecha_iso": "2026-09-24",
+      "esperado_valida": false,
+      "mensaje_esperado": "Los datos de esa fecha aún no están disponibles. La última fecha consultable es 23/09/2026.",
+      "mensaje_mostrado": "Los datos de esa fecha aún no están disponibles. La última fecha consultable es 23/09/2026.",
+      "solicitudes_archive": 0,
+      "recuperacion": {
+        "fecha": "23/09/2026",
+        "http": 200,
+        "datos_mostrados": true
+      },
+      "cumple": true
+    },
+    {
+      "escenario": "Última disponible (hoy − 5)",
+      "fecha": "23/09/2026",
+      "fecha_iso": "2026-09-23",
+      "esperado_valida": true,
+      "mensaje_esperado": null,
+      "solicitudes_archive": 1,
+      "url_enviada": "https://archive-api.open-meteo.com/v1/archive?latitude=2.93001&longitude=-75.27973&start_date=2026-09-23&end_date=2026-09-23&daily=temperature_2m_max%2Ctemperature_2m_min%2Ctemperature_2m_mean%2Cprecipitation_sum%2Cwind_speed_10m_max%2Crelative_humidity_2m_mean&timezone=auto&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+      "http": 200,
+      "valores_mostrados": [
+        "37,8 °C",
+        "25,1 °C",
+        "31,7 °C",
+        "2,4 mm",
+        "12,1 km/h",
+        "53 %"
+      ],
+      "cumple": true
+    },
+    {
+      "escenario": "Mínima",
+      "fecha": "01/01/1940",
+      "fecha_iso": "1940-01-01",
+      "esperado_valida": true,
+      "mensaje_esperado": null,
+      "solicitudes_archive": 1,
+      "url_enviada": "https://archive-api.open-meteo.com/v1/archive?latitude=2.93001&longitude=-75.27973&start_date=1940-01-01&end_date=1940-01-01&daily=temperature_2m_max%2Ctemperature_2m_min%2Ctemperature_2m_mean%2Cprecipitation_sum%2Cwind_speed_10m_max%2Crelative_humidity_2m_mean&timezone=auto&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+      "http": 200,
+      "valores_mostrados": [
+        "28,2 °C",
+        "22,1 °C",
+        "24,3 °C",
+        "N/D",
+        "7,7 km/h",
+        "81 %"
+      ],
+      "cumple": true
+    },
+    {
+      "escenario": "Un día antes del mínimo",
+      "fecha": "31/12/1939",
+      "fecha_iso": "1939-12-31",
+      "esperado_valida": false,
+      "mensaje_esperado": "Solo hay datos disponibles desde el 01/01/1940.",
+      "mensaje_mostrado": "Solo hay datos disponibles desde el 01/01/1940.",
+      "solicitudes_archive": 0,
+      "recuperacion": {
+        "fecha": "23/09/2026",
+        "http": 200,
+        "datos_mostrados": true
+      },
+      "cumple": true
+    }
+  ]
+}
