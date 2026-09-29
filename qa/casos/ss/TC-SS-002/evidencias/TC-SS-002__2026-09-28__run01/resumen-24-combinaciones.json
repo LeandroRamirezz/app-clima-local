@@ -1,0 +1,1082 @@
+[
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Auckland",
+    "zona_ubicacion_api": "Pacific/Auckland",
+    "fecha_solicitada": "2024-02-29",
+    "latitud_enviada": -36.84853,
+    "longitud_enviada": 174.76349,
+    "start_date_enviado": "2024-02-29",
+    "end_date_enviado": "2024-02-29",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-02-29"
+    ],
+    "fecha_mostrada": "29/02/2024",
+    "valores_ui": [
+      "23,7 °C",
+      "15,7 °C",
+      "19,4 °C",
+      "0 mm",
+      "19 km/h",
+      "70 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-02-29"
+    ],
+    "valores_directa": [
+      "23,7 °C",
+      "15,7 °C",
+      "19,4 °C",
+      "0 mm",
+      "19 km/h",
+      "70 %"
+    ],
+    "valores_api_crudos": [
+      23.7,
+      15.7,
+      19.4,
+      0,
+      19,
+      70
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Auckland",
+    "zona_ubicacion_api": "Pacific/Auckland",
+    "fecha_solicitada": "2023-12-31",
+    "latitud_enviada": -36.84853,
+    "longitud_enviada": 174.76349,
+    "start_date_enviado": "2023-12-31",
+    "end_date_enviado": "2023-12-31",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2023-12-31"
+    ],
+    "fecha_mostrada": "31/12/2023",
+    "valores_ui": [
+      "24,8 °C",
+      "19,2 °C",
+      "21,3 °C",
+      "21,2 mm",
+      "27 km/h",
+      "88 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2023-12-31"
+    ],
+    "valores_directa": [
+      "24,8 °C",
+      "19,2 °C",
+      "21,3 °C",
+      "21,2 mm",
+      "27 km/h",
+      "88 %"
+    ],
+    "valores_api_crudos": [
+      24.8,
+      19.2,
+      21.3,
+      21.2,
+      27,
+      88
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Auckland",
+    "zona_ubicacion_api": "Pacific/Auckland",
+    "fecha_solicitada": "2024-01-01",
+    "latitud_enviada": -36.84853,
+    "longitud_enviada": 174.76349,
+    "start_date_enviado": "2024-01-01",
+    "end_date_enviado": "2024-01-01",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-01-01"
+    ],
+    "fecha_mostrada": "01/01/2024",
+    "valores_ui": [
+      "20,1 °C",
+      "15,8 °C",
+      "18,2 °C",
+      "0,7 mm",
+      "27,2 km/h",
+      "69 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-01-01"
+    ],
+    "valores_directa": [
+      "20,1 °C",
+      "15,8 °C",
+      "18,2 °C",
+      "0,7 mm",
+      "27,2 km/h",
+      "69 %"
+    ],
+    "valores_api_crudos": [
+      20.1,
+      15.8,
+      18.2,
+      0.7,
+      27.2,
+      69
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Honolulu",
+    "zona_ubicacion_api": "Pacific/Honolulu",
+    "fecha_solicitada": "2024-02-29",
+    "latitud_enviada": 21.30694,
+    "longitud_enviada": -157.85834,
+    "start_date_enviado": "2024-02-29",
+    "end_date_enviado": "2024-02-29",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-02-29"
+    ],
+    "fecha_mostrada": "29/02/2024",
+    "valores_ui": [
+      "25,8 °C",
+      "18,7 °C",
+      "22,3 °C",
+      "0,9 mm",
+      "26,9 km/h",
+      "67 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-02-29"
+    ],
+    "valores_directa": [
+      "25,8 °C",
+      "18,7 °C",
+      "22,3 °C",
+      "0,9 mm",
+      "26,9 km/h",
+      "67 %"
+    ],
+    "valores_api_crudos": [
+      25.8,
+      18.7,
+      22.3,
+      0.9,
+      26.9,
+      67
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Honolulu",
+    "zona_ubicacion_api": "Pacific/Honolulu",
+    "fecha_solicitada": "2023-12-31",
+    "latitud_enviada": 21.30694,
+    "longitud_enviada": -157.85834,
+    "start_date_enviado": "2023-12-31",
+    "end_date_enviado": "2023-12-31",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2023-12-31"
+    ],
+    "fecha_mostrada": "31/12/2023",
+    "valores_ui": [
+      "28,2 °C",
+      "17 °C",
+      "21,6 °C",
+      "0 mm",
+      "12,6 km/h",
+      "71 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2023-12-31"
+    ],
+    "valores_directa": [
+      "28,2 °C",
+      "17 °C",
+      "21,6 °C",
+      "0 mm",
+      "12,6 km/h",
+      "71 %"
+    ],
+    "valores_api_crudos": [
+      28.2,
+      17,
+      21.6,
+      0,
+      12.6,
+      71
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Honolulu",
+    "zona_ubicacion_api": "Pacific/Honolulu",
+    "fecha_solicitada": "2024-01-01",
+    "latitud_enviada": 21.30694,
+    "longitud_enviada": -157.85834,
+    "start_date_enviado": "2024-01-01",
+    "end_date_enviado": "2024-01-01",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-01-01"
+    ],
+    "fecha_mostrada": "01/01/2024",
+    "valores_ui": [
+      "25,1 °C",
+      "17,8 °C",
+      "21,8 °C",
+      "0,6 mm",
+      "23,6 km/h",
+      "75 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-01-01"
+    ],
+    "valores_directa": [
+      "25,1 °C",
+      "17,8 °C",
+      "21,8 °C",
+      "0,6 mm",
+      "23,6 km/h",
+      "75 %"
+    ],
+    "valores_api_crudos": [
+      25.1,
+      17.8,
+      21.8,
+      0.6,
+      23.6,
+      75
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Neiva",
+    "zona_ubicacion_api": "America/Bogota",
+    "fecha_solicitada": "2024-02-29",
+    "latitud_enviada": 2.93001,
+    "longitud_enviada": -75.27973,
+    "start_date_enviado": "2024-02-29",
+    "end_date_enviado": "2024-02-29",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-02-29"
+    ],
+    "fecha_mostrada": "29/02/2024",
+    "valores_ui": [
+      "36 °C",
+      "23,7 °C",
+      "29,7 °C",
+      "1,3 mm",
+      "15,6 km/h",
+      "59 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-02-29"
+    ],
+    "valores_directa": [
+      "36 °C",
+      "23,7 °C",
+      "29,7 °C",
+      "1,3 mm",
+      "15,6 km/h",
+      "59 %"
+    ],
+    "valores_api_crudos": [
+      36,
+      23.7,
+      29.7,
+      1.3,
+      15.6,
+      59
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Neiva",
+    "zona_ubicacion_api": "America/Bogota",
+    "fecha_solicitada": "2023-12-31",
+    "latitud_enviada": 2.93001,
+    "longitud_enviada": -75.27973,
+    "start_date_enviado": "2023-12-31",
+    "end_date_enviado": "2023-12-31",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2023-12-31"
+    ],
+    "fecha_mostrada": "31/12/2023",
+    "valores_ui": [
+      "29,7 °C",
+      "21,7 °C",
+      "25,7 °C",
+      "3,4 mm",
+      "10,2 km/h",
+      "81 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2023-12-31"
+    ],
+    "valores_directa": [
+      "29,7 °C",
+      "21,7 °C",
+      "25,7 °C",
+      "3,4 mm",
+      "10,2 km/h",
+      "81 %"
+    ],
+    "valores_api_crudos": [
+      29.7,
+      21.7,
+      25.7,
+      3.4,
+      10.2,
+      81
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Neiva",
+    "zona_ubicacion_api": "America/Bogota",
+    "fecha_solicitada": "2024-01-01",
+    "latitud_enviada": 2.93001,
+    "longitud_enviada": -75.27973,
+    "start_date_enviado": "2024-01-01",
+    "end_date_enviado": "2024-01-01",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-01-01"
+    ],
+    "fecha_mostrada": "01/01/2024",
+    "valores_ui": [
+      "29,6 °C",
+      "22,1 °C",
+      "26,1 °C",
+      "0,7 mm",
+      "7 km/h",
+      "80 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-01-01"
+    ],
+    "valores_directa": [
+      "29,6 °C",
+      "22,1 °C",
+      "26,1 °C",
+      "0,7 mm",
+      "7 km/h",
+      "80 %"
+    ],
+    "valores_api_crudos": [
+      29.6,
+      22.1,
+      26.1,
+      0.7,
+      7,
+      80
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Tokio",
+    "zona_ubicacion_api": "Asia/Tokyo",
+    "fecha_solicitada": "2024-02-29",
+    "latitud_enviada": 35.6895,
+    "longitud_enviada": 139.69171,
+    "start_date_enviado": "2024-02-29",
+    "end_date_enviado": "2024-02-29",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-02-29"
+    ],
+    "fecha_mostrada": "29/02/2024",
+    "valores_ui": [
+      "10,9 °C",
+      "-0,6 °C",
+      "5,5 °C",
+      "4,2 mm",
+      "18,7 km/h",
+      "70 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-02-29"
+    ],
+    "valores_directa": [
+      "10,9 °C",
+      "-0,6 °C",
+      "5,5 °C",
+      "4,2 mm",
+      "18,7 km/h",
+      "70 %"
+    ],
+    "valores_api_crudos": [
+      10.9,
+      -0.6,
+      5.5,
+      4.2,
+      18.7,
+      70
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Tokio",
+    "zona_ubicacion_api": "Asia/Tokyo",
+    "fecha_solicitada": "2023-12-31",
+    "latitud_enviada": 35.6895,
+    "longitud_enviada": 139.69171,
+    "start_date_enviado": "2023-12-31",
+    "end_date_enviado": "2023-12-31",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2023-12-31"
+    ],
+    "fecha_mostrada": "31/12/2023",
+    "valores_ui": [
+      "12,5 °C",
+      "4,8 °C",
+      "8,2 °C",
+      "4,7 mm",
+      "17,4 km/h",
+      "76 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2023-12-31"
+    ],
+    "valores_directa": [
+      "12,5 °C",
+      "4,8 °C",
+      "8,2 °C",
+      "4,7 mm",
+      "17,4 km/h",
+      "76 %"
+    ],
+    "valores_api_crudos": [
+      12.5,
+      4.8,
+      8.2,
+      4.7,
+      17.4,
+      76
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Kiritimati",
+    "ubicacion": "Tokio",
+    "zona_ubicacion_api": "Asia/Tokyo",
+    "fecha_solicitada": "2024-01-01",
+    "latitud_enviada": 35.6895,
+    "longitud_enviada": 139.69171,
+    "start_date_enviado": "2024-01-01",
+    "end_date_enviado": "2024-01-01",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-01-01"
+    ],
+    "fecha_mostrada": "01/01/2024",
+    "valores_ui": [
+      "10,7 °C",
+      "2 °C",
+      "7,7 °C",
+      "0 mm",
+      "51,3 km/h",
+      "52 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-01-01"
+    ],
+    "valores_directa": [
+      "10,7 °C",
+      "2 °C",
+      "7,7 °C",
+      "0 mm",
+      "51,3 km/h",
+      "52 %"
+    ],
+    "valores_api_crudos": [
+      10.7,
+      2,
+      7.7,
+      0,
+      51.3,
+      52
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Auckland",
+    "zona_ubicacion_api": "Pacific/Auckland",
+    "fecha_solicitada": "2024-02-29",
+    "latitud_enviada": -36.84853,
+    "longitud_enviada": 174.76349,
+    "start_date_enviado": "2024-02-29",
+    "end_date_enviado": "2024-02-29",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-02-29"
+    ],
+    "fecha_mostrada": "29/02/2024",
+    "valores_ui": [
+      "23,7 °C",
+      "15,7 °C",
+      "19,4 °C",
+      "0 mm",
+      "19 km/h",
+      "70 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-02-29"
+    ],
+    "valores_directa": [
+      "23,7 °C",
+      "15,7 °C",
+      "19,4 °C",
+      "0 mm",
+      "19 km/h",
+      "70 %"
+    ],
+    "valores_api_crudos": [
+      23.7,
+      15.7,
+      19.4,
+      0,
+      19,
+      70
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Auckland",
+    "zona_ubicacion_api": "Pacific/Auckland",
+    "fecha_solicitada": "2023-12-31",
+    "latitud_enviada": -36.84853,
+    "longitud_enviada": 174.76349,
+    "start_date_enviado": "2023-12-31",
+    "end_date_enviado": "2023-12-31",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2023-12-31"
+    ],
+    "fecha_mostrada": "31/12/2023",
+    "valores_ui": [
+      "24,8 °C",
+      "19,2 °C",
+      "21,3 °C",
+      "21,2 mm",
+      "27 km/h",
+      "88 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2023-12-31"
+    ],
+    "valores_directa": [
+      "24,8 °C",
+      "19,2 °C",
+      "21,3 °C",
+      "21,2 mm",
+      "27 km/h",
+      "88 %"
+    ],
+    "valores_api_crudos": [
+      24.8,
+      19.2,
+      21.3,
+      21.2,
+      27,
+      88
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Auckland",
+    "zona_ubicacion_api": "Pacific/Auckland",
+    "fecha_solicitada": "2024-01-01",
+    "latitud_enviada": -36.84853,
+    "longitud_enviada": 174.76349,
+    "start_date_enviado": "2024-01-01",
+    "end_date_enviado": "2024-01-01",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-01-01"
+    ],
+    "fecha_mostrada": "01/01/2024",
+    "valores_ui": [
+      "20,1 °C",
+      "15,8 °C",
+      "18,2 °C",
+      "0,7 mm",
+      "27,2 km/h",
+      "69 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-01-01"
+    ],
+    "valores_directa": [
+      "20,1 °C",
+      "15,8 °C",
+      "18,2 °C",
+      "0,7 mm",
+      "27,2 km/h",
+      "69 %"
+    ],
+    "valores_api_crudos": [
+      20.1,
+      15.8,
+      18.2,
+      0.7,
+      27.2,
+      69
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Honolulu",
+    "zona_ubicacion_api": "Pacific/Honolulu",
+    "fecha_solicitada": "2024-02-29",
+    "latitud_enviada": 21.30694,
+    "longitud_enviada": -157.85834,
+    "start_date_enviado": "2024-02-29",
+    "end_date_enviado": "2024-02-29",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-02-29"
+    ],
+    "fecha_mostrada": "29/02/2024",
+    "valores_ui": [
+      "25,8 °C",
+      "18,7 °C",
+      "22,3 °C",
+      "0,9 mm",
+      "26,9 km/h",
+      "67 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-02-29"
+    ],
+    "valores_directa": [
+      "25,8 °C",
+      "18,7 °C",
+      "22,3 °C",
+      "0,9 mm",
+      "26,9 km/h",
+      "67 %"
+    ],
+    "valores_api_crudos": [
+      25.8,
+      18.7,
+      22.3,
+      0.9,
+      26.9,
+      67
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Honolulu",
+    "zona_ubicacion_api": "Pacific/Honolulu",
+    "fecha_solicitada": "2023-12-31",
+    "latitud_enviada": 21.30694,
+    "longitud_enviada": -157.85834,
+    "start_date_enviado": "2023-12-31",
+    "end_date_enviado": "2023-12-31",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2023-12-31"
+    ],
+    "fecha_mostrada": "31/12/2023",
+    "valores_ui": [
+      "28,2 °C",
+      "17 °C",
+      "21,6 °C",
+      "0 mm",
+      "12,6 km/h",
+      "71 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2023-12-31"
+    ],
+    "valores_directa": [
+      "28,2 °C",
+      "17 °C",
+      "21,6 °C",
+      "0 mm",
+      "12,6 km/h",
+      "71 %"
+    ],
+    "valores_api_crudos": [
+      28.2,
+      17,
+      21.6,
+      0,
+      12.6,
+      71
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Honolulu",
+    "zona_ubicacion_api": "Pacific/Honolulu",
+    "fecha_solicitada": "2024-01-01",
+    "latitud_enviada": 21.30694,
+    "longitud_enviada": -157.85834,
+    "start_date_enviado": "2024-01-01",
+    "end_date_enviado": "2024-01-01",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-01-01"
+    ],
+    "fecha_mostrada": "01/01/2024",
+    "valores_ui": [
+      "25,1 °C",
+      "17,8 °C",
+      "21,8 °C",
+      "0,6 mm",
+      "23,6 km/h",
+      "75 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-01-01"
+    ],
+    "valores_directa": [
+      "25,1 °C",
+      "17,8 °C",
+      "21,8 °C",
+      "0,6 mm",
+      "23,6 km/h",
+      "75 %"
+    ],
+    "valores_api_crudos": [
+      25.1,
+      17.8,
+      21.8,
+      0.6,
+      23.6,
+      75
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Neiva",
+    "zona_ubicacion_api": "America/Bogota",
+    "fecha_solicitada": "2024-02-29",
+    "latitud_enviada": 2.93001,
+    "longitud_enviada": -75.27973,
+    "start_date_enviado": "2024-02-29",
+    "end_date_enviado": "2024-02-29",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-02-29"
+    ],
+    "fecha_mostrada": "29/02/2024",
+    "valores_ui": [
+      "36 °C",
+      "23,7 °C",
+      "29,7 °C",
+      "1,3 mm",
+      "15,6 km/h",
+      "59 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-02-29"
+    ],
+    "valores_directa": [
+      "36 °C",
+      "23,7 °C",
+      "29,7 °C",
+      "1,3 mm",
+      "15,6 km/h",
+      "59 %"
+    ],
+    "valores_api_crudos": [
+      36,
+      23.7,
+      29.7,
+      1.3,
+      15.6,
+      59
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Neiva",
+    "zona_ubicacion_api": "America/Bogota",
+    "fecha_solicitada": "2023-12-31",
+    "latitud_enviada": 2.93001,
+    "longitud_enviada": -75.27973,
+    "start_date_enviado": "2023-12-31",
+    "end_date_enviado": "2023-12-31",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2023-12-31"
+    ],
+    "fecha_mostrada": "31/12/2023",
+    "valores_ui": [
+      "29,7 °C",
+      "21,7 °C",
+      "25,7 °C",
+      "3,4 mm",
+      "10,2 km/h",
+      "81 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2023-12-31"
+    ],
+    "valores_directa": [
+      "29,7 °C",
+      "21,7 °C",
+      "25,7 °C",
+      "3,4 mm",
+      "10,2 km/h",
+      "81 %"
+    ],
+    "valores_api_crudos": [
+      29.7,
+      21.7,
+      25.7,
+      3.4,
+      10.2,
+      81
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Neiva",
+    "zona_ubicacion_api": "America/Bogota",
+    "fecha_solicitada": "2024-01-01",
+    "latitud_enviada": 2.93001,
+    "longitud_enviada": -75.27973,
+    "start_date_enviado": "2024-01-01",
+    "end_date_enviado": "2024-01-01",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-01-01"
+    ],
+    "fecha_mostrada": "01/01/2024",
+    "valores_ui": [
+      "29,6 °C",
+      "22,1 °C",
+      "26,1 °C",
+      "0,7 mm",
+      "7 km/h",
+      "80 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-01-01"
+    ],
+    "valores_directa": [
+      "29,6 °C",
+      "22,1 °C",
+      "26,1 °C",
+      "0,7 mm",
+      "7 km/h",
+      "80 %"
+    ],
+    "valores_api_crudos": [
+      29.6,
+      22.1,
+      26.1,
+      0.7,
+      7,
+      80
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Tokio",
+    "zona_ubicacion_api": "Asia/Tokyo",
+    "fecha_solicitada": "2024-02-29",
+    "latitud_enviada": 35.6895,
+    "longitud_enviada": 139.69171,
+    "start_date_enviado": "2024-02-29",
+    "end_date_enviado": "2024-02-29",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-02-29"
+    ],
+    "fecha_mostrada": "29/02/2024",
+    "valores_ui": [
+      "10,9 °C",
+      "-0,6 °C",
+      "5,5 °C",
+      "4,2 mm",
+      "18,7 km/h",
+      "70 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-02-29"
+    ],
+    "valores_directa": [
+      "10,9 °C",
+      "-0,6 °C",
+      "5,5 °C",
+      "4,2 mm",
+      "18,7 km/h",
+      "70 %"
+    ],
+    "valores_api_crudos": [
+      10.9,
+      -0.6,
+      5.5,
+      4.2,
+      18.7,
+      70
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Tokio",
+    "zona_ubicacion_api": "Asia/Tokyo",
+    "fecha_solicitada": "2023-12-31",
+    "latitud_enviada": 35.6895,
+    "longitud_enviada": 139.69171,
+    "start_date_enviado": "2023-12-31",
+    "end_date_enviado": "2023-12-31",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2023-12-31"
+    ],
+    "fecha_mostrada": "31/12/2023",
+    "valores_ui": [
+      "12,5 °C",
+      "4,8 °C",
+      "8,2 °C",
+      "4,7 mm",
+      "17,4 km/h",
+      "76 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2023-12-31"
+    ],
+    "valores_directa": [
+      "12,5 °C",
+      "4,8 °C",
+      "8,2 °C",
+      "4,7 mm",
+      "17,4 km/h",
+      "76 %"
+    ],
+    "valores_api_crudos": [
+      12.5,
+      4.8,
+      8.2,
+      4.7,
+      17.4,
+      76
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Tokio",
+    "zona_ubicacion_api": "Asia/Tokyo",
+    "fecha_solicitada": "2024-01-01",
+    "latitud_enviada": 35.6895,
+    "longitud_enviada": 139.69171,
+    "start_date_enviado": "2024-01-01",
+    "end_date_enviado": "2024-01-01",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-01-01"
+    ],
+    "fecha_mostrada": "01/01/2024",
+    "valores_ui": [
+      "10,7 °C",
+      "2 °C",
+      "7,7 °C",
+      "0 mm",
+      "51,3 km/h",
+      "52 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-01-01"
+    ],
+    "valores_directa": [
+      "10,7 °C",
+      "2 °C",
+      "7,7 °C",
+      "0 mm",
+      "51,3 km/h",
+      "52 %"
+    ],
+    "valores_api_crudos": [
+      10.7,
+      2,
+      7.7,
+      0,
+      51.3,
+      52
+    ],
+    "sin_desfase": true
+  }
+]

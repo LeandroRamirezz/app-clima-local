@@ -1,0 +1,137 @@
+[
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Tokio",
+    "zona_ubicacion_api": "Asia/Tokyo",
+    "fecha_solicitada": "2024-02-29",
+    "latitud_enviada": 35.6895,
+    "longitud_enviada": 139.69171,
+    "start_date_enviado": "2024-02-29",
+    "end_date_enviado": "2024-02-29",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-02-29"
+    ],
+    "fecha_mostrada": "29/02/2024",
+    "valores_ui": [
+      "10,9 °C",
+      "-0,6 °C",
+      "5,5 °C",
+      "4,2 mm",
+      "18,7 km/h",
+      "70 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-02-29"
+    ],
+    "valores_directa": [
+      "10,9 °C",
+      "-0,6 °C",
+      "5,5 °C",
+      "4,2 mm",
+      "18,7 km/h",
+      "70 %"
+    ],
+    "valores_api_crudos": [
+      10.9,
+      -0.6,
+      5.5,
+      4.2,
+      18.7,
+      70
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Tokio",
+    "zona_ubicacion_api": "Asia/Tokyo",
+    "fecha_solicitada": "2023-12-31",
+    "latitud_enviada": 35.6895,
+    "longitud_enviada": 139.69171,
+    "start_date_enviado": "2023-12-31",
+    "end_date_enviado": "2023-12-31",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2023-12-31"
+    ],
+    "fecha_mostrada": "31/12/2023",
+    "valores_ui": [
+      "12,5 °C",
+      "4,8 °C",
+      "8,2 °C",
+      "4,7 mm",
+      "17,4 km/h",
+      "76 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2023-12-31"
+    ],
+    "valores_directa": [
+      "12,5 °C",
+      "4,8 °C",
+      "8,2 °C",
+      "4,7 mm",
+      "17,4 km/h",
+      "76 %"
+    ],
+    "valores_api_crudos": [
+      12.5,
+      4.8,
+      8.2,
+      4.7,
+      17.4,
+      76
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Tokio",
+    "zona_ubicacion_api": "Asia/Tokyo",
+    "fecha_solicitada": "2024-01-01",
+    "latitud_enviada": 35.6895,
+    "longitud_enviada": 139.69171,
+    "start_date_enviado": "2024-01-01",
+    "end_date_enviado": "2024-01-01",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-01-01"
+    ],
+    "fecha_mostrada": "01/01/2024",
+    "valores_ui": [
+      "10,7 °C",
+      "2 °C",
+      "7,7 °C",
+      "0 mm",
+      "51,3 km/h",
+      "52 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-01-01"
+    ],
+    "valores_directa": [
+      "10,7 °C",
+      "2 °C",
+      "7,7 °C",
+      "0 mm",
+      "51,3 km/h",
+      "52 %"
+    ],
+    "valores_api_crudos": [
+      10.7,
+      2,
+      7.7,
+      0,
+      51.3,
+      52
+    ],
+    "sin_desfase": true
+  }
+]

@@ -1,0 +1,137 @@
+[
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Honolulu",
+    "zona_ubicacion_api": "Pacific/Honolulu",
+    "fecha_solicitada": "2024-02-29",
+    "latitud_enviada": 21.30694,
+    "longitud_enviada": -157.85834,
+    "start_date_enviado": "2024-02-29",
+    "end_date_enviado": "2024-02-29",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-02-29"
+    ],
+    "fecha_mostrada": "29/02/2024",
+    "valores_ui": [
+      "25,8 °C",
+      "18,7 °C",
+      "22,3 °C",
+      "0,9 mm",
+      "26,9 km/h",
+      "67 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-02-29"
+    ],
+    "valores_directa": [
+      "25,8 °C",
+      "18,7 °C",
+      "22,3 °C",
+      "0,9 mm",
+      "26,9 km/h",
+      "67 %"
+    ],
+    "valores_api_crudos": [
+      25.8,
+      18.7,
+      22.3,
+      0.9,
+      26.9,
+      67
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Honolulu",
+    "zona_ubicacion_api": "Pacific/Honolulu",
+    "fecha_solicitada": "2023-12-31",
+    "latitud_enviada": 21.30694,
+    "longitud_enviada": -157.85834,
+    "start_date_enviado": "2023-12-31",
+    "end_date_enviado": "2023-12-31",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2023-12-31"
+    ],
+    "fecha_mostrada": "31/12/2023",
+    "valores_ui": [
+      "28,2 °C",
+      "17 °C",
+      "21,6 °C",
+      "0 mm",
+      "12,6 km/h",
+      "71 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2023-12-31"
+    ],
+    "valores_directa": [
+      "28,2 °C",
+      "17 °C",
+      "21,6 °C",
+      "0 mm",
+      "12,6 km/h",
+      "71 %"
+    ],
+    "valores_api_crudos": [
+      28.2,
+      17,
+      21.6,
+      0,
+      12.6,
+      71
+    ],
+    "sin_desfase": true
+  },
+  {
+    "zona_navegador": "Pacific/Pago_Pago",
+    "ubicacion": "Honolulu",
+    "zona_ubicacion_api": "Pacific/Honolulu",
+    "fecha_solicitada": "2024-01-01",
+    "latitud_enviada": 21.30694,
+    "longitud_enviada": -157.85834,
+    "start_date_enviado": "2024-01-01",
+    "end_date_enviado": "2024-01-01",
+    "timezone_enviado": "auto",
+    "http_app": 200,
+    "daily_time_app": [
+      "2024-01-01"
+    ],
+    "fecha_mostrada": "01/01/2024",
+    "valores_ui": [
+      "25,1 °C",
+      "17,8 °C",
+      "21,8 °C",
+      "0,6 mm",
+      "23,6 km/h",
+      "75 %"
+    ],
+    "http_directa": 200,
+    "daily_time_directa": [
+      "2024-01-01"
+    ],
+    "valores_directa": [
+      "25,1 °C",
+      "17,8 °C",
+      "21,8 °C",
+      "0,6 mm",
+      "23,6 km/h",
+      "75 %"
+    ],
+    "valores_api_crudos": [
+      25.1,
+      17.8,
+      21.8,
+      0.6,
+      23.6,
+      75
+    ],
+    "sin_desfase": true
+  }
+]
