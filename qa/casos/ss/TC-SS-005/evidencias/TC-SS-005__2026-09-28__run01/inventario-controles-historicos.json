@@ -1,0 +1,33 @@
+{
+  "controles_en_seccion": [
+    {
+      "tag": "input",
+      "type": "date",
+      "id": "historical-start-date",
+      "role": null,
+      "texto_o_etiqueta": "Fecha inicial"
+    },
+    {
+      "tag": "input",
+      "type": "date",
+      "id": "historical-end-date",
+      "role": null,
+      "texto_o_etiqueta": "Fecha final"
+    },
+    {
+      "tag": "button",
+      "type": "submit",
+      "id": null,
+      "role": null,
+      "texto_o_etiqueta": "Consultar histórico"
+    }
+  ],
+  "controles_de_comparacion_encontrados": 0,
+  "texto_menciona_comparar": false,
+  "solicitudes_archive": [
+    "https://archive-api.open-meteo.com/v1/archive?latitude=2.93001&longitude=-75.27973&start_date=2026-09-15&end_date=2026-09-15&daily=temperature_2m_max%2Ctemperature_2m_min%2Ctemperature_2m_mean%2Cprecipitation_sum%2Cwind_speed_10m_max%2Crelative_humidity_2m_mean&timezone=auto&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+  ],
+  "solicitudes_forecast_rf01_al_seleccionar_ubicacion": [
+    "https://api.open-meteo.com/v1/forecast?latitude=2.93001&longitude=-75.27973&current=temperature_2m%2Capparent_temperature%2Crelative_humidity_2m%2Cprecipitation%2Cweather_code%2Cwind_speed_10m%2Cwind_direction_10m&hourly=temperature_2m%2Capparent_temperature%2Cprecipitation_probability%2Cprecipitation%2Cwind_speed_10m%2Cuv_index%2Cweather_code&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_sum%2Cprecipitation_probability_max%2Cwind_speed_10m_max%2Cuv_index_max%2Csunrise%2Csunset%2Cdaylight_duration&timezone=auto&forecast_days=7&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm&models=best_match"
+  ]
+}

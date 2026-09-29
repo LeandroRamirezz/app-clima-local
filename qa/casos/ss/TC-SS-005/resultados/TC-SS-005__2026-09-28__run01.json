@@ -1,0 +1,42 @@
+{
+  "id_caso": "TC-SS-005",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Integración",
+  "rf_relacionado": "RF-05 (Datos históricos), RF-01 (Clima actual)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Comparación de una fecha histórica contra otra fecha histórica y contra el clima actual. Verificar que el usuario pueda comparar la fecha consultada contra otra fecha histórica o contra el clima actual, y que el sistema muestre ambos conjuntos lado a lado con la diferencia por variable calculada correctamente.",
+  "precondiciones": "Ubicación activa: Neiva. Unidades por defecto. RF-01 funcional (verificado: /v1/forecast respondió al seleccionar la ubicación).",
+  "pasos_ejecutados": [
+    "0. Seleccionar Neiva, Huila como ubicación activa (la pestaña «Clima» carga /v1/forecast: RF-01 disponible) y abrir «Históricos».",
+    "1. Consultar 15/09/2026 (HTTP 200, datos mostrados) y buscar la opción «Comparar» con otra fecha (15/09/2025) o con el clima actual.",
+    "2 a 7. No ejecutables: la sección no ofrece ningún control de comparación, por lo que no es posible elegir 15/09/2025 ni «Clima actual», verificar las dos solicitudes, la vista lado a lado, la diferencia por variable ni desactivar la comparación."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-005 --project=ss"
+  ],
+  "resultado_esperado": "A: dos solicitudes HTTP 200; columnas «15/09/2026» y «15/09/2025» con valores iguales a cada respuesta; la diferencia por variable coincide con el cálculo manual (con su signo y unidad). B: columna «15/09/2026» vs. «Actual»; la diferencia por variable es correcta. La vista permanece operativa al activar y desactivar la comparación.",
+  "resultado_obtenido": "La consulta base de 15/09/2026 funcionó (HTTP 200; 37,8 °C · 26,8 °C · 32,6 °C · 0 mm · 16,3 km/h · 40 %), pero la sección «Históricos» no ofrece ninguna forma de comparar: sus únicos controles son «Fecha inicial», «Fecha final» y «Consultar histórico», y ningún texto de la sección menciona comparar. Solo se envió una solicitud a /v1/archive (la de 15/09/2026). Los escenarios A (vs. 15/09/2025) y B (vs. clima actual) no pueden realizarse. El test automatizado falló en la verificación del control de comparación (0 controles encontrados).",
+  "tiempo_respuesta_ms": null,
+  "estado": "Fallido",
+  "bug_id": "BUG-SS-001",
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-005__2026-09-28__run01/paso1-sin-control-comparar.png",
+    "evidencias/TC-SS-005__2026-09-28__run01/inventario-controles-historicos.json",
+    "evidencias/TC-SS-005__2026-09-28__run01/test-failed-1.png",
+    "evidencias/TC-SS-005__2026-09-28__run01/video.webm",
+    "evidencias/TC-SS-005__2026-09-28__run01/error-context.md"
+  ],
+  "observaciones": "La funcionalidad de comparación exigida por RF-05 (entradas fecha_comparacion y comparar_con_actual, paso 7 del proceso, salida «Comparativo por variable» y criterio de aceptación «Se puede consultar una fecha y compararla con otra fecha o con el clima actual») no está implementada en la versión desplegada. En el código de origin/main (src/components/HistoricalWeather.tsx y src/hooks/useHistoricalWeather.ts) tampoco existe lógica de comparación. El escenario B no se marca como Bloqueado porque RF-01 sí estaba disponible (la pestaña «Clima» consultó /v1/forecast con éxito al seleccionar Neiva); falla por la misma ausencia de funcionalidad. La pestaña «Comparar ciudades» compara pronósticos entre ciudades (RF-04) y no cubre este requerimiento."
+}
