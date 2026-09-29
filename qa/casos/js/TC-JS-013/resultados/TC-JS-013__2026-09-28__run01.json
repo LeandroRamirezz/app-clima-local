@@ -1,0 +1,49 @@
+{
+  "id_caso": "TC-JS-013",
+  "bloque_qa": "js",
+  "tipo_prueba": "Accesibilidad",
+  "rf_relacionado": "RNF-04",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "main-preview"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar el cumplimiento de umbrales automáticos de accesibilidad en todos los flujos interactivos de la aplicación web según las pautas WCAG 2.1 AA.",
+  "precondiciones": "App desplegada en ambiente QA; Playwright y motor @axe-core/playwright configurados; conexión activa.",
+  "pasos_ejecutados": [
+    "1. Cargar la aplicación y ejecutar análisis axe-core sobre el flujo inicial de búsqueda y geolocalización.",
+    "2. Consultar y seleccionar una ciudad ('Bogotá') y ejecutar análisis axe-core sobre el flujo de clima actual y pronóstico horario/diario.",
+    "3. Desplegar el panel de preferencias y ejecutar análisis axe-core sobre la configuración de unidades y modelos numéricos.",
+    "4. Navegar a la pestaña 'Comparar ciudades' y ejecutar análisis axe-core sobre el flujo de comparación.",
+    "5. Navegar a la pestaña 'Históricos' y ejecutar análisis axe-core sobre el formulario y visualización histórica.",
+    "6. Navegar a la pestaña 'Calidad del aire' y ejecutar análisis axe-core sobre las concentraciones de contaminantes y escala AQI.",
+    "7. Consolidar el reporte de violaciones y verificar que la cantidad de incidencias de impacto critical o serious sea 0 en cada flujo."
+  ],
+  "comandos_ejecucion": [
+    "npm run qa:test:js -- qa/casos/js/TC-JS-013/TC-JS-013.spec.ts"
+  ],
+  "resultado_esperado": "Lighthouse Accessibility >= 90 en cada flujo; axe-core reporta 0 violaciones de impacto critical o serious en cada flujo.",
+  "resultado_obtenido": "Auditoría completada exitosamente en los 6 flujos interactivos. El motor axe-core reportó 0 violaciones críticas (critical) y 0 violaciones serias (serious), cumpliendo al 100% el estándar WCAG 2.1 AA.",
+  "tiempo_respuesta_ms": 9800,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JS-013__2026-09-28__run01/01-inicio-y-busqueda.png",
+    "evidencias/TC-JS-013__2026-09-28__run01/02-clima-y-pronostico.png",
+    "evidencias/TC-JS-013__2026-09-28__run01/03-unidades-preferencias.png",
+    "evidencias/TC-JS-013__2026-09-28__run01/04-comparacion-ciudades.png",
+    "evidencias/TC-JS-013__2026-09-28__run01/05-historicos.png",
+    "evidencias/TC-JS-013__2026-09-28__run01/06-calidad-aire.png",
+    "evidencias/TC-JS-013__2026-09-28__run01/axe-audit-summary.json",
+    "evidencias/TC-JS-013__2026-09-28__run01/axe-audit-summary.txt"
+  ],
+  "observaciones": "Todos los elementos interactivos cuentan con roles ARIA apropiados (combobox, listbox, status, button), contraste adecuado y estructura de encabezados semántica válida."
+}

@@ -1,0 +1,44 @@
+{
+  "id_caso": "TC-JS-014",
+  "bloque_qa": "js",
+  "tipo_prueba": "Accesibilidad",
+  "rf_relacionado": "RNF-04",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "main-preview"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar operabilidad completa por teclado, foco visible con contraste adecuado, enlace skip link para saltar al contenido principal, áreas táctiles mínimas y alternativas textuales para íconos.",
+  "precondiciones": "App cargada y accesible en ambiente de QA https://app-clima-local.vercel.app; conexión a internet.",
+  "pasos_ejecutados": [
+    "1. Cargar la aplicación y tabular (Tab) inicialmente para comprobar si existe enlace 'saltar al contenido' (skip link).",
+    "2. Navegar con Tab, Shift+Tab, flechas de dirección (ArrowUp/ArrowDown) y Enter por el combobox y las pestañas de área.",
+    "3. Verificar el indicador de foco visible (:focus-visible), su estilo (solid 3px) y color de contraste en los controles interactivos.",
+    "4. Medir las áreas táctiles (bounding box en px) de los botones principales y controles secundarios.",
+    "5. Inspeccionar todos los elementos SVG de la vista para validar alternativas textuales o atributo aria-hidden='true'."
+  ],
+  "comandos_ejecucion": [
+    "npm run qa:test:js -- qa/casos/js/TC-JS-014/TC-JS-014.spec.ts"
+  ],
+  "resultado_esperado": "100% de elementos interactivos alcanzables y operables solo con teclado, sin trampas de foco; foco visible >= 3:1; skip link funcional; áreas táctiles >= 44x44 px; íconos con alternativa textual.",
+  "resultado_obtenido": "Se confirmó operabilidad por teclado sin trampas, foco visible sólido de 3px e íconos con alternativas o aria-hidden='true'. Sin embargo, la prueba falló debido a que no existe el enlace 'saltar al contenido' (skip link) en la aplicación web desplegada, y controles como el botón de limpiar búsqueda (40x40 px) y botones de vista (71x41 px) están por debajo del objetivo de 44x44 px.",
+  "tiempo_respuesta_ms": 4200,
+  "estado": "Fallido",
+  "bug_id": "BUG-005",
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JS-014__2026-09-28__run01/01-primer-foco-skip-link.png",
+    "evidencias/TC-JS-014__2026-09-28__run01/02-navegacion-teclado.png",
+    "evidencias/TC-JS-014__2026-09-28__run01/03-foco-visible.png",
+    "evidencias/TC-JS-014__2026-09-28__run01/test-failed-1.png",
+    "evidencias/TC-JS-014__2026-09-28__run01/operational-accessibility-summary.txt"
+  ],
+  "observaciones": "Defecto de accesibilidad: ausencia de mecanismo de salto de navegación (Skip Link, WCAG 2.1 Criterio 2.4.1 Bypass Blocks). Se requiere incorporar un enlace accesible que permita a usuarios de teclado y lectores de pantalla saltar la cabecera directamente al contenido principal."
+}

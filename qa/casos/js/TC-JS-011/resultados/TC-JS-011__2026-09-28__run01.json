@@ -1,0 +1,42 @@
+{
+  "id_caso": "TC-JS-011",
+  "bloque_qa": "js",
+  "tipo_prueba": "Seguridad",
+  "rf_relacionado": "RF-02",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "main-preview"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar que la entrada de texto en el buscador de ciudades no ejecuta código malicioso inyectado (XSS reflejado) y que el contenido es adecuadamente escapado en la interfaz.",
+  "precondiciones": "App cargada y accesible en ambiente de QA; conexión a internet activa; endpoint /v1/search disponible.",
+  "pasos_ejecutados": [
+    "1. Configurar listener de eventos dialog de navegador para detectar alertas no deseadas.",
+    "2. Navegar a la página principal del ambiente desplegado https://app-clima-local.vercel.app.",
+    "3. Escribir el payload malicioso <script>alert(1)</script> en el input del buscador.",
+    "4. Monitorear la petición de red hacia Open-Meteo (/v1/search?name=%3Cscript%3Ealert%281%29%3C%2Fscript%3E...).",
+    "5. Verificar que ningún script o diálogo sea ejecutado.",
+    "6. Verificar que el texto reflejado aparezca escapado en el DOM y que no existan nodos script inyectados."
+  ],
+  "comandos_ejecucion": [
+    "npm run qa:test:js -- qa/casos/js/TC-JS-011/TC-JS-011.spec.ts"
+  ],
+  "resultado_esperado": "No se ejecuta ningún script. El texto aparece escapado dentro del mensaje 'No se encontraron ubicaciones para «<script>alert(1)</script>»' sin que el navegador lo interprete como HTML.",
+  "resultado_obtenido": "No se ejecutó ningún script ni diálogo en el navegador. La búsqueda consultó la API con codificación URI y React renderizó el payload como texto plano escapado (&lt;script&gt;alert(1)&lt;/script&gt;), sin inyectar etiquetas script en el DOM.",
+  "tiempo_respuesta_ms": 3100,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JS-011__2026-09-28__run01/TC-JS-011__xss-escaped-status.png",
+    "evidencias/TC-JS-011__2026-09-28__run01/execution-summary.txt"
+  ],
+  "observaciones": "El mecanismo de interpolación JSX de React mitiga de manera nativa la inyección directa de elementos script en el árbol de componentes para este flujo reflejado."
+}

@@ -1,0 +1,14 @@
+CASO: TC-JS-012 - Privacidad de Coordenadas en Geolocalización
+Fecha: 2026-09-28
+Coordenadas de prueba: lat=2.93, lon=-75.28
+Aviso de privacidad previo: Presente y verificado
+Peticiones a analítica o terceros: 0 detectadas
+Peticiones con coordenadas a Open-Meteo: 1
+Peticiones examinadas con coordenadas:
+  - https://api.open-meteo.com/v1/forecast?latitude=2.93&longitude=-75.28&current=temperature_2m%2Capparent_temperature%2Crelative_humidity_2m%2Cprecipitation%2Cweather_code%2Cwind_speed_10m%2Cwind_direction_10m&hourly=temperature_2m%2Capparent_temperature%2Cprecipitation_probability%2Cprecipitation%2Cwind_speed_10m%2Cuv_index%2Cweather_code&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_sum%2Cprecipitation_probability_max%2Cwind_speed_10m_max%2Cuv_index_max%2Csunrise%2Csunset%2Cdaylight_duration&timezone=auto&forecast_days=7&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm&models=best_match
+Contenido de localStorage: {"weather-app.units":"{\"temperature\":\"celsius\",\"windSpeed\":\"kmh\",\"precipitation\":\"mm\"}"}
+Contenido de sessionStorage: {}
+Coordenadas persistidas en storage: NO
+Logs de consola totales: 0
+Logs con coordenadas filtradas: 0
+Estado: Aprobado (Cumplimiento estricto de RNF-07)

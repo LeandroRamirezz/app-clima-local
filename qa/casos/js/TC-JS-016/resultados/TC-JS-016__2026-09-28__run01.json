@@ -1,0 +1,43 @@
+{
+  "id_caso": "TC-JS-016",
+  "bloque_qa": "js",
+  "tipo_prueba": "Accesibilidad",
+  "rf_relacionado": "RNF-04",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "main-preview"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar contraste cromático conforme a WCAG 2.1 AA, uso de información no dependiente exclusivamente del color, reflow a 320 px y 200% de zoom sin desplazamiento horizontal, respeto de la preferencia prefers-reduced-motion y configuración de idioma español.",
+  "precondiciones": "App cargada y accesible en ambiente de QA https://app-clima-local.vercel.app; conexión a internet activa.",
+  "pasos_ejecutados": [
+    "1. Auditar contraste de texto y componentes con reglas color-contrast de axe-core.",
+    "2. Verificar que el semáforo AQI, estados de botones y errores incluyan descripciones textuales y atributos ARIA sin depender solo del color.",
+    "3. Reducir el viewport a 320 px con factor de escala 2 (200% zoom) y comprobar que el scrollWidth no exceda el clientWidth.",
+    "4. Emular prefers-reduced-motion: reduce y corroborar que las duraciones de transición se anulen (0s).",
+    "5. Comprobar que el documento HTML declara lang='es' y que todos los textos de navegación están en español."
+  ],
+  "comandos_ejecucion": [
+    "npm run qa:test:js -- qa/casos/js/TC-JS-016/TC-JS-016.spec.ts"
+  ],
+  "resultado_esperado": "Contraste cumple; información no depende solo del color; sin scroll horizontal a 320 px ni 200%; reduced motion respetado; 100% textos externalizados.",
+  "resultado_obtenido": "El contraste de color cumple plenamente con los ratios WCAG AA (0 violaciones de contraste detectadas). La información no depende únicamente del color (el índice AQI incluye texto descriptivo, valor numérico y aria-label; botones usan aria-pressed). A 320 px y 200% de zoom no existe desplazamiento horizontal de página. La directiva prefers-reduced-motion: reduce desactiva las transiciones a 0s, y el atributo lang='es' está correctamente configurado.",
+  "tiempo_respuesta_ms": 9200,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JS-016__2026-09-28__run01/01-contraste-y-color-aqi.png",
+    "evidencias/TC-JS-016__2026-09-28__run01/02-reflow-320px-mobile.png",
+    "evidencias/TC-JS-016__2026-09-28__run01/03-reduced-motion-lang.png",
+    "evidencias/TC-JS-016__2026-09-28__run01/accessibility-reflow-contrast-summary.txt"
+  ],
+  "observaciones": "El diseño CSS responsivo y las variables de diseño garantizan una experiencia accesible en pantallas ultraestrechas y respetan las preferencias de accesibilidad del sistema operativo."
+}

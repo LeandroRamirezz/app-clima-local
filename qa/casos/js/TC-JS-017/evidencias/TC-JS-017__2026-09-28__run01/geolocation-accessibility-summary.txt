@@ -1,0 +1,7 @@
+=== AUDITORÍA DE ACCESIBILIDAD EN GEOLOCALIZACIÓN (TC-JS-017) ===
+
+
+[PASO 3 y 4] Manejo de error/denegación de geolocalización:
+  - Elemento de error con role="alert"
+  - Mensaje de denegación anunciado: "No se pudo acceder a su ubicación porque el permiso fue denegado. Puede buscar su ciudad manualmente o habilitar el permiso en la configuración del navegador."
+  - Verificación de ausencia de trampa de foco: Tabuló correctamente hacia <BUTTON>

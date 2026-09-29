@@ -1,0 +1,12 @@
+
+=== BLOQUE 2: ACTUALIZACIONES DE BÚSQUEDA EN ROLE="STATUS" ===
+
+- Búsqueda sin resultados:
+  Role ARIA: "status", aria-live: "polite"
+  Mensaje anunciado: "No se encontraron ubicaciones para «Xyzabc123». Verifique la ortografía o pruebe con otro nombre."
+- Búsqueda de homónimos múltiples:
+  Role ARIA: "status", aria-live: "polite"
+  Mensaje anunciado: "10 ubicaciones encontradas."
+- Selección de ubicación activa:
+  Role ARIA: "status", aria-live: "polite"
+  Mensaje anunciado: "Bogotá, Bogotá D.C., Colombia"

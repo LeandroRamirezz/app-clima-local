@@ -1,0 +1,41 @@
+{
+  "id_caso": "TC-JS-017",
+  "bloque_qa": "js",
+  "tipo_prueba": "Accesibilidad",
+  "rf_relacionado": "RF-03",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "main-preview"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar la accesibilidad completa por teclado, roles ARIA en estados dinámicos (role='status', role='alert'), ausencia de trampas de foco y operabilidad accesible en el flujo de solicitud de geolocalización.",
+  "precondiciones": "App cargada y accesible en ambiente de QA https://app-clima-local.vercel.app; botón 'Usar mi ubicación' visible.",
+  "pasos_ejecutados": [
+    "1. Enfocar el botón 'Usar mi ubicación' mediante navegación por teclado y activarlo usando la barra espaciadora (Space) y la tecla Enter.",
+    "2. Verificar que la transición de carga y la actualización de ubicación activa se presenten con role='status' y aria-live='polite'.",
+    "3. Simular denegación de permiso de geolocalización y comprobar que el mensaje de advertencia se anuncia en un contenedor con role='alert'.",
+    "4. Comprobar la ausencia de trampas de foco tabulando fuera del control de geolocalización hacia el resto de la interfaz."
+  ],
+  "comandos_ejecucion": [
+    "npm run qa:test:js -- qa/casos/js/TC-JS-017/TC-JS-017.spec.ts"
+  ],
+  "resultado_esperado": "Todo el flujo del diálogo de geolocalización es operable solo con teclado; estado 'Obteniendo ubicación…' anunciado en role='status'; errores en role='alert'; sin trampas de foco.",
+  "resultado_obtenido": "El botón 'Usar mi ubicación' responde de forma natural a la activación por teclado (Space y Enter). La actualización de ubicación se anuncia en live regions corteses (role='status', aria-live='polite'). Ante la denegación del permiso, el mensaje se monta en role='alert' permitiendo su verbalización inmediata, y la navegación con Tab continúa con total fluidez sin trampas de foco.",
+  "tiempo_respuesta_ms": 2500,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JS-017__2026-09-28__run01/01-geolocalizacion-teclado-exito.png",
+    "evidencias/TC-JS-017__2026-09-28__run01/02-geolocalizacion-denegada-alert.png",
+    "evidencias/TC-JS-017__2026-09-28__run01/geolocation-accessibility-summary.txt"
+  ],
+  "observaciones": "El componente GeolocationControl cumple de forma estricta las directrices de diseño accesible (WCAG 2.1 AA) para controles interactivos y regiones de alerta."
+}

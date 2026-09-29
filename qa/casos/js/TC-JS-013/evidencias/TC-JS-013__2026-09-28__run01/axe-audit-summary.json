@@ -1,0 +1,56 @@
+[
+  {
+    "flow": "Carga inicial y buscador",
+    "violationsCount": 0,
+    "criticalCount": 0,
+    "seriousCount": 0,
+    "moderateCount": 0,
+    "minorCount": 0,
+    "violations": []
+  },
+  {
+    "flow": "Clima actual y pronóstico",
+    "violationsCount": 0,
+    "criticalCount": 0,
+    "seriousCount": 0,
+    "moderateCount": 0,
+    "minorCount": 0,
+    "violations": []
+  },
+  {
+    "flow": "Preferencias de unidades y modelos",
+    "violationsCount": 0,
+    "criticalCount": 0,
+    "seriousCount": 0,
+    "moderateCount": 0,
+    "minorCount": 0,
+    "violations": []
+  },
+  {
+    "flow": "Comparación de ciudades",
+    "violationsCount": 0,
+    "criticalCount": 0,
+    "seriousCount": 0,
+    "moderateCount": 0,
+    "minorCount": 0,
+    "violations": []
+  },
+  {
+    "flow": "Históricos meteorológicos",
+    "violationsCount": 0,
+    "criticalCount": 0,
+    "seriousCount": 0,
+    "moderateCount": 0,
+    "minorCount": 0,
+    "violations": []
+  },
+  {
+    "flow": "Calidad del aire",
+    "violationsCount": 0,
+    "criticalCount": 0,
+    "seriousCount": 0,
+    "moderateCount": 0,
+    "minorCount": 0,
+    "violations": []
+  }
+]

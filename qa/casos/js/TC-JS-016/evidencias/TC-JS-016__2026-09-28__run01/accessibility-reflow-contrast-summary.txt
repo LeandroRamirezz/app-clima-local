@@ -1,0 +1,10 @@
+=== AUDITORÍA TÉCNICA DE ACCESIBILIDAD Y RESPONSIVIDAD (TC-JS-016) ===
+
+
+[PASO 4] Reduced Motion (WCAG 2.3.3):
+  - Preferencia emulada: prefers-reduced-motion: reduce
+  - Duración computada de transición en botones: 0s
+
+[PASO 5] Externalización e Idioma (i18n):
+  - Atributo lang en <html>: "es"
+  - Textos de navegación y encabezados verificados en español.

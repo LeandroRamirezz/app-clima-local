@@ -1,0 +1,56 @@
+=======================================================
+AUDITORÍA DE ACCESIBILIDAD AXE-CORE (TC-JS-013 / RNF-04)
+=======================================================
+Fecha: 2026-09-28
+Estándares evaluados: WCAG 2.0 A/AA, WCAG 2.1 A/AA
+Flujos evaluados: 6
+
+Flujo: Carga inicial y buscador
+  Total Violaciones: 0
+  Críticas: 0
+  Serias: 0
+  Moderadas: 0
+  Menores: 0
+  Sin violaciones detectadas.
+-------------------------------------------------------
+Flujo: Clima actual y pronóstico
+  Total Violaciones: 0
+  Críticas: 0
+  Serias: 0
+  Moderadas: 0
+  Menores: 0
+  Sin violaciones detectadas.
+-------------------------------------------------------
+Flujo: Preferencias de unidades y modelos
+  Total Violaciones: 0
+  Críticas: 0
+  Serias: 0
+  Moderadas: 0
+  Menores: 0
+  Sin violaciones detectadas.
+-------------------------------------------------------
+Flujo: Comparación de ciudades
+  Total Violaciones: 0
+  Críticas: 0
+  Serias: 0
+  Moderadas: 0
+  Menores: 0
+  Sin violaciones detectadas.
+-------------------------------------------------------
+Flujo: Históricos meteorológicos
+  Total Violaciones: 0
+  Críticas: 0
+  Serias: 0
+  Moderadas: 0
+  Menores: 0
+  Sin violaciones detectadas.
+-------------------------------------------------------
+Flujo: Calidad del aire
+  Total Violaciones: 0
+  Críticas: 0
+  Serias: 0
+  Moderadas: 0
+  Menores: 0
+  Sin violaciones detectadas.
+-------------------------------------------------------
+Resultado Global: Aprobado (0 violaciones critical / serious en todos los flujos)

@@ -1,0 +1,23 @@
+=== AUDITORÍA OPERATIVA DE ACCESIBILIDAD (TC-JS-014) ===
+
+[PASO 1] Evaluación de Skip Link:
+  - Primer elemento enfocado al dar Tab: <input> "" (href: "")
+  - ¿Existe elemento de enlace para saltar al contenido en el DOM?: NO
+[PASO 2] Operabilidad por teclado:
+  - Entrada de texto, flechas de selección en combobox y pulsación Enter: EXITOSA
+  - Navegación entre pestañas y cambio de vistas con teclado: EXITOSA
+  - Trampas de foco detectadas: NINGUNA
+[PASO 3] Indicador de Foco Visible (:focus-visible):
+  - Estilo de outline: solid
+  - Ancho de outline: 3px
+  - Color de outline: rgb(183, 104, 50)
+  - Contraste visual activo: SÍ (outline sólido de 3px con color de énfasis visible)
+[PASO 4] Medición de Áreas Táctiles (Target Size):
+  - Botón Geolocalización: 165×44 px (Cumple min 44x44px: SÍ)
+  - Pestañas de modo (Clima, Comparar...): 301×53 px (Cumple min 44x44px: SÍ)
+  - Botón limpiar búsqueda: 40×40 px (Cumple min 44x44px: PARCIAL (cumple WCAG 2.5.8 min 24px, pero sub-44px))
+  - Botones Diario/Horario: 71×41 px (Cumple min 44x44px: PARCIAL (cumple WCAG 2.5.8 min 24px, pero sub-44px))
+[PASO 5] Alternativas textuales en íconos:
+  - Total SVGs analizados: 10
+  - Íconos conformes (ocultos a AT vía aria-hidden o con etiqueta/texto alternativo): 10
+  - Íconos no conformes: 0

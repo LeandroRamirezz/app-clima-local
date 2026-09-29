@@ -1,0 +1,47 @@
+{
+  "id_caso": "TC-JS-015",
+  "bloque_qa": "js",
+  "tipo_prueba": "Accesibilidad",
+  "rf_relacionado": "RNF-04",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "main-preview"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar que errores (E-01 a E-05) y actualizaciones de búsqueda se anuncian correctamente a través de live regions (role='alert' y role='status' con aria-live) para lectores de pantalla como NVDA y VoiceOver.",
+  "precondiciones": "App cargada y accesible en ambiente de QA https://app-clima-local.vercel.app; conexión a internet.",
+  "pasos_ejecutados": [
+    "1. Simular errores E-01 (red), E-02 (timeout), E-03 (429), E-04 (400) y E-05 (500) y validar el anuncio en contenedores con role='alert'.",
+    "2. Ejecutar búsqueda sin resultados ('Xyzabc123') y validar montaje de mensaje en contenedor con role='status' y aria-live='polite'.",
+    "3. Ejecutar búsqueda con múltiples homónimos ('San') y verificar verbalización del conteo de ubicaciones encontradas en role='status'.",
+    "4. Seleccionar una ubicación válida ('Bogotá') y verificar actualización de la región viva de ubicación activa (role='status', aria-live='polite')."
+  ],
+  "comandos_ejecucion": [
+    "npm run qa:test:js -- qa/casos/js/TC-JS-015/TC-JS-015.spec.ts"
+  ],
+  "resultado_esperado": "Los 5 errores se anuncian automáticamente en NVDA y VoiceOver; las actualizaciones de búsqueda (válida, sin resultados, homónimos) se anuncian en ambos.",
+  "resultado_obtenido": "Los errores E-01 a E-05 se renderizan en contenedores con role='alert' permitiendo su verbalización asertiva e inmediata. Las actualizaciones de búsqueda (sin resultados, homónimos y selección activa) se montan en elementos con role='status' y aria-live='polite', garantizando anuncios claros sin interrupciones para lectores de pantalla.",
+  "tiempo_respuesta_ms": 18600,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JS-015__2026-09-28__run01/error-E-01.png",
+    "evidencias/TC-JS-015__2026-09-28__run01/error-E-02.png",
+    "evidencias/TC-JS-015__2026-09-28__run01/error-E-03.png",
+    "evidencias/TC-JS-015__2026-09-28__run01/error-E-04.png",
+    "evidencias/TC-JS-015__2026-09-28__run01/error-E-05.png",
+    "evidencias/TC-JS-015__2026-09-28__run01/status-sin-resultados.png",
+    "evidencias/TC-JS-015__2026-09-28__run01/status-homonimos.png",
+    "evidencias/TC-JS-015__2026-09-28__run01/status-ubicacion-activa.png",
+    "evidencias/TC-JS-015__2026-09-28__run01/screen-reader-announcements-summary.txt"
+  ],
+  "observaciones": "El uso adecuado de role='alert' para contingencias críticas y role='status' / aria-live='polite' para cambios dinámicos asegura una experiencia accesible y predecible en lectores de pantalla NVDA y VoiceOver."
+}

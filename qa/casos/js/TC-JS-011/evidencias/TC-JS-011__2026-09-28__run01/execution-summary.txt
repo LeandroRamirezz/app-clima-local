@@ -1,0 +1,11 @@
+ID del caso: TC-JS-011
+Fecha de prueba: 2026-09-28
+URL evaluada: https://app-clima-local.vercel.app/
+Payload probado: <script>alert(1)</script>
+Dialog disparado: false
+Scripts inyectados detectados en el DOM: 0
+Petición a API capturada: true
+URL consultada: https://geocoding-api.open-meteo.com/v1/search?name=%3Cscript%3Ealert%281%29%3C%2Fscript%3E&count=10&language=es&format=json
+Texto obtenido en estado: No se encontraron ubicaciones para «<script>alert(1)</script>». Verifique la ortografía o pruebe con otro nombre.
+HTML interno en estado: No se encontraron ubicaciones para «&lt;script&gt;alert(1)&lt;/script&gt;». Verifique la ortografía o pruebe con otro nombre.
+Resultado: Aprobado (Mitigación XSS efectiva por renderizado seguro de React)

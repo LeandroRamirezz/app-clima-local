@@ -1,0 +1,41 @@
+{
+  "id_caso": "TC-JS-012",
+  "bloque_qa": "js",
+  "tipo_prueba": "Seguridad",
+  "rf_relacionado": "RF-03",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "main-preview"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar que las coordenadas de geolocalización no se persisten en almacenamiento local, no se envían a analítica ni a terceros, no se imprimen en logs y que se muestra un aviso previo visible al usuario.",
+  "precondiciones": "App cargada y accesible en ambiente de QA; DevTools/Network/Application y permisos de geolocalización simulados en el navegador.",
+  "pasos_ejecutados": [
+    "1. Verificar la existencia y visibilidad del aviso previo sobre el tratamiento de la ubicación antes de conceder permiso.",
+    "2. Conceder permiso de geolocalización con coordenadas simuladas (lat=2.93, lon=-75.28) y hacer clic en 'Usar mi ubicación'.",
+    "3. Auditar el tráfico de red: verificar que solo existan llamadas a dominios de Open-Meteo y ninguna a servicios de analítica de terceros.",
+    "4. Inspeccionar localStorage y sessionStorage: comprobar la ausencia de coordenadas almacenadas.",
+    "5. Monitorear los logs de consola: comprobar que no se registren ni filtren las coordenadas del usuario."
+  ],
+  "comandos_ejecucion": [
+    "npm run qa:test:js -- qa/casos/js/TC-JS-012/TC-JS-012.spec.ts"
+  ],
+  "resultado_esperado": "Aviso presente; coordenadas solo en llamadas a Open-Meteo; no persistidas en localStorage ni enviadas a terceros; sin logs de coordenadas.",
+  "resultado_obtenido": "Aviso de privacidad visible antes de interactuar. Las coordenadas solo se transmitieron al endpoint oficial /v1/forecast de Open-Meteo. localStorage contiene únicamente preferencias de unidades meteorológicas y sessionStorage está vacío. Cero peticiones de analítica y cero logs de coordenadas.",
+  "tiempo_respuesta_ms": 5000,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JS-012__2026-09-28__run01/TC-JS-012__geolocation-privacy.png",
+    "evidencias/TC-JS-012__2026-09-28__run01/privacy-audit-summary.txt"
+  ],
+  "observaciones": "Cumplimiento estricto del requerimiento RNF-07 y RF-03. La aplicación respeta el principio de privacidad por diseño en el manejo de datos de geolocalización."
+}
