@@ -416,7 +416,7 @@ describe('CurrentWeather', () => {
     expect(within(screen.getByRole('region', { name: 'Clima actual' })).getByText('Mi ubicación (2.93, -75.28)')).toBeTruthy();
   });
 
-  it.each(['E-01', 'E-02', 'E-03', 'E-04', 'E-05'] as AppErrorCode[])(
+  it.each(['E-01', 'E-02', 'E-04', 'E-05'] as AppErrorCode[])(
     'muestra el mensaje seguro %s y permite reintentar para la ubicación activa', async (code) => {
       mockGetForecast.mockRejectedValueOnce(new AppError(code, { reason: 'detalle privado' }));
       renderWeather(neiva);
@@ -431,6 +431,17 @@ describe('CurrentWeather', () => {
       expect(screen.getByRole('region', { name: 'Clima actual' })).toBeTruthy();
     },
   );
+
+  it('presenta E-03 como alerta sin ofrecer Reintentar ni repetir Forecast', async () => {
+    mockGetForecast.mockRejectedValueOnce(new AppError('E-03', { reason: 'detalle privado' }));
+    renderWeather(neiva);
+    await flushPromises();
+    expect(screen.getByRole('alert').textContent).toContain(APP_ERROR_MESSAGES['E-03']);
+    expect(screen.getByRole('alert').textContent).not.toContain('detalle privado');
+    expect(screen.queryByRole('button', { name: 'Reintentar' })).toBeNull();
+    expect(document.querySelector('.current-weather__retry')).toBeNull();
+    expect(mockGetForecast).toHaveBeenCalledTimes(1);
+  });
 
   it('cancela la consulta anterior y mantiene solo los datos de la ubicación más reciente', async () => {
     mockGetForecast.mockImplementation(() => mockGetForecast.mock.calls.length === 1

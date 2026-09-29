@@ -108,3 +108,17 @@ test('accesibilidad automática y layout a 320 px', async ({ page }) => {
   const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
   expect(audit.violations, JSON.stringify(audit.violations, null, 2)).toEqual([]);
 });
+
+test('BUG-002: Forecast HTTP 429 muestra E-03 sin botón Reintentar', async ({ page }) => {
+  await mockApis(page);
+  let forecastRequests = 0;
+  await page.route(/https:\/\/api\.open-meteo\.com\/v1\/forecast/, async (route) => {
+    forecastRequests += 1;
+    await route.fulfill({ status: 429, json: { error: true, reason: 'detalle técnico' } });
+  });
+  await page.goto('/');
+  await selectCity(page, 'Neiva');
+  await expect(page.getByRole('alert')).toHaveText('Se alcanzó el límite de consultas del servicio meteorológico. Espere unos minutos e intente de nuevo.');
+  await expect(page.locator('.current-weather__retry')).toHaveCount(0);
+  expect(forecastRequests).toBe(1);
+});

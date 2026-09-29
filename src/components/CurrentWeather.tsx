@@ -200,7 +200,7 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
       {activeArea === 'climate' && activeLocation && state.status === 'error' && (
         <div className="current-weather__error" role="alert">
           <span>{state.error.message}</span>
-          <button className="current-weather__retry" type="button" onClick={retry}>{es.common.retry}</button>
+          {state.error.code !== 'E-03' && <button className="current-weather__retry" type="button" onClick={retry}>{es.common.retry}</button>}
         </div>
       )}
       {activeArea === 'climate' && activeLocation && state.status === 'success' && (
