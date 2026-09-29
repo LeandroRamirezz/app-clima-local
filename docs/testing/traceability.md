@@ -39,7 +39,7 @@ La suite local aprobó **348/348** pruebas en **16/16** archivos. Incluye reques
 | RNF-11 — precisión 100 % | Normalización y contrato estructural cubiertos; comparación numérica exhaustiva UI/API en vivo **SIN EVIDENCIA**. |
 | RNF-12 — estados de red/error | E-01 a E-05, cancelación/reintento cubiertos; espera temporal de 429 **SIN EVIDENCIA** específica. |
 | RNF-13 — atribución/licencia | Enlaces de fuente presentes; revisión integral de vistas/licencias **SIN EVIDENCIA**. |
-| RNF-14 — HTTPS | Vercel HTTPS verificado para el artefacto anterior; nueva versión local aún no identificada en despliegue al corte. |
+| RNF-14 — HTTPS | Vercel HTTPS verificado para el commit funcional `0ac5709`; JS/CSS públicos coinciden por SHA-256 con el build local y el smoke publicado aprobó. |
 | RNF-15 — casos críticos 100 %, total ≥ 95 % | **SIN EVIDENCIA** de inventario completo y denominador vigente; 348 tests no son un porcentaje de criterios. |
 | RNF-16 — cero defectos críticos/bloqueantes abiertos | Ninguno identificado en registro interno; no hay inventario externo exhaustivo. Ver [hallazgos](defects-summary.md). |
 | RNF-17 — aprobación UAT | **NO EJECUTADA**; no hay acta de aceptación. |
