@@ -1,0 +1,1151 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@faker-js/faker": {
+      "name": "@faker-js/faker",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1158500,
+          "name": "@faker-js/faker",
+          "dependency": "@faker-js/faker",
+          "title": "Faker: helpers.fake exploitable into arbritary code execution",
+          "url": "https://github.com/advisories/GHSA-qxc2-j82w-r537",
+          "severity": "high",
+          "cwe": [
+            "CWE-95"
+          ],
+          "cvss": {
+            "score": 7.8,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": "<=10.4.0"
+        }
+      ],
+      "effects": [
+        "postman-collection"
+      ],
+      "range": "<=10.4.0",
+      "nodes": [
+        "node_modules/@faker-js/faker"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@lhci/cli": {
+      "name": "@lhci/cli",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@lhci/utils",
+        "inquirer",
+        "lighthouse",
+        "tmp",
+        "uuid"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/@lhci/cli"
+      ],
+      "fixAvailable": {
+        "name": "@lhci/cli",
+        "version": "0.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "@lhci/utils": {
+      "name": "@lhci/utils",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "lighthouse"
+      ],
+      "effects": [
+        "@lhci/cli"
+      ],
+      "range": ">=0.13.0",
+      "nodes": [
+        "node_modules/@lhci/utils"
+      ],
+      "fixAvailable": {
+        "name": "@lhci/cli",
+        "version": "0.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "@puppeteer/browsers": {
+      "name": "@puppeteer/browsers",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "extract-zip"
+      ],
+      "effects": [
+        "puppeteer-core"
+      ],
+      "range": "<=2.13.2",
+      "nodes": [
+        "node_modules/@puppeteer/browsers"
+      ],
+      "fixAvailable": {
+        "name": "@lhci/cli",
+        "version": "0.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "csv-parse": {
+      "name": "csv-parse",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1193670,
+          "name": "csv-parse",
+          "dependency": "csv-parse",
+          "title": "node-csv: Prototype replacement still reachable via columns path",
+          "url": "https://github.com/advisories/GHSA-8cw4-87c7-c6xx",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<7.0.2"
+        }
+      ],
+      "effects": [
+        "newman"
+      ],
+      "range": "<7.0.2",
+      "nodes": [
+        "node_modules/csv-parse"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "external-editor": {
+      "name": "external-editor",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "tmp"
+      ],
+      "effects": [
+        "inquirer"
+      ],
+      "range": ">=1.1.1",
+      "nodes": [
+        "node_modules/external-editor"
+      ],
+      "fixAvailable": {
+        "name": "@lhci/cli",
+        "version": "0.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "extract-zip": {
+      "name": "extract-zip",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1139346,
+          "name": "extract-zip",
+          "dependency": "extract-zip",
+          "title": "extract-zip unvalidated symlink path traversal",
+          "url": "https://github.com/advisories/GHSA-jmr9-qjv8-65gv",
+          "severity": "high",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:N"
+          },
+          "range": "<=2.0.1"
+        },
+        {
+          "source": 1193685,
+          "name": "extract-zip",
+          "dependency": "extract-zip",
+          "title": "extract-zip allows arbitrary file writes through symlink archive entries",
+          "url": "https://github.com/advisories/GHSA-7pqw-9j4j-h8q3",
+          "severity": "high",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:H"
+          },
+          "range": "<=2.0.1"
+        }
+      ],
+      "effects": [
+        "@puppeteer/browsers"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/extract-zip"
+      ],
+      "fixAvailable": {
+        "name": "@lhci/cli",
+        "version": "0.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "flatted": {
+      "name": "flatted",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1114526,
+          "name": "flatted",
+          "dependency": "flatted",
+          "title": "flatted vulnerable to unbounded recursion DoS in parse() revive phase",
+          "url": "https://github.com/advisories/GHSA-25h7-pfq9-p65f",
+          "severity": "high",
+          "cwe": [
+            "CWE-674"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<3.4.0"
+        },
+        {
+          "source": 1115357,
+          "name": "flatted",
+          "dependency": "flatted",
+          "title": "Prototype Pollution via parse() in NodeJS flatted",
+          "url": "https://github.com/advisories/GHSA-rf6f-7fwh-wjgh",
+          "severity": "high",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<=3.4.1"
+        }
+      ],
+      "effects": [
+        "uvm"
+      ],
+      "range": "<=3.4.1",
+      "nodes": [
+        "node_modules/uvm/node_modules/flatted"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "handlebars": {
+      "name": "handlebars",
+      "severity": "critical",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1115538,
+          "name": "handlebars",
+          "dependency": "handlebars",
+          "title": "Handlebars.js has JavaScript Injection via AST Type Confusion by tampering @partial-block",
+          "url": "https://github.com/advisories/GHSA-3mfm-83xf-c92r",
+          "severity": "high",
+          "cwe": [
+            "CWE-94",
+            "CWE-843"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": ">=4.0.0 <=4.7.8"
+        },
+        {
+          "source": 1115539,
+          "name": "handlebars",
+          "dependency": "handlebars",
+          "title": "Handlebars.js has JavaScript Injection via AST Type Confusion",
+          "url": "https://github.com/advisories/GHSA-2w6w-674q-4c4q",
+          "severity": "critical",
+          "cwe": [
+            "CWE-94",
+            "CWE-843"
+          ],
+          "cvss": {
+            "score": 9.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": ">=4.0.0 <=4.7.8"
+        },
+        {
+          "source": 1115544,
+          "name": "handlebars",
+          "dependency": "handlebars",
+          "title": "Handlebars.js has Prototype Pollution Leading to XSS through Partial Template Injection",
+          "url": "https://github.com/advisories/GHSA-2qvq-rjwj-gvw9",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-79",
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 4.7,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:C/C:L/I:L/A:N"
+          },
+          "range": ">=4.0.0 <4.7.9"
+        },
+        {
+          "source": 1115588,
+          "name": "handlebars",
+          "dependency": "handlebars",
+          "title": "Handlebars.js has a Prototype Method Access Control Gap via Missing __lookupSetter__ Blocklist Entry",
+          "url": "https://github.com/advisories/GHSA-7rx3-28cr-v5wh",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 4.8,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N"
+          },
+          "range": ">=4.6.0 <=4.7.8"
+        },
+        {
+          "source": 1115589,
+          "name": "handlebars",
+          "dependency": "handlebars",
+          "title": "Handlebars.js has a Property Access Validation Bypass in container.lookup",
+          "url": "https://github.com/advisories/GHSA-442j-39wm-28r2",
+          "severity": "low",
+          "cwe": [
+            "CWE-367"
+          ],
+          "cvss": {
+            "score": 3.7,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N"
+          },
+          "range": ">=4.0.0 <=4.7.8"
+        },
+        {
+          "source": 1115693,
+          "name": "handlebars",
+          "dependency": "handlebars",
+          "title": "Handlebars.js has JavaScript Injection via AST Type Confusion when passing an object as dynamic partial",
+          "url": "https://github.com/advisories/GHSA-xhpv-hc6g-r9c6",
+          "severity": "high",
+          "cwe": [
+            "CWE-94",
+            "CWE-843"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": ">=4.0.0 <=4.7.8"
+        },
+        {
+          "source": 1115694,
+          "name": "handlebars",
+          "dependency": "handlebars",
+          "title": "Handlebars.js has Denial of Service via Malformed Decorator Syntax in Template Compilation",
+          "url": "https://github.com/advisories/GHSA-9cx6-37pm-9jff",
+          "severity": "high",
+          "cwe": [
+            "CWE-754"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=4.0.0 <=4.7.8"
+        },
+        {
+          "source": 1117465,
+          "name": "handlebars",
+          "dependency": "handlebars",
+          "title": "Handlebars.js has JavaScript Injection in CLI Precompiler via Unescaped Names and Options",
+          "url": "https://github.com/advisories/GHSA-xjpj-3mr7-gcpf",
+          "severity": "high",
+          "cwe": [
+            "CWE-79",
+            "CWE-94",
+            "CWE-116"
+          ],
+          "cvss": {
+            "score": 8.2,
+            "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:C/C:H/I:H/A:H"
+          },
+          "range": ">=4.0.0 <=4.7.8"
+        }
+      ],
+      "effects": [
+        "postman-runtime"
+      ],
+      "range": "4.0.0 - 4.7.8",
+      "nodes": [
+        "node_modules/handlebars"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "httpntlm": {
+      "name": "httpntlm",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "underscore"
+      ],
+      "effects": [
+        "postman-runtime"
+      ],
+      "range": ">=1.5.0",
+      "nodes": [
+        "node_modules/httpntlm"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "inquirer": {
+      "name": "inquirer",
+      "severity": "low",
+      "isDirect": false,
+      "via": [
+        "external-editor"
+      ],
+      "effects": [
+        "@lhci/cli"
+      ],
+      "range": "3.0.0 - 8.2.6 || 9.0.0 - 9.3.7",
+      "nodes": [
+        "node_modules/inquirer"
+      ],
+      "fixAvailable": {
+        "name": "@lhci/cli",
+        "version": "0.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "jose": {
+      "name": "jose",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1096835,
+          "name": "jose",
+          "dependency": "jose",
+          "title": "jose vulnerable to resource exhaustion via specifically crafted JWE with compressed plaintext",
+          "url": "https://github.com/advisories/GHSA-hhhv-q57g-882q",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": ">=3.0.0 <=4.15.4"
+        }
+      ],
+      "effects": [
+        "postman-runtime"
+      ],
+      "range": "3.0.0 - 4.15.4",
+      "nodes": [
+        "node_modules/jose"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "lighthouse": {
+      "name": "lighthouse",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "puppeteer-core"
+      ],
+      "effects": [
+        "@lhci/cli",
+        "@lhci/utils"
+      ],
+      "range": "10.1.1-dev.20230414 - 10.1.1-dev.20230503 || 10.2.0-dev.20230504 - 13.3.0",
+      "nodes": [
+        "node_modules/lighthouse"
+      ],
+      "fixAvailable": {
+        "name": "@lhci/cli",
+        "version": "0.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "lodash": {
+      "name": "lodash",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1115806,
+          "name": "lodash",
+          "dependency": "lodash",
+          "title": "lodash vulnerable to Code Injection via `_.template` imports key names",
+          "url": "https://github.com/advisories/GHSA-r5fr-rjxr-66jc",
+          "severity": "high",
+          "cwe": [
+            "CWE-94"
+          ],
+          "cvss": {
+            "score": 8.1,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+          },
+          "range": ">=4.0.0 <=4.17.23"
+        },
+        {
+          "source": 1115810,
+          "name": "lodash",
+          "dependency": "lodash",
+          "title": "lodash vulnerable to Prototype Pollution via array path bypass in `_.unset` and `_.omit`",
+          "url": "https://github.com/advisories/GHSA-f23m-r3pf-42rh",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L"
+          },
+          "range": "<=4.17.23"
+        },
+        {
+          "source": 1120370,
+          "name": "lodash",
+          "dependency": "lodash",
+          "title": "Lodash has Prototype Pollution Vulnerability in `_.unset` and `_.omit` functions",
+          "url": "https://github.com/advisories/GHSA-xxjr-mmjv-4gpg",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-1321"
+          ],
+          "cvss": {
+            "score": 6.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L"
+          },
+          "range": ">=4.0.0 <=4.17.22"
+        }
+      ],
+      "effects": [
+        "newman",
+        "postman-collection",
+        "postman-collection-transformer",
+        "postman-runtime",
+        "postman-sandbox"
+      ],
+      "range": "<=4.17.23",
+      "nodes": [
+        "node_modules/newman/node_modules/lodash",
+        "node_modules/postman-collection-transformer/node_modules/lodash",
+        "node_modules/postman-collection/node_modules/lodash",
+        "node_modules/postman-runtime/node_modules/lodash",
+        "node_modules/postman-sandbox/node_modules/lodash"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "newman": {
+      "name": "newman",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "csv-parse",
+        "lodash",
+        "postman-collection",
+        "postman-collection-transformer",
+        "postman-request",
+        "postman-runtime",
+        "serialised-error"
+      ],
+      "effects": [],
+      "range": ">=3.0.0-beta.1",
+      "nodes": [
+        "node_modules/newman"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "node-forge": {
+      "name": "node-forge",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1110996,
+          "name": "node-forge",
+          "dependency": "node-forge",
+          "title": "node-forge has ASN.1 Unbounded Recursion",
+          "url": "https://github.com/advisories/GHSA-554w-wpv2-vw27",
+          "severity": "high",
+          "cwe": [
+            "CWE-674"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<1.3.2"
+        },
+        {
+          "source": 1110998,
+          "name": "node-forge",
+          "dependency": "node-forge",
+          "title": "node-forge has an Interpretation Conflict vulnerability via its ASN.1 Validator Desynchronization",
+          "url": "https://github.com/advisories/GHSA-5gfm-wpxj-wjgq",
+          "severity": "high",
+          "cwe": [
+            "CWE-436"
+          ],
+          "cvss": {
+            "score": 8.6,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:N/I:H/A:N"
+          },
+          "range": "<1.3.2"
+        },
+        {
+          "source": 1111068,
+          "name": "node-forge",
+          "dependency": "node-forge",
+          "title": "node-forge is vulnerable to ASN.1 OID Integer Truncation",
+          "url": "https://github.com/advisories/GHSA-65ch-62r8-g69g",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-190"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<1.3.2"
+        },
+        {
+          "source": 1115545,
+          "name": "node-forge",
+          "dependency": "node-forge",
+          "title": "Forge has a basicConstraints bypass in its certificate chain verification (RFC 5280 violation)",
+          "url": "https://github.com/advisories/GHSA-2328-f5f3-gj25",
+          "severity": "high",
+          "cwe": [
+            "CWE-295"
+          ],
+          "cvss": {
+            "score": 7.4,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N"
+          },
+          "range": "<=1.3.3"
+        },
+        {
+          "source": 1115546,
+          "name": "node-forge",
+          "dependency": "node-forge",
+          "title": "Forge has signature forgery in Ed25519 due to missing S > L check",
+          "url": "https://github.com/advisories/GHSA-q67f-28xg-22rw",
+          "severity": "high",
+          "cwe": [
+            "CWE-347"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+          },
+          "range": "<1.4.0"
+        },
+        {
+          "source": 1115548,
+          "name": "node-forge",
+          "dependency": "node-forge",
+          "title": "Forge has Denial of Service via Infinite Loop in BigInteger.modInverse() with Zero Input",
+          "url": "https://github.com/advisories/GHSA-5m6q-g25r-mvwx",
+          "severity": "high",
+          "cwe": [
+            "CWE-835"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<1.4.0"
+        },
+        {
+          "source": 1115612,
+          "name": "node-forge",
+          "dependency": "node-forge",
+          "title": "Forge has signature forgery in RSA-PKCS due to ASN.1 extra field  ",
+          "url": "https://github.com/advisories/GHSA-ppp5-5v6c-4jwp",
+          "severity": "high",
+          "cwe": [
+            "CWE-20",
+            "CWE-347"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+          },
+          "range": "<1.4.0"
+        }
+      ],
+      "effects": [
+        "postman-runtime"
+      ],
+      "range": "<=1.3.3",
+      "nodes": [
+        "node_modules/node-forge"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "postman-collection": {
+      "name": "postman-collection",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@faker-js/faker",
+        "lodash",
+        "uuid"
+      ],
+      "effects": [
+        "newman",
+        "postman-runtime",
+        "postman-sandbox"
+      ],
+      "range": ">=0.5.1",
+      "nodes": [
+        "node_modules/postman-collection"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "postman-collection-transformer": {
+      "name": "postman-collection-transformer",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "lodash"
+      ],
+      "effects": [
+        "newman"
+      ],
+      "range": "2.2.0-beta.1 - 4.1.13",
+      "nodes": [
+        "node_modules/postman-collection-transformer"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "postman-request": {
+      "name": "postman-request",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "qs",
+        "uuid"
+      ],
+      "effects": [
+        "newman",
+        "postman-runtime"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/postman-request",
+        "node_modules/postman-runtime/node_modules/postman-request"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "postman-runtime": {
+      "name": "postman-runtime",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "handlebars",
+        "httpntlm",
+        "jose",
+        "lodash",
+        "node-forge",
+        "postman-collection",
+        "postman-request",
+        "postman-sandbox",
+        "serialised-error",
+        "uuid"
+      ],
+      "effects": [
+        "newman"
+      ],
+      "range": ">=2.4.3",
+      "nodes": [
+        "node_modules/postman-runtime"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "postman-sandbox": {
+      "name": "postman-sandbox",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "lodash",
+        "postman-collection",
+        "uvm"
+      ],
+      "effects": [
+        "postman-runtime"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/postman-sandbox"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "puppeteer-core": {
+      "name": "puppeteer-core",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "@puppeteer/browsers"
+      ],
+      "effects": [
+        "lighthouse"
+      ],
+      "range": "19.8.4 - 24.43.1",
+      "nodes": [
+        "node_modules/puppeteer-core"
+      ],
+      "fixAvailable": {
+        "name": "@lhci/cli",
+        "version": "0.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "qs": {
+      "name": "qs",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1113719,
+          "name": "qs",
+          "dependency": "qs",
+          "title": "qs's arrayLimit bypass in its bracket notation allows DoS via memory exhaustion",
+          "url": "https://github.com/advisories/GHSA-6rw7-vpxm-498p",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-20"
+          ],
+          "cvss": {
+            "score": 3.7,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": "<6.14.1"
+        },
+        {
+          "source": 1119502,
+          "name": "qs",
+          "dependency": "qs",
+          "title": "qs has a remotely triggerable DoS: qs.stringify crashes with TypeError on null/undefined entries in comma-format arrays when encodeValuesOnly is set",
+          "url": "https://github.com/advisories/GHSA-q8mj-m7cp-5q26",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-476"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": ">=6.11.1 <=6.15.1"
+        },
+        {
+          "source": 1158506,
+          "name": "qs",
+          "dependency": "qs",
+          "title": "qs array-limit bypass via bracket-key comma parsing",
+          "url": "https://github.com/advisories/GHSA-x5fp-wj9c-mxmx",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-770"
+          ],
+          "cvss": {
+            "score": 3.7,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": ">=6.14.2 <=6.15.3"
+        },
+        {
+          "source": 1158507,
+          "name": "qs",
+          "dependency": "qs",
+          "title": "qs: Denial of Service via Attacker Controlled isBuffer",
+          "url": "https://github.com/advisories/GHSA-4mjr-xmp4-gh2g",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-248",
+            "CWE-703"
+          ],
+          "cvss": {
+            "score": 5.3,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+          },
+          "range": ">=2.2.5 <6.16.0"
+        }
+      ],
+      "effects": [
+        "postman-request"
+      ],
+      "range": "<=6.15.3",
+      "nodes": [
+        "node_modules/postman-request/node_modules/qs",
+        "node_modules/postman-runtime/node_modules/qs"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "serialised-error": {
+      "name": "serialised-error",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "uuid"
+      ],
+      "effects": [
+        "newman",
+        "postman-runtime"
+      ],
+      "range": ">=1.1.3",
+      "nodes": [
+        "node_modules/serialised-error"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "tmp": {
+      "name": "tmp",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1109537,
+          "name": "tmp",
+          "dependency": "tmp",
+          "title": "tmp allows arbitrary temporary file / directory write via symbolic link `dir` parameter",
+          "url": "https://github.com/advisories/GHSA-52f5-9888-hmc6",
+          "severity": "low",
+          "cwe": [
+            "CWE-59"
+          ],
+          "cvss": {
+            "score": 2.5,
+            "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+          },
+          "range": "<=0.2.3"
+        },
+        {
+          "source": 1120654,
+          "name": "tmp",
+          "dependency": "tmp",
+          "title": "tmp has Path Traversal via unsanitized prefix/postfix that enables directory escape",
+          "url": "https://github.com/advisories/GHSA-ph9p-34f9-6g65",
+          "severity": "high",
+          "cwe": [
+            "CWE-22"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<0.2.6"
+        }
+      ],
+      "effects": [
+        "@lhci/cli",
+        "external-editor"
+      ],
+      "range": "<=0.2.5",
+      "nodes": [
+        "node_modules/external-editor/node_modules/tmp",
+        "node_modules/tmp"
+      ],
+      "fixAvailable": {
+        "name": "@lhci/cli",
+        "version": "0.1.0",
+        "isSemVerMajor": true
+      }
+    },
+    "underscore": {
+      "name": "underscore",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1117689,
+          "name": "underscore",
+          "dependency": "underscore",
+          "title": "Underscore has unlimited recursion in _.flatten and _.isEqual, potential for DoS attack",
+          "url": "https://github.com/advisories/GHSA-qpx9-hpmf-5gmw",
+          "severity": "high",
+          "cwe": [
+            "CWE-674",
+            "CWE-770"
+          ],
+          "cvss": {
+            "score": 5.9,
+            "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": "<=1.13.7"
+        }
+      ],
+      "effects": [
+        "httpntlm"
+      ],
+      "range": "<=1.13.7",
+      "nodes": [
+        "node_modules/underscore"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "uuid": {
+      "name": "uuid",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1119441,
+          "name": "uuid",
+          "dependency": "uuid",
+          "title": "uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided",
+          "url": "https://github.com/advisories/GHSA-w5hq-g745-h8pq",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-787",
+            "CWE-1285"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+          },
+          "range": "<11.1.1"
+        }
+      ],
+      "effects": [
+        "@lhci/cli",
+        "postman-collection",
+        "postman-request",
+        "postman-runtime",
+        "serialised-error"
+      ],
+      "range": "<11.1.1",
+      "nodes": [
+        "node_modules/serialised-error/node_modules/uuid",
+        "node_modules/uuid"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    },
+    "uvm": {
+      "name": "uvm",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        "flatted"
+      ],
+      "effects": [
+        "postman-sandbox"
+      ],
+      "range": "1.7.5 - 4.0.1",
+      "nodes": [
+        "node_modules/uvm"
+      ],
+      "fixAvailable": {
+        "name": "newman",
+        "version": "4.6.1",
+        "isSemVerMajor": true
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 2,
+      "moderate": 7,
+      "high": 18,
+      "critical": 1,
+      "total": 28
+    },
+    "dependencies": {
+      "prod": 21,
+      "dev": 654,
+      "optional": 30,
+      "peer": 9,
+      "peerOptional": 0,
+      "total": 701
+    }
+  }
+}

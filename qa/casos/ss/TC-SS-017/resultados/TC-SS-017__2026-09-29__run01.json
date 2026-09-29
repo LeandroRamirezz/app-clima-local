@@ -1,0 +1,50 @@
+{
+  "id_caso": "TC-SS-017",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Seguridad",
+  "rf_relacionado": "RNF-06 (Seguridad: dependencias sin vulnerabilidades críticas)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-29",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "npm audit",
+  "descripcion_caso": "Dependencias sin vulnerabilidades de severidad alta o crítica (npm audit). Verificar que las dependencias del proyecto no tengan vulnerabilidades conocidas de severidad alta o crítica antes de la entrega.",
+  "precondiciones": "Repositorio en el commit de la build evaluada (66860ed, origin/main) mediante git worktree desanclado. package-lock.json versionado. Node.js v24.20.0 y npm 11.19.0.",
+  "pasos_ejecutados": [
+    "0. Preparar una copia del repositorio en el commit de la build evaluada (git worktree desanclado en 66860ed, origin/main) con package-lock.json versionado; Node.js v24.20.0 y npm 11.19.0.",
+    "1. Ejecutar npm ci para instalar exactamente las versiones del lock.",
+    "2. Ejecutar npm audit --audit-level=high y registrar el código de salida.",
+    "3. Ejecutar npm audit --omit=dev --audit-level=high (solo producción) y registrar el código de salida.",
+    "4. Exportar el resultado a JSON (npm audit --json > npm_audit.json; también solo producción).",
+    "5. Registrar vulnerabilidades moderadas o bajas en Observaciones. Complementario: auditar también el package-lock.json de la rama qa (con las herramientas de QA) y clasificar lo encontrado."
+  ],
+  "comandos_ejecucion": [
+    "npm ci",
+    "npm audit --audit-level=high",
+    "npm audit --omit=dev --audit-level=high",
+    "npm audit --json > npm_audit.json",
+    "npm audit --omit=dev --json > npm_audit_produccion.json",
+    "(complementario, rama qa) npm audit --audit-level=high; npm audit --omit=dev --audit-level=high; npm audit --json > npm_audit_rama_qa.json"
+  ],
+  "resultado_esperado": "Ambos comandos de auditoría terminan con código de salida 0. El reporte muestra 0 vulnerabilidades high y 0 critical. Las vulnerabilidades moderadas o bajas (si las hay) quedan registradas, sin bloquear la entrega.",
+  "resultado_obtenido": "Build evaluada (commit 66860ed): npm ci instaló 222 paquetes del lock (21 de producción, 175 de desarrollo) con código 0. npm audit --audit-level=high → «found 0 vulnerabilities», código de salida 0. npm audit --omit=dev --audit-level=high → «found 0 vulnerabilities», código de salida 0. Reporte JSON: critical 0, high 0, moderate 0, low 0, info 0 (total 0), tanto con todas las dependencias como solo producción. No hay vulnerabilidades moderadas ni bajas que registrar.",
+  "tiempo_respuesta_ms": null,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-017__2026-09-29__run01/npm-audit-consola-main.txt",
+    "evidencias/TC-SS-017__2026-09-29__run01/npm_audit.json",
+    "evidencias/TC-SS-017__2026-09-29__run01/npm_audit_produccion.json",
+    "evidencias/TC-SS-017__2026-09-29__run01/npm-audit-consola-qa.txt",
+    "evidencias/TC-SS-017__2026-09-29__run01/npm_audit_rama_qa.json"
+  ],
+  "observaciones": "HALLAZGO COMPLEMENTARIO (rama qa, commit 369d941): el package-lock.json de la rama qa, que agrega las herramientas de QA, reporta 28 vulnerabilidades (1 critical, 18 high, 7 moderate, 2 low) sobre 701 paquetes; npm audit --audit-level=high termina con código 1 y npm audit --omit=dev --audit-level=high con código 0. Todas están en dependencias de desarrollo (0 en producción) y provienen de dos herramientas directas: newman 6.2.2 (cadena postman-runtime/postman-collection/postman-sandbox: handlebars [critical], node-forge, lodash, @faker-js/faker, flatted, httpntlm, underscore, uvm) y @lhci/cli 0.15.1 (cadena lighthouse/puppeteer-core/@puppeteer/browsers: extract-zip, tmp). La corrección sugerida por npm (npm audit fix --force) implica versiones con cambios incompatibles (newman 4.6.1, @lhci/cli 0.1.0). No afecta a la app desplegada (no se empaquetan en la build), pero si la rama qa se fusiona en main, npm audit --audit-level=high dejaría de pasar. Se recomienda al equipo QA revisar las versiones homologadas de newman y @lhci/cli o aislar esas herramientas. La auditoría de la build se hizo en un git worktree desanclado (sin crear ramas), eliminado al terminar. No aplica tiempo de respuesta."
+}
