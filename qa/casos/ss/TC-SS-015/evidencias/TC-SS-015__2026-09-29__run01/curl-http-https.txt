@@ -1,0 +1,45 @@
+### 2026-09-29 00:49:56 HPS
+$ curl -I http://app-clima-local.vercel.app
+HTTP/1.0 308 Permanent Redirect
+Content-Type: text/plain
+Location: https://app-clima-local.vercel.app/
+Refresh: 0;url=https://app-clima-local.vercel.app/
+server: Vercel
+
+
+$ curl -I https://app-clima-local.vercel.app
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Access-Control-Allow-Origin: *
+Age: 184268
+Cache-Control: public, max-age=0, must-revalidate
+Content-Disposition: inline
+Content-Length: 471
+Content-Type: text/html; charset=utf-8
+Date: Tue, 29 Sep 2026 05:49:57 GMT
+Etag: "1b34ea96ff38f86804464b9e4f20cd2a"
+Last-Modified: Sun, 27 Sep 2026 02:38:49 GMT
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Vercel-Cache: HIT
+X-Vercel-Id: iad1::j77q7-1790660997814-4083ed1e9f26
+
+
+$ curl -sS -o /dev/null -v https://app-clima-local.vercel.app (TLS/certificado)
+* schannel: disabled automatic use of client certificate
+* ALPN: curl offers http/1.1
+* ALPN: server accepted http/1.1
+* schannel: remote party requests renegotiation
+* schannel: renegotiating SSL/TLS connection
+* schannel: SSL/TLS connection renegotiated
+
+$ openssl s_client -connect app-clima-local.vercel.app:443 -servername app-clima-local.vercel.app | openssl x509 -noout -subject -issuer -dates -ext subjectAltName
+subject=CN=*.vercel.app
+issuer=C=US, O=Google Trust Services, CN=WR1
+notBefore=Aug 29 19:48:09 2026 GMT
+notAfter=Nov 27 19:48:08 2026 GMT
+X509v3 Subject Alternative Name: 
+    DNS:*.vercel.app
+New, TLSv1.3, Cipher is TLS_AES_128_GCM_SHA256
+Protocol: TLSv1.3
+Verify return code: 0 (ok)

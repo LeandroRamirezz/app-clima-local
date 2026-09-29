@@ -1,0 +1,47 @@
+{
+  "id_caso": "TC-SS-015",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Seguridad",
+  "rf_relacionado": "RNF-14 (Disponibilidad / Hosting HTTPS), RF-03 (requisito de contexto seguro)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-29",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Comunicación 100 % por HTTPS (sitio y llamadas a Open-Meteo). Verificar que la aplicación se sirva completamente por HTTPS, que el acceso por HTTP redirija a HTTPS y que las solicitudes a los 4 endpoints de Open-Meteo usen HTTPS, sin contenido mixto (requisito además para la geolocalización de RF-03).",
+  "precondiciones": "Ambiente desplegado https://app-clima-local.vercel.app. curl 8 y openssl (Git Bash) disponibles. Playwright con Chromium completo para registrar solicitudes, consola y estado de seguridad (equivalente a DevTools > Network, Console y Security).",
+  "pasos_ejecutados": [
+    "1. Ejecutar curl -I http://app-clima-local.vercel.app y verificar el código y la cabecera Location.",
+    "2. Ejecutar curl -I https://app-clima-local.vercel.app y verificar HTTP 200; verificar el certificado con openssl s_client (sujeto, emisor, vigencia y código de verificación).",
+    "3. Abrir la app en Chromium (Playwright, Chromium completo en modo headless) y recorrer el flujo: buscar «Bogotá», ver pronóstico, abrir histórico (15/09/2026), calidad del aire y comparar Bogotá con Neiva.",
+    "4. Registrar todas las solicitudes del flujo (equivalente a DevTools > Network) y verificar que usen https://, incluidas las de los 4 endpoints de Open-Meteo.",
+    "5. Revisar los mensajes de consola buscando advertencias de «Mixed Content».",
+    "6. Leer el estado de seguridad de la página con el dominio Security de DevTools (CDP Security.visibleSecurityStateChanged, equivalente a la pestaña Security) y window.isSecureContext."
+  ],
+  "comandos_ejecucion": [
+    "curl -I http://app-clima-local.vercel.app",
+    "curl -I https://app-clima-local.vercel.app",
+    "openssl s_client -connect app-clima-local.vercel.app:443 -servername app-clima-local.vercel.app | openssl x509 -noout -subject -issuer -dates -ext subjectAltName",
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-015 --project=ss"
+  ],
+  "resultado_esperado": "http:// responde 301 o 308 con Location: https://app-clima-local.vercel.app. https:// responde 200 con certificado válido, sin advertencias. 100 % de las solicitudes del flujo usan HTTPS (incluidas las 4 de Open-Meteo). 0 advertencias de contenido mixto. La página se reporta como segura.",
+  "resultado_obtenido": "Cumple todo (1/1 test aprobado). curl http:// → «HTTP/1.0 308 Permanent Redirect» con «Location: https://app-clima-local.vercel.app/». curl https:// → «HTTP/1.1 200 OK» con Strict-Transport-Security «max-age=63072000; includeSubDomains; preload». Certificado válido: CN=*.vercel.app, emitido por Google Trust Services (WR1), vigente del 29/08/2026 al 27/11/2026, TLS 1.3, openssl «Verify return code: 0 (ok)». En el flujo se registraron 10 solicitudes y 10/10 usaron HTTPS: 3 propias (app-clima-local.vercel.app) y 4 endpoints de Open-Meteo (geocoding 2, forecast 3, archive 1, air-quality 1). No se contactó ningún otro host. 0 advertencias de contenido mixto y 0 mensajes en consola. Estado de seguridad de la página: «secure» (TLS 1.3, AES_128_GCM, sin indicadores de problema); window.isSecureContext = true.",
+  "tiempo_respuesta_ms": null,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-015__2026-09-29__run01/curl-http-https.txt",
+    "evidencias/TC-SS-015__2026-09-29__run01/resumen-https.json",
+    "evidencias/TC-SS-015__2026-09-29__run01/paso3-pronostico-bogota.png",
+    "evidencias/TC-SS-015__2026-09-29__run01/paso3-comparacion-bogota-neiva.png"
+  ],
+  "observaciones": "El diseño lista dos veces «curl -I https://…»; siguiendo el paso 1 se usó http:// en el primer comando. El código 308 (en lugar de 301) cumple el criterio. La cabecera Location incluye la barra final («…vercel.app/»), equivalente a la URL esperada. El estado de la pestaña Security se leyó con el dominio Security de DevTools; se usó el Chromium completo de Playwright (channel \"chromium\") porque el shell headless por defecto no emite esos eventos. curl en Windows (schannel) no imprime los datos del certificado, por eso se complementó con openssl. No aplica tiempo de respuesta."
+}
