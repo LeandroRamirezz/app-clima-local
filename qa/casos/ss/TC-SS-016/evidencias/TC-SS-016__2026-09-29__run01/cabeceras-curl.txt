@@ -1,0 +1,42 @@
+### 2026-09-29 00:57:08 HPS
+$ curl -sI https://app-clima-local.vercel.app
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Access-Control-Allow-Origin: *
+Age: 184699
+Cache-Control: public, max-age=0, must-revalidate
+Content-Disposition: inline
+Content-Length: 471
+Content-Type: text/html; charset=utf-8
+Date: Tue, 29 Sep 2026 05:57:08 GMT
+Etag: "1b34ea96ff38f86804464b9e4f20cd2a"
+Last-Modified: Sun, 27 Sep 2026 02:38:49 GMT
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Vercel-Cache: HIT
+X-Vercel-Id: iad1::ft54w-1790661428653-8521952f37fa
+
+
+$ curl -sI https://app-clima-local.vercel.app/assets/index--_24DWxh.js
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Access-Control-Allow-Origin: *
+Age: 39643
+Cache-Control: public, max-age=0, must-revalidate
+Content-Disposition: inline; filename="index--_24DWxh.js"
+Content-Length: 294005
+Content-Type: application/javascript; charset=utf-8
+Date: Tue, 29 Sep 2026 05:57:09 GMT
+Etag: "21272150e2dfd4d618076a93558eb0b9"
+Last-Modified: Mon, 28 Sep 2026 18:56:25 GMT
+Server: Vercel
+Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Vercel-Cache: HIT
+X-Vercel-Id: iad1::s8vq6-1790661429171-72f6730dcf04
+
+
+### Verificación de las 4 cabeceras (documento principal, sin distinguir mayúsculas)
+Content-Security-Policy => AUSENTE
+Strict-Transport-Security => Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+X-Content-Type-Options => AUSENTE
+Referrer-Policy => AUSENTE

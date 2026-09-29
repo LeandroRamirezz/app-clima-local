@@ -1,0 +1,32 @@
+{
+  "url": "https://app-clima-local.vercel.app/",
+  "http": 200,
+  "cabeceras_de_seguridad": {
+    "Content-Security-Policy": null,
+    "CSP en <meta>": null,
+    "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+    "X-Content-Type-Options": null,
+    "Referrer-Policy": null,
+    "X-Frame-Options (complementaria)": null
+  },
+  "hsts_max_age": 63072000,
+  "analisis_csp": null,
+  "violaciones_csp": [],
+  "mensajes_consola": [],
+  "todas_las_cabeceras": {
+    "accept-ranges": "bytes",
+    "access-control-allow-origin": "*",
+    "age": "185176",
+    "cache-control": "public, max-age=0, must-revalidate",
+    "content-disposition": "inline",
+    "content-length": "471",
+    "content-type": "text/html; charset=utf-8",
+    "date": "Tue, 29 Sep 2026 06:05:05 GMT",
+    "etag": "\"1b34ea96ff38f86804464b9e4f20cd2a\"",
+    "last-modified": "Sun, 27 Sep 2026 02:38:49 GMT",
+    "server": "Vercel",
+    "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+    "x-vercel-cache": "HIT",
+    "x-vercel-id": "iad1::hrzj4-1790661905911-3f9c49ba744b"
+  }
+}

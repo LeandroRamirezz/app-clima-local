@@ -1,0 +1,51 @@
+{
+  "id_caso": "TC-SS-016",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Seguridad",
+  "rf_relacionado": "RNF-06 (Seguridad: cabeceras HTTP seguras)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-29",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "OWASP ZAP",
+  "descripcion_caso": "Cabeceras HTTP de seguridad (CSP, HSTS, X-Content-Type-Options, Referrer-Policy) y escaneo OWASP ZAP. Verificar que el despliegue envíe las 4 cabeceras de seguridad exigidas con valores adecuados y que el escaneo pasivo de OWASP ZAP no reporte vulnerabilidades de riesgo alto.",
+  "precondiciones": "Ambiente desplegado https://app-clima-local.vercel.app. OWASP ZAP (ghcr.io/zaproxy/zaproxy:stable, v2.17.0) en Docker Desktop. Mozilla Observatory (API v2). curl y Playwright para cabeceras y verificación funcional.",
+  "pasos_ejecutados": [
+    "1. Ejecutar curl -sI contra https://app-clima-local.vercel.app (documento y un recurso JS) y registrar las cabeceras de respuesta.",
+    "2. Verificar la presencia y el valor de Content-Security-Policy, Strict-Transport-Security, X-Content-Type-Options y Referrer-Policy (curl y Playwright); verificar además si existe una CSP en <meta> y la configuración de vercel.json.",
+    "3. Analizar la CSP (connect-src limitado a 'self' y los 4 dominios de Open-Meteo; script-src sin 'unsafe-inline' ni 'unsafe-eval').",
+    "4. Abrir la app con Playwright, recorrer Neiva → histórico 15/09/2026 → calidad del aire, escuchando eventos securitypolicyviolation y mensajes de consola.",
+    "5. Ejecutar el baseline scan pasivo de OWASP ZAP en Docker y revisar el reporte por nivel de riesgo.",
+    "6. Ejecutar Mozilla Observatory (API v2) y guardar la calificación y el detalle de pruebas."
+  ],
+  "comandos_ejecucion": [
+    "curl -sI https://app-clima-local.vercel.app",
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-016 --project=ss",
+    "docker run --rm -v <evidencias>:/zap/wrk/:rw -t ghcr.io/zaproxy/zaproxy:stable zap-baseline.py -t https://app-clima-local.vercel.app -r zap_report.html -J zap_report.json",
+    "curl -X POST \"https://observatory-api.mdn.mozilla.net/api/v2/scan?host=app-clima-local.vercel.app\""
+  ],
+  "resultado_esperado": "Las 4 cabeceras están presentes: Content-Security-Policy con default-src 'self', connect-src limitado a 'self' y los 4 dominios de Open-Meteo, sin 'unsafe-inline' ni 'unsafe-eval' en script-src; Strict-Transport-Security con max-age ≥ 31536000; X-Content-Type-Options: nosniff; Referrer-Policy: strict-origin-when-cross-origin o no-referrer. La app funciona sin recursos bloqueados por la CSP. OWASP ZAP: 0 alertas de riesgo alto (High).",
+  "resultado_obtenido": "Solo 1 de las 4 cabeceras está presente. Strict-Transport-Security: «max-age=63072000; includeSubDomains; preload» (max-age 63072000 ≥ 31536000, cumple). AUSENTES: Content-Security-Policy (ni en cabecera ni en <meta>), X-Content-Type-Options y Referrer-Policy; tampoco X-Frame-Options. vercel.json solo define una reescritura a /index.html, sin sección headers. Al no existir CSP, no se pudo verificar connect-src ni script-src; la app funcionó sin recursos bloqueados (0 violaciones de CSP, consola sin mensajes). OWASP ZAP 2.17.0 baseline: 0 alertas High (cumple), 3 Medium (CSP no configurada, Cross-Domain Misconfiguration por Access-Control-Allow-Origin: *, falta de cabecera anti-clickjacking), 4 Low (incluida X-Content-Type-Options ausente) y 4 informativas; 57 reglas PASS, 0 FAIL. Mozilla Observatory: calificación C (50/100), 3 pruebas fallidas (CSP −25, X-Frame-Options −20, X-Content-Type-Options −5; Referrer-Policy no implementada).",
+  "tiempo_respuesta_ms": null,
+  "estado": "Fallido",
+  "bug_id": "BUG-SS-006",
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-016__2026-09-29__run01/cabeceras-curl.txt",
+    "evidencias/TC-SS-016__2026-09-29__run01/resumen-cabeceras.json",
+    "evidencias/TC-SS-016__2026-09-29__run01/paso4-app-funcionando.png",
+    "evidencias/TC-SS-016__2026-09-29__run01/zap_report.html",
+    "evidencias/TC-SS-016__2026-09-29__run01/zap_report.json",
+    "evidencias/TC-SS-016__2026-09-29__run01/zap-consola.txt",
+    "evidencias/TC-SS-016__2026-09-29__run01/zap.yaml",
+    "evidencias/TC-SS-016__2026-09-29__run01/mozilla-observatory.json"
+  ],
+  "observaciones": "Las cabeceras ausentes tienen una causa común: el despliegue en Vercel no las configura (vercel.json sin sección headers y sin CSP en <meta>); HSTS la agrega Vercel por defecto. Se registra un solo bug (BUG-SS-006). El criterio de ZAP (0 High) se cumple; las alertas Medium refuerzan el mismo hallazgo. «Cross-Domain Misconfiguration» se debe a Access-Control-Allow-Origin: *; para un sitio estático público sin autenticación el riesgo es bajo, se deja como observación. El exit code 2 de zap-baseline.py solo indica advertencias (WARN), no fallas. Mozilla Observatory es un servicio público: el escaneo quedó registrado en su historial (autorizado por la evaluadora). No aplica tiempo de respuesta."
+}
