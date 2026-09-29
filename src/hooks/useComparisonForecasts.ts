@@ -22,7 +22,6 @@ export function useComparisonForecasts(
   forecastDays: number,
   units: ForecastUnits,
   model: ForecastModel,
-  onSuccess?: () => void,
   onUnsupportedModel?: UnsupportedModelHandler,
 ) {
   const [records, setRecords] = useState<Map<string, StoredForecastState>>(() => new Map());
@@ -71,7 +70,6 @@ export function useComparisonForecasts(
           if (controller.signal.aborted || controllers.current.get(key) !== controller
             || !activeLocationKeys.current.has(key)) return;
           setRecords((previous) => new Map(previous).set(key, { status: 'success', configKey: currentConfigKey, data }));
-          onSuccess?.();
         })
         .catch((cause: unknown) => {
           if (controller.signal.aborted || controllers.current.get(key) !== controller
@@ -81,7 +79,7 @@ export function useComparisonForecasts(
           if (error.code === 'E-04' && model !== 'best_match') onUnsupportedModel?.(error);
         });
     }
-  }, [locations, currentConfigKey, forecastDays, units, model, retryKey, retryVersions, onSuccess, onUnsupportedModel]);
+  }, [locations, currentConfigKey, forecastDays, units, model, retryKey, retryVersions, onUnsupportedModel]);
 
   useEffect(() => () => {
     for (const controller of controllers.current.values()) controller.abort();

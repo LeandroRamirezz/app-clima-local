@@ -17,7 +17,6 @@ interface CityComparisonProps {
   units: ForecastUnits;
   model: ForecastModel;
   onRemove: (location: Location) => void;
-  onSuccess?: () => void;
   onUnsupportedModel?: (error: import('../types/errors').AppError) => void;
 }
 
@@ -103,9 +102,9 @@ function DailyComparison({
   );
 }
 
-export function CityComparison({ locations, forecastDays, units, model, onRemove, onSuccess, onUnsupportedModel }: CityComparisonProps) {
+export function CityComparison({ locations, forecastDays, units, model, onRemove, onUnsupportedModel }: CityComparisonProps) {
   const forecastLocations = locations.length >= 2 ? locations : [];
-  const { getState, retry } = useComparisonForecasts(forecastLocations, forecastDays, units, model, onSuccess, onUnsupportedModel);
+  const { getState, retry } = useComparisonForecasts(forecastLocations, forecastDays, units, model, onUnsupportedModel);
   const modelName = FORECAST_MODELS.find((option) => option.value === model)?.label ?? es.model.automatic.label;
   const errors = locations.flatMap((location) => {
     const state = getState(location);

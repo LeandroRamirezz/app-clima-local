@@ -106,12 +106,11 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
   const [model, setModel] = useState<ForecastModel>(DEFAULT_FORECAST_MODEL);
   const [modelFallbackError, setModelFallbackError] = useState<AppError | null>(null);
   const preferences = useForecastPreferences();
-  const handleForecastSuccess = useCallback(() => setModelFallbackError(null), []);
   const handleUnsupportedModel = useCallback((error: AppError) => {
     setModelFallbackError(error);
     setModel(DEFAULT_FORECAST_MODEL);
   }, []);
-  const forecastCallbacks = { onSuccess: handleForecastSuccess, onUnsupportedModel: handleUnsupportedModel };
+  const forecastCallbacks = { onUnsupportedModel: handleUnsupportedModel };
   const { state, retry, isRefreshing } = useCurrentWeather(activeArea === 'climate' ? activeLocation : null, forecastDays, preferences.units, model, forecastCallbacks);
   const modelCoverageUnavailable = model !== DEFAULT_FORECAST_MODEL
     && state.status === 'success'
@@ -233,7 +232,6 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
               units={preferences.units}
               model={model}
               onRemove={removeComparisonLocation}
-              onSuccess={handleForecastSuccess}
               onUnsupportedModel={handleUnsupportedModel}
             />
           </Suspense>

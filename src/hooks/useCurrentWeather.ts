@@ -13,7 +13,6 @@ type CurrentWeatherState =
 
 const IDLE_STATE: CurrentWeatherState = { status: 'idle', requestKey: null };
 type ForecastCallbacks = {
-  onSuccess?: () => void;
   onUnsupportedModel?: (error: AppError) => void;
 };
 const NO_FORECAST_CALLBACKS: ForecastCallbacks = {};
@@ -57,7 +56,7 @@ export function useCurrentWeather(
   const requestId = useRef(0);
   const locationKey = makeLocationKey(activeLocation);
   const requestKey = locationKey === null ? null : JSON.stringify([locationKey, forecastDays, units, model]);
-  const { onSuccess, onUnsupportedModel } = callbacks;
+  const { onUnsupportedModel } = callbacks;
   useEffect(() => {
     if (!hasValidCoordinates(activeLocation) || locationKey === null || requestKey === null) {
       requestId.current += 1;
@@ -78,7 +77,6 @@ export function useCurrentWeather(
       .then((data) => {
         if (currentRequestId !== requestId.current || controller.signal.aborted) return;
         setState({ status: 'success', requestKey, data });
-        onSuccess?.();
       })
       .catch((cause: unknown) => {
         if (currentRequestId !== requestId.current || controller.signal.aborted || isAbortError(cause)) return;
@@ -91,7 +89,7 @@ export function useCurrentWeather(
       controller.abort();
       if (requestId.current === currentRequestId) requestId.current += 1;
     };
-  }, [activeLocation, locationKey, requestKey, forecastDays, units, model, retryVersion, onSuccess, onUnsupportedModel]);
+  }, [activeLocation, locationKey, requestKey, forecastDays, units, model, retryVersion, onUnsupportedModel]);
 
   const retry = useCallback(() => {
     if (requestKey !== null && hasValidCoordinates(activeLocation)) {

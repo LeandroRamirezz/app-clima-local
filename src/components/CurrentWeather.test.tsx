@@ -338,22 +338,28 @@ describe('CurrentWeather', () => {
     expect(localStorage.getItem(FORECAST_UNITS_STORAGE_KEY)).not.toContain('ncep_gfs_seamless');
   });
 
-  it('restablece Automático tras HTTP 400 de un modelo sin repetir el fallo ni persistir el modelo', async () => {
+  it('conserva E-04 visible tras el fallback exitoso a Automático y lo limpia al elegir otro modelo', async () => {
     mockGetForecast.mockResolvedValueOnce(forecast());
-    mockGetForecast.mockRejectedValueOnce(new AppError('E-04'));
-    mockGetForecast.mockResolvedValueOnce(forecast());
+    mockGetForecast.mockRejectedValueOnce(new AppError('E-04', { reason: 'detalle privado' }));
+    mockGetForecast.mockResolvedValueOnce(forecast()).mockResolvedValueOnce(forecast());
     renderWeather();
     await flushPromises();
     fireEvent.click(screen.getByText('Opciones avanzadas'));
-    fireEvent.change(screen.getByLabelText('Modelo numérico'), { target: { value: 'ecmwf_ifs025' } });
+    fireEvent.change(screen.getByLabelText('Modelo numérico'), { target: { value: 'icon_seamless' } });
     await flushPromises();
     await flushPromises();
     expect(mockGetForecast).toHaveBeenCalledTimes(3);
-    expect(mockGetForecast.mock.calls[1]?.[0].model).toBe('ecmwf_ifs025');
+    expect(mockGetForecast.mock.calls[1]?.[0].model).toBe('icon_seamless');
     expect(mockGetForecast.mock.calls[2]?.[0].model).toBe('best_match');
     expect(screen.getByText('Modelo: Automático')).toBeTruthy();
     expect(screen.getByRole('region', { name: 'Clima actual' })).toBeTruthy();
-    expect(localStorage.getItem(FORECAST_UNITS_STORAGE_KEY)).not.toContain('ecmwf_ifs025');
+    expect(screen.getByRole('alert').textContent).toBe(APP_ERROR_MESSAGES['E-04']);
+    expect(screen.getByRole('alert').textContent).not.toContain('detalle privado');
+    expect(localStorage.getItem(FORECAST_UNITS_STORAGE_KEY)).not.toContain('icon_seamless');
+    fireEvent.change(screen.getByLabelText('Modelo numérico'), { target: { value: 'ncep_gfs_seamless' } });
+    await flushPromises();
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(mockGetForecast.mock.calls[3]?.[0].model).toBe('ncep_gfs_seamless');
   });
 
   it('avisa la falta de cobertura de ICON con HTTP 200 y permite volver a Automático', async () => {

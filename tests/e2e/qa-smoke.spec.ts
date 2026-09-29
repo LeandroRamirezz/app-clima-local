@@ -152,3 +152,29 @@ test('BUG-003: ICON con datos nulos informa cobertura y permite volver a Automá
   await expect(page.getByText(/El modelo ICON no tiene datos/)).toHaveCount(0);
   expect(models).toEqual(['best_match', 'icon_seamless', 'best_match']);
 });
+
+test('BUG-004: E-04 sigue visible tras el fallback exitoso de ICON a Automático', async ({ page }) => {
+  await mockApis(page);
+  const models: string[] = [];
+  await page.route(/https:\/\/api\.open-meteo\.com\/v1\/forecast/, async (route) => {
+    const url = new URL(route.request().url());
+    const model = url.searchParams.get('models') ?? '';
+    models.push(model);
+    if (model === 'icon_seamless') {
+      await route.fulfill({ status: 400, json: { error: true, reason: 'detalle técnico privado' } });
+    } else {
+      await route.fulfill({ json: forecastPayload(url) });
+    }
+  });
+  await page.goto('/');
+  await selectCity(page, 'Neiva');
+  await expect(page.getByRole('heading', { name: 'Clima actual' })).toBeVisible();
+  await page.locator('.current-weather__preferences > summary').click();
+  await page.getByText('Opciones avanzadas').click();
+  await page.getByLabel('Modelo numérico').selectOption('icon_seamless');
+  await expect(page.getByText('Modelo: Automático')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Clima actual' })).toBeVisible();
+  await expect(page.getByRole('alert')).toHaveText('No fue posible procesar la consulta. Verifique los datos ingresados.');
+  await expect(page.getByRole('alert')).not.toContainText('detalle técnico privado');
+  expect(models).toEqual(['best_match', 'icon_seamless', 'best_match']);
+});

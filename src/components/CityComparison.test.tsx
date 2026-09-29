@@ -31,7 +31,7 @@ function forecast(params: ForecastParams, overrides: Partial<ForecastData['curre
 }
 
 function renderComparison(locations: Location[], props: Partial<Parameters<typeof CityComparison>[0]> = {}) {
-  return render(<CityComparison locations={locations} forecastDays={props.forecastDays ?? 7} units={props.units ?? celsius} model={props.model ?? 'best_match'} onRemove={props.onRemove ?? vi.fn()} onSuccess={props.onSuccess} onUnsupportedModel={props.onUnsupportedModel} />);
+  return render(<CityComparison locations={locations} forecastDays={props.forecastDays ?? 7} units={props.units ?? celsius} model={props.model ?? 'best_match'} onRemove={props.onRemove ?? vi.fn()} onUnsupportedModel={props.onUnsupportedModel} />);
 }
 
 async function flushPromises() {
