@@ -1,0 +1,24 @@
+{
+  "us_aqi_simulado": "abc",
+  "categoria_esperada": "N/D (sin categoría)",
+  "solicitud": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=2.93001&longitude=-75.27973&current=us_aqi%2Cpm2_5%2Cpm10%2Cozone%2Cnitrogen_dioxide%2Csulphur_dioxide%2Ccarbon_monoxide&hourly=us_aqi%2Cpm2_5%2Cpm10%2Cozone%2Cnitrogen_dioxide%2Csulphur_dioxide%2Ccarbon_monoxide&forecast_hours=24&timezone=auto",
+  "mostrado": {
+    "bloque_aqi_presente": false,
+    "numero": null,
+    "categoria": null,
+    "mensaje": null,
+    "clase_color": null,
+    "aria_label": null,
+    "texto_no_disponible": "La calidad del aire no está disponible para esta ubicación."
+  },
+  "colores": null,
+  "icono": {
+    "elementos": 0,
+    "pseudo_elementos": 0,
+    "con_texto_alternativo": 0,
+    "presente": false
+  },
+  "captura": "aqi_abc.png",
+  "captura_escala_grises": null,
+  "errores_consola": []
+}

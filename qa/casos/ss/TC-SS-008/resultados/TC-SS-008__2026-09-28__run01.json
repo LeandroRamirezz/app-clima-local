@@ -1,0 +1,72 @@
+{
+  "id_caso": "TC-SS-008",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-06 (Calidad del aire), S-02 (escala US AQI)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Categoría del AQI en valores límite, interpretación y no dependencia exclusiva del color. Verificar, con análisis de valores límite, que cada valor de us_aqi se asigne a la categoría correcta de la escala de EE. UU. (S-02), con texto, color, ícono y mensaje de salud, y que los valores fuera de rango se traten según el flujo alterno.",
+  "precondiciones": "Ubicación activa: Neiva. Interceptación de /v1/air-quality con Playwright que devuelve el valor de current.us_aqi bajo prueba. Emulación de acromatopsia de Chrome (CDP Emulation.setEmulatedVisionDeficiency).",
+  "pasos_ejecutados": [
+    "0. Seleccionar Neiva, Huila como ubicación activa. Interceptar /v1/air-quality con Playwright y reemplazar current.us_aqi por el valor bajo prueba (un test por valor).",
+    "1. Para cada valor (0, 50, 51, 100, 101, 150, 151, 200, 201, 300, 301, 500, -1, \"abc\"), abrir la pestaña «Calidad del aire».",
+    "2. Anotar el número mostrado, la categoría en texto, el color (clase CSS), el ícono y el mensaje.",
+    "3. Verificar si existe un ícono y si tiene texto alternativo (alt o aria-label).",
+    "4. Con el valor 151, activar la emulación «Achromatopsia» (CDP Emulation.setEmulatedVisionDeficiency, equivalente a DevTools > Rendering) y verificar si la categoría se entiende por texto e ícono."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-008 --project=ss"
+  ],
+  "resultado_esperado": "0 y 50 → «Buena»; 51 y 100 → «Moderada»; 101 y 150 → «Dañina para grupos sensibles»; 151 y 200 → «Dañina»; 201 y 300 → «Muy dañina»; 301 y 500 → «Peligrosa»; -1 y \"abc\" → «N/D» (sin categoría). En los valores válidos, el número siempre va acompañado de categoría en texto, ícono con alternativa textual, color y mensaje de salud breve. En escala de grises la categoría sigue identificándose por texto e ícono.",
+  "resultado_obtenido": "Categorías: los 12 valores válidos se asignaron a la categoría correcta, con el número igual al simulado, mensaje de la categoría y color propio (clases good, moderate, unhealthy-sensitive, unhealthy, very-unhealthy y hazardous). -1 mostró la categoría «N/D» sin categoría válida (clase unavailable), según lo esperado. DEFECTO 1 (BUG-SS-002): en ninguno de los 12 valores válidos el indicador tiene ícono (0 elementos svg/img/role=\"img\" y ningún pseudo-elemento gráfico), por lo que tampoco hay texto alternativo de ícono; con 151 en acromatopsia la categoría se entiende solo por el texto «Dañina». DEFECTO 2 (BUG-SS-003): con \"abc\" no se muestra «N/D»; la app muestra «La calidad del aire no está disponible para esta ubicación.» (mensaje del flujo de AQI nulo), en lugar de la categoría «N/D» que RF-06 exige para valores no numéricos. 13/14 tests fallaron (12 por el ícono y \"abc\" por N/D); solo -1 aprobó. Sin errores de consola; la vista no se rompió en ningún valor.",
+  "tiempo_respuesta_ms": null,
+  "estado": "Fallido",
+  "bug_id": "BUG-SS-002, BUG-SS-003",
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-008__2026-09-28__run01/resumen-valores-limite.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_0.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_0.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_50.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_50.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_51.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_51.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_100.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_100.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_101.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_101.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_150.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_150.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_151.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_151.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_200.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_200.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_201.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_201.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_300.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_300.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_301.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_301.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_500.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_500.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_menos1.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_menos1.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_abc.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_abc.json",
+    "evidencias/TC-SS-008__2026-09-28__run01/aqi_151__acromatopsia.png",
+    "evidencias/TC-SS-008__2026-09-28__run01/video__aqi_151__fallo-icono.webm",
+    "evidencias/TC-SS-008__2026-09-28__run01/video__aqi_abc__fallo-nd.webm",
+    "evidencias/TC-SS-008__2026-09-28__run01/error-context__aqi_abc.md"
+  ],
+  "observaciones": "El ícono faltante es el mismo defecto reportado en TC-SS-007 (BUG-SS-002), por lo que se referencia sin duplicarlo. El comportamiento con \"abc\" se registró como BUG-SS-003 por decisión de la evaluadora. Con -1 la app muestra el número «-1» junto a la categoría «N/D»; se considera conforme porque el flujo alterno de RF-06 habla de la categoría. Los mensajes de categoría («La escala US AQI clasifica esta lectura…») interpretan el rango pero no dan una recomendación de salud (ver observación de TC-SS-007). El mock usa la respuesta real de /v1/air-quality y solo reemplaza current.us_aqi. Se adjuntan videos de los fallos de 151 (ícono) y \"abc\" (N/D); las capturas de cada valor están en la carpeta de evidencias."
+}

@@ -1,0 +1,142 @@
+[
+  {
+    "us_aqi": 0,
+    "categoria_esperada": "Buena",
+    "numero": "0",
+    "categoria": "Buena",
+    "mensaje": "La escala US AQI clasifica esta lectura dentro del rango bueno.",
+    "clase_color": "air-quality__aqi air-quality__aqi--good",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": 50,
+    "categoria_esperada": "Buena",
+    "numero": "50",
+    "categoria": "Buena",
+    "mensaje": "La escala US AQI clasifica esta lectura dentro del rango bueno.",
+    "clase_color": "air-quality__aqi air-quality__aqi--good",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": 51,
+    "categoria_esperada": "Moderada",
+    "numero": "51",
+    "categoria": "Moderada",
+    "mensaje": "La escala US AQI clasifica esta lectura dentro del rango moderado.",
+    "clase_color": "air-quality__aqi air-quality__aqi--moderate",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": 100,
+    "categoria_esperada": "Moderada",
+    "numero": "100",
+    "categoria": "Moderada",
+    "mensaje": "La escala US AQI clasifica esta lectura dentro del rango moderado.",
+    "clase_color": "air-quality__aqi air-quality__aqi--moderate",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": 101,
+    "categoria_esperada": "Dañina para grupos sensibles",
+    "numero": "101",
+    "categoria": "Dañina para grupos sensibles",
+    "mensaje": "La escala US AQI clasifica esta lectura como dañina para grupos sensibles.",
+    "clase_color": "air-quality__aqi air-quality__aqi--unhealthy-sensitive",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": 150,
+    "categoria_esperada": "Dañina para grupos sensibles",
+    "numero": "150",
+    "categoria": "Dañina para grupos sensibles",
+    "mensaje": "La escala US AQI clasifica esta lectura como dañina para grupos sensibles.",
+    "clase_color": "air-quality__aqi air-quality__aqi--unhealthy-sensitive",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": 151,
+    "categoria_esperada": "Dañina",
+    "numero": "151",
+    "categoria": "Dañina",
+    "mensaje": "La escala US AQI clasifica esta lectura dentro del rango dañino.",
+    "clase_color": "air-quality__aqi air-quality__aqi--unhealthy",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": 200,
+    "categoria_esperada": "Dañina",
+    "numero": "200",
+    "categoria": "Dañina",
+    "mensaje": "La escala US AQI clasifica esta lectura dentro del rango dañino.",
+    "clase_color": "air-quality__aqi air-quality__aqi--unhealthy",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": 201,
+    "categoria_esperada": "Muy dañina",
+    "numero": "201",
+    "categoria": "Muy dañina",
+    "mensaje": "La escala US AQI clasifica esta lectura dentro del rango muy dañino.",
+    "clase_color": "air-quality__aqi air-quality__aqi--very-unhealthy",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": 300,
+    "categoria_esperada": "Muy dañina",
+    "numero": "300",
+    "categoria": "Muy dañina",
+    "mensaje": "La escala US AQI clasifica esta lectura dentro del rango muy dañino.",
+    "clase_color": "air-quality__aqi air-quality__aqi--very-unhealthy",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": 301,
+    "categoria_esperada": "Peligrosa",
+    "numero": "301",
+    "categoria": "Peligrosa",
+    "mensaje": "La escala US AQI clasifica esta lectura dentro del rango peligroso.",
+    "clase_color": "air-quality__aqi air-quality__aqi--hazardous",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": 500,
+    "categoria_esperada": "Peligrosa",
+    "numero": "500",
+    "categoria": "Peligrosa",
+    "mensaje": "La escala US AQI clasifica esta lectura dentro del rango peligroso.",
+    "clase_color": "air-quality__aqi air-quality__aqi--hazardous",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": -1,
+    "categoria_esperada": "N/D (sin categoría)",
+    "numero": "-1",
+    "categoria": "N/D",
+    "mensaje": null,
+    "clase_color": "air-quality__aqi air-quality__aqi--unavailable",
+    "icono": false,
+    "texto_no_disponible": null
+  },
+  {
+    "us_aqi": "abc",
+    "categoria_esperada": "N/D (sin categoría)",
+    "numero": null,
+    "categoria": null,
+    "mensaje": null,
+    "clase_color": null,
+    "icono": false,
+    "texto_no_disponible": "La calidad del aire no está disponible para esta ubicación."
+  }
+]

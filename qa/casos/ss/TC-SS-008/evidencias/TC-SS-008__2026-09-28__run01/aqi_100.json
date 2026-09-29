@@ -1,0 +1,27 @@
+{
+  "us_aqi_simulado": 100,
+  "categoria_esperada": "Moderada",
+  "solicitud": "https://air-quality-api.open-meteo.com/v1/air-quality?latitude=2.93001&longitude=-75.27973&current=us_aqi%2Cpm2_5%2Cpm10%2Cozone%2Cnitrogen_dioxide%2Csulphur_dioxide%2Ccarbon_monoxide&hourly=us_aqi%2Cpm2_5%2Cpm10%2Cozone%2Cnitrogen_dioxide%2Csulphur_dioxide%2Ccarbon_monoxide&forecast_hours=24&timezone=auto",
+  "mostrado": {
+    "bloque_aqi_presente": true,
+    "numero": "100",
+    "categoria": "Moderada",
+    "mensaje": "La escala US AQI clasifica esta lectura dentro del rango moderado.",
+    "clase_color": "air-quality__aqi air-quality__aqi--moderate",
+    "aria_label": "Índice de calidad del aire: 100, categoría Moderada.",
+    "texto_no_disponible": null
+  },
+  "colores": {
+    "fondo": "rgb(255, 246, 220)",
+    "borde": "rgb(147, 108, 11)"
+  },
+  "icono": {
+    "elementos": 0,
+    "pseudo_elementos": 0,
+    "con_texto_alternativo": 0,
+    "presente": false
+  },
+  "captura": "aqi_100.png",
+  "captura_escala_grises": null,
+  "errores_consola": []
+}
