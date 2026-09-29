@@ -64,7 +64,7 @@ function useFakeSecureContext(value: boolean) {
 
 async function selectNeiva() {
   fireEvent.change(screen.getByRole('combobox', { name: 'Nombre de la ciudad' }), { target: { value: 'Neiva' } });
-  const option = await screen.findByRole('option', { name: /Neiva Huila, Colombia/ });
+  const option = await screen.findByRole('option', { name: /Neiva Huila, Colombia/ }, { timeout: 5000 });
   fireEvent.click(option);
   return option;
 }

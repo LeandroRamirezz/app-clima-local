@@ -1,5 +1,9 @@
 # Rendimiento de APIs Open-Meteo
 
+**Procedencia:** resultados registrados en el proyecto el 26/09/2026; no se repitió el ensayo para el corte QA del 28/09/2026. La metodología y los valores permanecen en este documento, pero no se conservaron logs crudos versionados. Por ello sirven como evidencia histórica de incumplimiento en aquella red y momento, no como medida actual de producción.
+
+**Decisión posterior (29/09/2026):** el solicitante autorizó revisar el criterio mediante una [desviación aprobada](rnf-01-approved-deviation.md). Las cifras de este informe permanecen como mediciones fallidas del umbral original; la desviación no altera ni reinterpreta esos valores. La medición Lighthouse del frontend se registra por separado en [resultados](test-results.md).
+
 Objetivo del requisito RNF-01: p95 < 500 ms por endpoint en condiciones normales de red. La medición comprende latencia desde `fetch` hasta consumir el cuerpo de respuesta; incluye red, procesamiento del proveedor y transferencia. No es un benchmark de renderizado ni atribuye latencia al frontend.
 
 ## Herramienta y seguridad del ensayo
@@ -43,3 +47,5 @@ Ejecución adicional: `npm run test:performance -- --samples=50 --concurrency=50
 | Air Quality | 50 | 50 | 50 | 0 | 0 | 919.3 | FAIL |
 
 El ensayo concurrente confirmó limitación de solicitudes: Forecast devolvió cinco HTTP 429 y tres fallos adicionales. Aunque 200 está por debajo de la cuota publicada por minuto, esa cuota no garantiza que una ráfaga simultánea sea aceptada. No se repitió el lote ni se hizo reintento automático. Las mediciones son específicas de esta máquina, ubicación de red y momento; no constituyen un SLO universal ni miden renderizado del cliente.
+
+**Alcance RNF-10:** 50 peticiones HTTP concurrentes a un endpoint no representan 50 usuarios simultáneos navegando por la aplicación. Ese escenario permanece **NO EJECUTADA** como prueba de usuarios. Los requisitos de FCP, renderizado y Lighthouse tampoco fueron medidos por este script.

@@ -209,4 +209,65 @@ describe('HistoricalWeather', () => {
     view.unmount();
     expect(capturedSignal?.aborted).toBe(true);
   });
+
+  it('compara dos fechas explícitas y presenta valores y diferencias con signo', async () => {
+    render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange('2026-08-10', '2026-08-10');
+    expect(mockGetHistoricalWeather).toHaveBeenCalledTimes(1);
+    fireEvent.change(screen.getByLabelText('Fecha para comparar'), { target: { value: '2026-08-09' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar fechas' }));
+    await flushPromises();
+    expect(mockGetHistoricalWeather).toHaveBeenCalledTimes(2);
+    expect(mockGetHistoricalWeather.mock.calls[1]?.[0]).toMatchObject({
+      latitude: 2.93, longitude: -75.28, startDate: '2026-08-09', endDate: '2026-08-09',
+      temperatureUnit: 'celsius', windSpeedUnit: 'kmh', precipitationUnit: 'mm',
+    });
+    const table = screen.getByRole('table', { name: /Comparación de dos fechas históricas/ });
+    expect(table.textContent).toContain('10/08/2026');
+    expect(table.textContent).toContain('09/08/2026');
+    expect(table.textContent).toContain('Diferencia');
+    expect(table.textContent).toContain('0 °C');
+  });
+
+  it('rechaza una comparación con la misma fecha sin llamada adicional', async () => {
+    render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange();
+    fireEvent.change(screen.getByLabelText('Fecha para comparar'), { target: { value: '2026-08-10' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar fechas' }));
+    expect(screen.getByRole('alert').textContent).toContain('Seleccione una fecha distinta');
+    expect(mockGetHistoricalWeather).toHaveBeenCalledTimes(1);
+  });
+
+  it('reconsulta ambas fechas con nuevas unidades y no muestra datos de unidades anteriores', async () => {
+    const view = render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange();
+    fireEvent.change(screen.getByLabelText('Fecha para comparar'), { target: { value: '2026-08-09' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar fechas' }));
+    await flushPromises();
+    view.rerender(<HistoricalWeather activeLocation={location} units={fahrenheit} />);
+    await flushPromises();
+    expect(mockGetHistoricalWeather).toHaveBeenCalledTimes(4);
+    expect(mockGetHistoricalWeather.mock.calls.slice(2).map((call) => call[0].temperatureUnit)).toEqual(['fahrenheit', 'fahrenheit']);
+    expect(screen.queryByText('31,5 °C')).toBeNull();
+    expect(screen.getAllByText('31,5 °F').length).toBeGreaterThan(0);
+  });
+
+  it('no presenta como actual una respuesta tardía de comparación anterior', async () => {
+    let resolveOld: ((data: HistoricalWeatherData) => void) | undefined;
+    mockGetHistoricalWeather.mockImplementationOnce((params: HistoricalParams) => Promise.resolve(historicalData(params)))
+      .mockImplementationOnce(() => new Promise<HistoricalWeatherData>((resolve) => { resolveOld = resolve; }))
+      .mockImplementationOnce((params: HistoricalParams) => Promise.resolve(historicalData(params)));
+    render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange();
+    fireEvent.change(screen.getByLabelText('Fecha para comparar'), { target: { value: '2026-08-09' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar fechas' }));
+    const oldSignal: AbortSignal = mockGetHistoricalWeather.mock.calls[1]?.[1]?.signal;
+    fireEvent.change(screen.getByLabelText('Fecha para comparar'), { target: { value: '2026-08-08' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar fechas' }));
+    await flushPromises();
+    expect(oldSignal.aborted).toBe(true);
+    expect(screen.getByRole('table', { name: /Comparación de dos fechas históricas/ }).textContent).toContain('08/08/2026');
+    await act(async () => { resolveOld?.(historicalData({ ...defaultParams, startDate: '2026-08-09', endDate: '2026-08-09' })); });
+    expect(screen.getByRole('table', { name: /Comparación de dos fechas históricas/ }).textContent).not.toContain('09/08/2026');
+  });
 });

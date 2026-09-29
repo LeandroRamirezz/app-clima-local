@@ -4,6 +4,7 @@ import { mapWeatherCode } from '../utils/weather-code';
 import { formatForecastDate, formatForecastMeasure, formatForecastNumber, formatForecastTime, getForecastUnits } from '../utils/forecast-presentation';
 import { formatDaylightDuration } from '../utils/daylight';
 import { WeatherConditionIcon } from './WeatherConditionIcon';
+import { es } from '../i18n/es';
 
 export type ForecastView = 'daily' | 'hourly';
 
@@ -14,7 +15,7 @@ interface ForecastPanelProps {
 
 function UvValue({ value }: { value: number | null }) {
   const category = getUvCategory(value);
-  return <>{value === null ? 'N/D' : `${formatForecastNumber(value)}${category ? ` — ${category}` : ''}`}</>;
+  return <>{value === null ? es.common.notAvailable : `${formatForecastNumber(value)}${category ? ` — ${category}` : ''}`}</>;
 }
 
 function DailyCard({ day, units }: { day: DailyForecast; units: ReturnType<typeof getForecastUnits> }) {
@@ -22,27 +23,27 @@ function DailyCard({ day, units }: { day: DailyForecast; units: ReturnType<typeo
   const condition = mapWeatherCode(day.weatherCode);
   return (
     <article className="forecast-panel__day" aria-label={date ? `${date.weekday} ${date.date}` : day.date}>
-      <h3>{date ? <><span>{date.weekday}</span> <time dateTime={day.date}>{date.date}</time></> : 'Fecha no disponible'}</h3>
+      <h3>{date ? <><span>{date.weekday}</span> <time dateTime={day.date}>{date.date}</time></> : es.forecast.dateUnavailable}</h3>
       <p className="forecast-panel__condition"><WeatherConditionIcon iconKey={condition.iconKey} /><span>{condition.label}</span></p>
       <dl className="forecast-panel__metrics">
-        <div><dt>Máxima</dt><dd>{formatForecastMeasure(day.temperatureMax, units.temperature)}</dd></div>
-        <div><dt>Mínima</dt><dd>{formatForecastMeasure(day.temperatureMin, units.temperature)}</dd></div>
-        <div><dt>Precipitación</dt><dd>{formatForecastMeasure(day.precipitationSum, units.precipitation)}</dd></div>
-        <div><dt>Probabilidad</dt><dd>{day.precipitationProbabilityMax === null ? 'N/D' : `${formatForecastNumber(day.precipitationProbabilityMax, 0)} %`}</dd></div>
-        <div><dt>Viento máx.</dt><dd>{formatForecastMeasure(day.windSpeedMax, units.windSpeed)}</dd></div>
-        <div><dt>UV máximo</dt><dd><UvValue value={day.uvIndexMax} /></dd></div>
+        <div><dt>{es.forecast.max}</dt><dd>{formatForecastMeasure(day.temperatureMax, units.temperature)}</dd></div>
+        <div><dt>{es.forecast.min}</dt><dd>{formatForecastMeasure(day.temperatureMin, units.temperature)}</dd></div>
+        <div><dt>{es.forecast.precipitation}</dt><dd>{formatForecastMeasure(day.precipitationSum, units.precipitation)}</dd></div>
+        <div><dt>{es.forecast.probability}</dt><dd>{day.precipitationProbabilityMax === null ? es.common.notAvailable : `${formatForecastNumber(day.precipitationProbabilityMax, 0)} %`}</dd></div>
+        <div><dt>{es.forecast.maxWind}</dt><dd>{formatForecastMeasure(day.windSpeedMax, units.windSpeed)}</dd></div>
+        <div><dt>{es.forecast.maxUv}</dt><dd><UvValue value={day.uvIndexMax} /></dd></div>
       </dl>
-      <dl className="forecast-panel__solar" aria-label="Luz del día">
-        <div><dt>Amanecer</dt><dd>{formatForecastTime(day.sunrise ?? '') ?? 'No disponible'}</dd></div>
-        <div><dt>Atardecer</dt><dd>{formatForecastTime(day.sunset ?? '') ?? 'No disponible'}</dd></div>
-        <div><dt>Duración del día</dt><dd>{formatDaylightDuration(day.daylightDuration)}</dd></div>
+      <dl className="forecast-panel__solar" aria-label={es.forecast.daylight}>
+        <div><dt>{es.forecast.sunrise}</dt><dd>{formatForecastTime(day.sunrise ?? '') ?? es.common.unavailable}</dd></div>
+        <div><dt>{es.forecast.sunset}</dt><dd>{formatForecastTime(day.sunset ?? '') ?? es.common.unavailable}</dd></div>
+        <div><dt>{es.forecast.daylightDuration}</dt><dd>{formatDaylightDuration(day.daylightDuration)}</dd></div>
       </dl>
     </article>
   );
 }
 
 function DailyForecastView({ forecast, units }: { forecast: ForecastData; units: ReturnType<typeof getForecastUnits> }) {
-  if (forecast.daily.length === 0) return <p className="forecast-panel__empty">No hay pronóstico diario disponible para esta ubicación.</p>;
+  if (forecast.daily.length === 0) return <p className="forecast-panel__empty">{es.forecast.emptyDaily}</p>;
   return <div className="forecast-panel__days">{forecast.daily.map((day) => <DailyCard key={day.date} day={day} units={units} />)}</div>;
 }
 
@@ -51,15 +52,15 @@ function HourlyCard({ hour, units }: { hour: HourlyForecast; units: ReturnType<t
   const condition = mapWeatherCode(hour.weatherCode);
   return (
     <article className="forecast-panel__hour" aria-label={time ? `${time}, ${condition.label}` : condition.label}>
-      <h4>{time ?? 'Hora no disponible'}</h4>
+      <h4>{time ?? es.forecast.hourUnavailable}</h4>
       <p className="forecast-panel__hour-condition"><WeatherConditionIcon iconKey={condition.iconKey} /><span>{condition.label}</span></p>
       <dl className="forecast-panel__metrics">
-        <div><dt>Temperatura</dt><dd>{formatForecastMeasure(hour.temperature, units.temperature)}</dd></div>
-        <div><dt>Sensación</dt><dd>{formatForecastMeasure(hour.apparentTemperature, units.temperature)}</dd></div>
-        <div><dt>Prob. lluvia</dt><dd>{hour.precipitationProbability === null ? 'N/D' : `${formatForecastNumber(hour.precipitationProbability, 0)} %`}</dd></div>
-        <div><dt>Precipitación</dt><dd>{formatForecastMeasure(hour.precipitation, units.precipitation)}</dd></div>
-        <div><dt>Viento</dt><dd>{formatForecastMeasure(hour.windSpeed, units.windSpeed)}</dd></div>
-        <div><dt>UV</dt><dd><UvValue value={hour.uvIndex} /></dd></div>
+        <div><dt>{es.forecast.temperature}</dt><dd>{formatForecastMeasure(hour.temperature, units.temperature)}</dd></div>
+        <div><dt>{es.forecast.feelsLike}</dt><dd>{formatForecastMeasure(hour.apparentTemperature, units.temperature)}</dd></div>
+        <div><dt>{es.forecast.rainProbability}</dt><dd>{hour.precipitationProbability === null ? es.common.notAvailable : `${formatForecastNumber(hour.precipitationProbability, 0)} %`}</dd></div>
+        <div><dt>{es.forecast.precipitation}</dt><dd>{formatForecastMeasure(hour.precipitation, units.precipitation)}</dd></div>
+        <div><dt>{es.forecast.wind}</dt><dd>{formatForecastMeasure(hour.windSpeed, units.windSpeed)}</dd></div>
+        <div><dt>{es.forecast.uv}</dt><dd><UvValue value={hour.uvIndex} /></dd></div>
       </dl>
     </article>
   );
@@ -73,7 +74,7 @@ function HourlyForecastView({ forecast, units }: { forecast: ForecastData; units
     const date = hour.time.slice(0, 10);
     groups.set(date, [...(groups.get(date) ?? []), hour]);
   }
-  if (groups.size === 0) return <p className="forecast-panel__empty">No hay pronóstico horario disponible para esta ubicación.</p>;
+  if (groups.size === 0) return <p className="forecast-panel__empty">{es.forecast.emptyHourly}</p>;
   return (
     <div className="forecast-panel__hour-days">
       {[...groups].map(([date, items]) => {
@@ -93,7 +94,7 @@ export function ForecastPanel({ forecast, view }: ForecastPanelProps) {
   const units = getForecastUnits(forecast.units);
   return (
     <section className="forecast-panel" aria-labelledby="forecast-title">
-      <h2 id="forecast-title">Pronóstico {view === 'daily' ? 'diario' : 'horario'}</h2>
+      <h2 id="forecast-title">{es.forecast.title} {view === 'daily' ? es.forecast.daily : es.forecast.hourly}</h2>
       {view === 'daily' ? <DailyForecastView forecast={forecast} units={units} /> : <HourlyForecastView forecast={forecast} units={units} />}
     </section>
   );

@@ -41,6 +41,9 @@ button { cursor: pointer; }
 button:disabled { cursor: not-allowed; }
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 .app-shell :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.skip-link { position: absolute; z-index: 100; inset: .7rem auto auto .7rem; padding: .65rem .9rem; background: var(--ink); color: var(--surface); border-radius: var(--radius-control); transform: translateY(-160%); }
+.skip-link:focus-visible { transform: translateY(0); outline: 3px solid var(--focus); outline-offset: 2px; }
+.current-weather__model-description { margin: .45rem 0 0; max-width: 36rem; color: var(--muted); font-size: .82rem; line-height: 1.5; }
 ::selection { background: #c9e5e4; color: var(--ink); }
 ::-webkit-scrollbar { width: 12px; height: 12px; }
 ::-webkit-scrollbar-track { background: #e7eeee; }
@@ -266,6 +269,12 @@ button:disabled { cursor: not-allowed; }
 .historical-weather__format-help { margin-top: .1rem; }
 .historical-weather__results { margin-top: 1.5rem; padding-top: 1.3rem; border-top: 1px solid var(--border); }
 .historical-weather__results h3 { font-family: var(--font-display); font-weight: 600; }
+.historical-weather__comparison { margin-top: 1.6rem; padding-top: 1.25rem; border-top: 1px solid var(--border); }
+.historical-weather__comparison h4 { margin: 0 0 .5rem; color: var(--ink); font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; }
+.historical-weather__comparison > p { margin: .35rem 0 .8rem; line-height: 1.55; }
+.historical-weather__compare-form { display: flex; flex-wrap: wrap; align-items: end; gap: .8rem; margin-bottom: 1rem; }
+.historical-weather__compare-form .historical-weather__date-field { min-width: min(100%, 13rem); }
+.historical-weather__compare-form .historical-weather__submit { min-height: 2.7rem; }
 .historical-weather__table caption, .city-comparison__table caption { font-weight: 600; }
 .air-quality__current { grid-template-columns: minmax(15rem, .7fr) minmax(0, 2fr); gap: 1.25rem; }
 .air-quality__trend { margin-top: 1.5rem; }

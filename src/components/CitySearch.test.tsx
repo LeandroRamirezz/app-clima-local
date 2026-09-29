@@ -711,8 +711,10 @@ describe('CitySearch', () => {
     ];
     mockSearchCities.mockResolvedValue(comparisonResults);
     render(<App />);
+    vi.useRealTimers();
     fireEvent.click(screen.getByRole('button', { name: 'Comparar ciudades' }));
-    expect(screen.getByText('Agregue al menos dos ciudades para comparar.')).toBeTruthy();
+    expect(await screen.findByText('Agregue al menos dos ciudades para comparar.')).toBeTruthy();
+    vi.useFakeTimers();
     const comparisonInput = () => screen.getAllByRole('combobox', { name: 'Nombre de la ciudad' })[1]!;
     async function findAndAdd(name: string) {
       fireEvent.change(comparisonInput(), { target: { value: name } });

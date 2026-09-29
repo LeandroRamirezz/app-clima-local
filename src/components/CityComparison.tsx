@@ -9,6 +9,7 @@ import { getUvCategory } from '../utils/uv-category';
 import { mapWeatherCode } from '../utils/weather-code';
 import { getElevationDifference } from '../utils/location-identity';
 import { WeatherConditionIcon } from './WeatherConditionIcon';
+import { es } from '../i18n/es';
 
 interface CityComparisonProps {
   locations: readonly Location[];
@@ -37,19 +38,19 @@ function ComparisonRow({ label, locations, getState, value }: ComparisonRowProps
 }
 
 function formatUv(value: number | null): string {
-  if (value === null || !Number.isFinite(value)) return 'N/D';
+  if (value === null || !Number.isFinite(value)) return es.common.notAvailable;
   const category = getUvCategory(value);
   return `${formatForecastNumber(value)}${category ? ` — ${category}` : ''}`;
 }
 
 function renderCondition(state: CityForecastState): ReactNode {
-  if (state.status !== 'success') return 'N/D';
+  if (state.status !== 'success') return es.common.notAvailable;
   const condition = mapWeatherCode(state.data.current.weatherCode);
   return <span className="city-comparison__condition"><WeatherConditionIcon iconKey={condition.iconKey} /><span>{condition.label}</span></span>;
 }
 
 function valueFor(state: CityForecastState, getValue: (state: Extract<CityForecastState, { status: 'success' }>) => string): string {
-  return state.status === 'success' ? getValue(state) : 'N/D';
+  return state.status === 'success' ? getValue(state) : es.common.notAvailable;
 }
 
 function DailyComparison({
@@ -63,37 +64,37 @@ function DailyComparison({
     const state = getState(location);
     return state.status === 'success' ? state.data.daily.length : 0;
   }));
-  if (dayCount === 0) return <p className="city-comparison__empty">No hay pronóstico diario disponible para las ciudades cargadas.</p>;
+  if (dayCount === 0) return <p className="city-comparison__empty">{es.comparison.emptyDaily}</p>;
 
   return (
     <section className="city-comparison__daily" aria-labelledby="comparison-daily-title">
-      <h3 id="comparison-daily-title">Pronóstico diario comparado</h3>
+      <h3 id="comparison-daily-title">{es.comparison.dailyTitle}</h3>
       {Array.from({ length: dayCount }, (_, dayIndex) => (
-        <div className="city-comparison__table-scroll" role="region" aria-label={`Pronóstico del día ${dayIndex + 1}`} tabIndex={0} key={dayIndex}>
+        <div className="city-comparison__table-scroll" role="region" aria-label={es.comparison.day(dayIndex + 1)} tabIndex={0} key={dayIndex}>
           <table className="city-comparison__table">
-            <caption>Pronóstico del día {dayIndex + 1}</caption>
-            <thead><tr><th scope="col">Variable</th>{locations.map((location) => <th scope="col" key={location.id === 'geolocation' ? `${location.latitude},${location.longitude}` : location.id}>{location.name}</th>)}</tr></thead>
+            <caption>{es.comparison.day(dayIndex + 1)}</caption>
+            <thead><tr><th scope="col">{es.comparison.variable}</th>{locations.map((location) => <th scope="col" key={location.id === 'geolocation' ? `${location.latitude},${location.longitude}` : location.id}>{location.name}</th>)}</tr></thead>
             <tbody>
-              <ComparisonRow label="Fecha local" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => {
+              <ComparisonRow label={es.comparison.localDate} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => {
                 const day = result.data.daily[dayIndex];
-                if (!day) return 'N/D';
+                if (!day) return es.common.notAvailable;
                 const date = formatForecastDate(day.date);
-                return date ? `${date.weekday} ${date.date}` : 'N/D';
+                return date ? `${date.weekday} ${date.date}` : es.common.notAvailable;
               })} />
-              <ComparisonRow label="Condición" locations={locations} getState={getState} value={(_, state) => {
-                if (state.status !== 'success') return 'N/D';
+              <ComparisonRow label={es.comparison.condition} locations={locations} getState={getState} value={(_, state) => {
+                if (state.status !== 'success') return es.common.notAvailable;
                 const day = state.data.daily[dayIndex];
-                return day ? mapWeatherCode(day.weatherCode).label : 'N/D';
+                return day ? mapWeatherCode(day.weatherCode).label : es.common.notAvailable;
               }} />
-              <ComparisonRow label="Máxima" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.daily[dayIndex]?.temperatureMax ?? null, getForecastUnits(result.data.units).temperature))} />
-              <ComparisonRow label="Mínima" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.daily[dayIndex]?.temperatureMin ?? null, getForecastUnits(result.data.units).temperature))} />
-              <ComparisonRow label="Precipitación" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.daily[dayIndex]?.precipitationSum ?? null, getForecastUnits(result.data.units).precipitation))} />
-              <ComparisonRow label="Probabilidad máxima" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => {
+              <ComparisonRow label={es.comparison.max} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.daily[dayIndex]?.temperatureMax ?? null, getForecastUnits(result.data.units).temperature))} />
+              <ComparisonRow label={es.comparison.min} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.daily[dayIndex]?.temperatureMin ?? null, getForecastUnits(result.data.units).temperature))} />
+              <ComparisonRow label={es.comparison.precipitation} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.daily[dayIndex]?.precipitationSum ?? null, getForecastUnits(result.data.units).precipitation))} />
+              <ComparisonRow label={es.comparison.maxProbability} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => {
                 const amount = result.data.daily[dayIndex]?.precipitationProbabilityMax;
-                return amount === null || amount === undefined ? 'N/D' : `${formatForecastNumber(amount, 0)} %`;
+                return amount === null || amount === undefined ? es.common.notAvailable : `${formatForecastNumber(amount, 0)} %`;
               })} />
-              <ComparisonRow label="Viento máximo" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.daily[dayIndex]?.windSpeedMax ?? null, getForecastUnits(result.data.units).windSpeed))} />
-              <ComparisonRow label="UV máximo" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatUv(result.data.daily[dayIndex]?.uvIndexMax ?? null))} />
+              <ComparisonRow label={es.comparison.maxWind} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.daily[dayIndex]?.windSpeedMax ?? null, getForecastUnits(result.data.units).windSpeed))} />
+              <ComparisonRow label={es.comparison.maxUv} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatUv(result.data.daily[dayIndex]?.uvIndexMax ?? null))} />
             </tbody>
           </table>
         </div>
@@ -105,7 +106,7 @@ function DailyComparison({
 export function CityComparison({ locations, forecastDays, units, model, onRemove, onSuccess, onUnsupportedModel }: CityComparisonProps) {
   const forecastLocations = locations.length >= 2 ? locations : [];
   const { getState, retry } = useComparisonForecasts(forecastLocations, forecastDays, units, model, onSuccess, onUnsupportedModel);
-  const modelName = FORECAST_MODELS.find((option) => option.value === model)?.label ?? 'Automático';
+  const modelName = FORECAST_MODELS.find((option) => option.value === model)?.label ?? es.model.automatic.label;
   const errors = locations.flatMap((location) => {
     const state = getState(location);
     return state.status === 'error' ? [{ location, state }] : [];
@@ -120,29 +121,29 @@ export function CityComparison({ locations, forecastDays, units, model, onRemove
     <section className="city-comparison" aria-labelledby="city-comparison-title">
       <header className="city-comparison__header">
         <div>
-          <h2 id="city-comparison-title">Comparación de ciudades</h2>
-          <p>Modelo: {modelName} · Pronóstico: {forecastDays} días · Unidades compartidas para todas las ciudades.</p>
+          <h2 id="city-comparison-title">{es.comparison.title}</h2>
+          <p>{es.comparison.meta(modelName, forecastDays)}</p>
         </div>
       </header>
 
-      <ul className="city-comparison__locations" aria-label="Ciudades en comparación">
+      <ul className="city-comparison__locations" aria-label={es.comparison.locationsLabel}>
         {locations.map((location) => (
           <li key={location.id === 'geolocation' ? `${location.latitude},${location.longitude}` : location.id}>
             <span>{location.name}</span>
-            <button type="button" aria-label={`Quitar ${location.name} de la comparación`} onClick={() => onRemove(location)}>Quitar</button>
+            <button type="button" aria-label={es.comparison.removeNamed(location.name)} onClick={() => onRemove(location)}>{es.comparison.remove}</button>
           </li>
         ))}
       </ul>
 
       {locations.length < 2 ? (
-        <p className="city-comparison__minimum" role="status">Agregue al menos dos ciudades para comparar.</p>
+        <p className="city-comparison__minimum" role="status">{es.comparison.minimum}</p>
       ) : (
         <>
           <div className="city-comparison__statuses" aria-live="polite">
             {locations.map((location) => {
               const state = getState(location);
               const key = location.id === 'geolocation' ? `${location.latitude},${location.longitude}` : location.id;
-              if (state.status === 'loading') return <p key={key} role="status">Consultando {location.name}…</p>;
+              if (state.status === 'loading') return <p key={key} role="status">{es.comparison.loading(location.name)}</p>;
               if (state.status === 'error') return null;
               return null;
             })}
@@ -150,37 +151,37 @@ export function CityComparison({ locations, forecastDays, units, model, onRemove
           {errors.map(({ location, state }) => (
             <div className="city-comparison__error" role="alert" key={location.id === 'geolocation' ? `${location.latitude},${location.longitude}` : location.id}>
               <span>{location.name}: {APP_ERROR_MESSAGES[state.error.code]}</span>
-              <button type="button" onClick={() => retry(location)} aria-label={`Reintentar ${location.name}`}>Reintentar</button>
+              <button type="button" onClick={() => retry(location)} aria-label={es.comparison.retryNamed(location.name)}>{es.common.retry}</button>
             </div>
           ))}
 
           <section aria-labelledby="comparison-current-title">
-            <h3 id="comparison-current-title">Comparación actual</h3>
-            <div className="city-comparison__table-scroll" role="region" aria-label="Tabla de clima actual comparado" tabIndex={0}>
+            <h3 id="comparison-current-title">{es.comparison.currentTitle}</h3>
+            <div className="city-comparison__table-scroll" role="region" aria-label={es.comparison.currentTable} tabIndex={0}>
               <table className="city-comparison__table">
-                <caption>Clima actual por ciudad. Datos en las mismas unidades y modelo.</caption>
-                <thead><tr><th scope="col">Variable</th>{locations.map((location) => <th scope="col" key={location.id === 'geolocation' ? `${location.latitude},${location.longitude}` : location.id}>{location.name}</th>)}</tr></thead>
+                <caption>{es.comparison.currentCaption}</caption>
+                <thead><tr><th scope="col">{es.comparison.variable}</th>{locations.map((location) => <th scope="col" key={location.id === 'geolocation' ? `${location.latitude},${location.longitude}` : location.id}>{location.name}</th>)}</tr></thead>
                 <tbody>
-                  <ComparisonRow label="Condición" locations={locations} getState={getState} value={(_, state) => renderCondition(state)} />
-                  <ComparisonRow label="Actualizado" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastTime(result.data.current.time) ?? 'N/D')} />
-                  <ComparisonRow label="Elevación" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => {
+                  <ComparisonRow label={es.comparison.condition} locations={locations} getState={getState} value={(_, state) => renderCondition(state)} />
+                  <ComparisonRow label={es.comparison.updated} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastTime(result.data.current.time) ?? es.common.notAvailable)} />
+                  <ComparisonRow label={es.comparison.elevation} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => {
                     const elevation = result.data.location.elevation;
-                    return typeof elevation === 'number' && Number.isFinite(elevation) ? `${formatForecastNumber(elevation)} m s. n. m.` : 'no disponible';
+                    return typeof elevation === 'number' && Number.isFinite(elevation) ? `${formatForecastNumber(elevation)} ${es.common.elevationUnit}` : es.weather.elevationUnavailable;
                   })} />
-                  <ComparisonRow label="Temperatura" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.current.temperature, getForecastUnits(result.data.units).temperature))} />
-                  <ComparisonRow label="Sensación térmica" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.current.apparentTemperature, getForecastUnits(result.data.units).temperature))} />
-                  <ComparisonRow label="Humedad" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => result.data.current.relativeHumidity === null ? 'N/D' : `${formatForecastNumber(result.data.current.relativeHumidity)} %`)} />
-                  <ComparisonRow label="Precipitación" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.current.precipitation, getForecastUnits(result.data.units).precipitation))} />
-                  <ComparisonRow label="Viento" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.current.windSpeed, getForecastUnits(result.data.units).windSpeed))} />
-                  <ComparisonRow label="Dirección del viento" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => result.data.current.windDirection === null ? 'N/D' : `${formatForecastNumber(result.data.current.windDirection, 0)}°`)} />
-                  <ComparisonRow label="Índice UV" locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatUv(result.data.current.uvIndex))} />
+                  <ComparisonRow label={es.comparison.temperature} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.current.temperature, getForecastUnits(result.data.units).temperature))} />
+                  <ComparisonRow label={es.comparison.feelsLike} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.current.apparentTemperature, getForecastUnits(result.data.units).temperature))} />
+                  <ComparisonRow label={es.comparison.humidity} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => result.data.current.relativeHumidity === null ? es.common.notAvailable : `${formatForecastNumber(result.data.current.relativeHumidity)} %`)} />
+                  <ComparisonRow label={es.comparison.precipitation} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.current.precipitation, getForecastUnits(result.data.units).precipitation))} />
+                  <ComparisonRow label={es.comparison.wind} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatForecastMeasure(result.data.current.windSpeed, getForecastUnits(result.data.units).windSpeed))} />
+                  <ComparisonRow label={es.comparison.windDirection} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => result.data.current.windDirection === null ? es.common.notAvailable : `${formatForecastNumber(result.data.current.windDirection, 0)}°`)} />
+                  <ComparisonRow label={es.comparison.uvIndex} locations={locations} getState={getState} value={(_, state) => valueFor(state, (result) => formatUv(result.data.current.uvIndex))} />
                 </tbody>
               </table>
             </div>
           </section>
 
           {elevationDifference !== null && elevationDifference > 300 && (
-            <p className="city-comparison__elevation-note" role="note">Existe una diferencia importante de altitud entre las ciudades comparadas; la altitud puede influir en la temperatura.</p>
+            <p className="city-comparison__elevation-note" role="note">{es.comparison.elevationNote}</p>
           )}
           <DailyComparison locations={locations} getState={getState} />
         </>

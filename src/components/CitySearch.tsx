@@ -1,6 +1,7 @@
 import { useId, useRef, useState, type KeyboardEvent } from 'react';
 import type { Location } from '../types/location';
 import { useCitySearch } from '../hooks/useCitySearch';
+import { es } from '../i18n/es';
 
 interface CitySearchProps {
   activeLocation: Location | null;
@@ -17,7 +18,7 @@ function formatLocationName(location: Location): string {
   return [location.name, location.admin1, location.country].filter(presentPart).join(', ');
 }
 
-export function CitySearch({ activeLocation, onSelectLocation, title = 'Buscar una ciudad', headingLevel = 1 }: CitySearchProps) {
+export function CitySearch({ activeLocation, onSelectLocation, title = es.citySearch.title, headingLevel = 1 }: CitySearchProps) {
   const { query, setQuery, setDisplayQuery, state, validationMessage, retry } = useCitySearch();
   const [activeIndex, setActiveIndex] = useState(-1);
   const [dismissedQuery, setDismissedQuery] = useState<string | null>(null);
@@ -88,7 +89,7 @@ export function CitySearch({ activeLocation, onSelectLocation, title = 'Buscar u
   return (
     <section className="city-search" aria-labelledby={`${inputId}-title`}>
       <Heading id={`${inputId}-title`}>{title}</Heading>
-      <label className="city-search__label" htmlFor={inputId}>Nombre de la ciudad</label>
+      <label className="city-search__label" htmlFor={inputId}>{es.citySearch.label}</label>
       <div className="city-search__field">
         <input
           ref={inputRef}
@@ -113,18 +114,18 @@ export function CitySearch({ activeLocation, onSelectLocation, title = 'Buscar u
           onCompositionStart={() => { composingRef.current = true; }}
           onCompositionEnd={(event) => { composingRef.current = false; handleInputChange(event.currentTarget.value); }}
         />
-        {query.length > 0 && <button className="city-search__clear" type="button" aria-label="Limpiar búsqueda" onClick={() => { handleInputChange(''); inputRef.current?.focus(); }}>
+        {query.length > 0 && <button className="city-search__clear" type="button" aria-label={es.citySearch.clear} onClick={() => { handleInputChange(''); inputRef.current?.focus(); }}>
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15" /></svg>
         </button>}
       </div>
-      <p className="city-search__help" id={helpId}>Escriba al menos 2 caracteres para buscar.</p>
+      <p className="city-search__help" id={helpId}>{es.citySearch.help}</p>
       {validationMessage && <p className="city-search__validation" id={validationId} role="status">{validationMessage}</p>}
 
-      {state.status === 'loading' && <p className="city-search__status" role="status" aria-live="polite">Buscando ubicaciones…</p>}
+      {state.status === 'loading' && <p className="city-search__status" role="status" aria-live="polite">{es.citySearch.loading}</p>}
       {listVisible && (
         <div className="city-search__results">
-          <p className="city-search__status" role="status" aria-live="polite">{results.length} {results.length === 1 ? 'ubicación encontrada.' : 'ubicaciones encontradas.'}</p>
-          <ul className="city-search__listbox" id={listboxId} role="listbox" aria-label="Ubicaciones encontradas">
+          <p className="city-search__status" role="status" aria-live="polite">{es.citySearch.found(results.length)}</p>
+          <ul className="city-search__listbox" id={listboxId} role="listbox" aria-label={es.citySearch.listLabel}>
             {results.map((location, index) => (
               <li
                 className="city-search__option"
@@ -137,7 +138,7 @@ export function CitySearch({ activeLocation, onSelectLocation, title = 'Buscar u
                 onClick={() => selectLocation(location)}
               >
                 <span className="city-search__option-name">{location.name}</span>
-                <span className="city-search__option-region">{[location.admin1, location.country].filter(presentPart).join(', ') || 'Región no disponible'}</span>
+                <span className="city-search__option-region">{[location.admin1, location.country].filter(presentPart).join(', ') || es.citySearch.regionUnavailable}</span>
                 <span className="city-search__option-coordinates">{location.latitude.toFixed(2)}, {location.longitude.toFixed(2)}</span>
               </li>
             ))}
@@ -146,13 +147,13 @@ export function CitySearch({ activeLocation, onSelectLocation, title = 'Buscar u
       )}
       {state.status === 'empty' && (
         <p className="city-search__status" role="status" aria-live="polite">
-          No se encontraron ubicaciones para «{state.query}». Verifique la ortografía o pruebe con otro nombre.
+          {es.citySearch.empty(state.query)}
         </p>
       )}
       {state.status === 'error' && (
         <div className="city-search__error" role="alert">
           <span>{state.error.message}</span>
-          <button className="city-search__retry" type="button" onClick={retry}>Reintentar</button>
+          <button className="city-search__retry" type="button" onClick={retry}>{es.common.retry}</button>
         </div>
       )}
     </section>

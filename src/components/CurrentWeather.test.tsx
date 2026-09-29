@@ -81,11 +81,11 @@ describe('CurrentWeather', () => {
     expect(await screen.findByRole('region', { name: 'Clima actual' })).toBeTruthy();
 
     fireEvent.click(within(navigation).getByRole('button', { name: 'Históricos' }));
-    expect(screen.getByRole('heading', { name: 'Históricos' })).toBeTruthy();
+    expect(await screen.findByRole('heading', { name: 'Históricos' })).toBeTruthy();
     expect(screen.queryByRole('region', { name: 'Clima actual' })).toBeNull();
 
     fireEvent.click(within(navigation).getByRole('button', { name: 'Calidad del aire' }));
-    expect(screen.getByRole('heading', { name: 'Calidad del aire' })).toBeTruthy();
+    expect(await screen.findByRole('heading', { name: 'Calidad del aire' })).toBeTruthy();
     expect(screen.queryByRole('heading', { name: 'Históricos' })).toBeNull();
 
     fireEvent.click(within(navigation).getByRole('button', { name: 'Clima' }));
@@ -183,7 +183,7 @@ describe('CurrentWeather', () => {
     renderWeather(gps);
     fireEvent.click(screen.getByRole('button', { name: 'Comparar ciudades' }));
     fireEvent.click(screen.getByRole('button', { name: 'Agregar ubicación seleccionada (Mi ubicación)' }));
-    expect(screen.getByRole('button', { name: 'Quitar Mi ubicación de la comparación' })).toBeTruthy();
+    expect(await screen.findByRole('button', { name: 'Quitar Mi ubicación de la comparación' })).toBeTruthy();
     expect(screen.getByText('Agregue al menos dos ciudades para comparar.')).toBeTruthy();
   });
 
@@ -327,8 +327,11 @@ describe('CurrentWeather', () => {
     fireEvent.click(screen.getByText('Opciones avanzadas'));
     const modelControl = screen.getByLabelText('Modelo numérico');
     expect((modelControl as HTMLSelectElement).options.length).toBe(4);
+    expect(modelControl.getAttribute('aria-describedby')).toBe('forecast-model-description');
+    expect(screen.getByText(/Open-Meteo elige el modelo con mejor cobertura/)).toBeTruthy();
     fireEvent.change(modelControl, { target: { value: 'ncep_gfs_seamless' } });
     await flushPromises();
+    expect(screen.getByText(/Modelo global de la NOAA/)).toBeTruthy();
     expect(mockGetForecast.mock.calls.at(-1)?.[0]).toMatchObject({ latitude: neiva.latitude, longitude: neiva.longitude, forecastDays: 10, temperatureUnit: 'fahrenheit', windSpeedUnit: 'kmh', precipitationUnit: 'mm', model: 'ncep_gfs_seamless' });
     expect(screen.getByText('Modelo: GFS')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Horario' }).getAttribute('aria-pressed')).toBe('true');

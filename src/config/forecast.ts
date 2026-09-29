@@ -1,4 +1,5 @@
 import { API_TIMEOUT_MS } from './api';
+import { es } from '../i18n/es';
 
 export const FORECAST_API_URL = 'https://api.open-meteo.com/v1/forecast';
 export const FORECAST_TIMEOUT_MS = API_TIMEOUT_MS;
@@ -8,10 +9,10 @@ export const DEFAULT_WIND_SPEED_UNIT = 'kmh';
 export const DEFAULT_PRECIPITATION_UNIT = 'mm';
 export const DEFAULT_FORECAST_MODEL = 'best_match';
 export const FORECAST_MODELS = [
-  { value: 'best_match', label: 'Automático' },
-  { value: 'icon_seamless', label: 'ICON' },
-  { value: 'ncep_gfs_seamless', label: 'GFS' },
-  { value: 'ecmwf_ifs025', label: 'ECMWF' },
+  { value: 'best_match', ...es.model.automatic },
+  { value: 'icon_seamless', ...es.model.icon },
+  { value: 'ncep_gfs_seamless', ...es.model.gfs },
+  { value: 'ecmwf_ifs025', ...es.model.ecmwf },
 ] as const;
 export const FORECAST_UNITS_STORAGE_KEY = 'weather-app.units';
 

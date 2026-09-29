@@ -5,19 +5,20 @@ import type { Location } from '../types/location';
 import { useAirQuality } from '../hooks/useAirQuality';
 import { formatForecastNumber } from '../utils/forecast-presentation';
 import { formatAirQualityTime, getNextAirQualityHours, getUsAqiCategory } from '../utils/air-quality';
+import { es } from '../i18n/es';
 
 const POLLUTANTS: Array<{ key: Exclude<AirQualityVariable, 'usAqi'>; label: string; name: string }> = [
-  { key: 'pm25', label: 'PM2.5', name: 'Partículas finas' },
-  { key: 'pm10', label: 'PM10', name: 'Partículas inhalables' },
-  { key: 'ozone', label: 'Ozono (O₃)', name: 'Ozono' },
-  { key: 'nitrogenDioxide', label: 'Dióxido de nitrógeno (NO₂)', name: 'Dióxido de nitrógeno' },
-  { key: 'sulphurDioxide', label: 'Dióxido de azufre (SO₂)', name: 'Dióxido de azufre' },
-  { key: 'carbonMonoxide', label: 'Monóxido de carbono (CO)', name: 'Monóxido de carbono' },
+  { key: 'pm25', label: es.airQuality.pm25, name: es.airQuality.pm25Name },
+  { key: 'pm10', label: es.airQuality.pm10, name: es.airQuality.pm10Name },
+  { key: 'ozone', label: es.airQuality.ozone, name: es.airQuality.ozoneName },
+  { key: 'nitrogenDioxide', label: es.airQuality.nitrogenDioxide, name: es.airQuality.nitrogenDioxideName },
+  { key: 'sulphurDioxide', label: es.airQuality.sulphurDioxide, name: es.airQuality.sulphurDioxideName },
+  { key: 'carbonMonoxide', label: es.airQuality.carbonMonoxide, name: es.airQuality.carbonMonoxideName },
 ];
 
 function formatLocationName(location: Location): string {
   if (location.source === 'geolocation') {
-    return `Mi ubicación (${location.latitude.toFixed(2)}, ${location.longitude.toFixed(2)})`;
+    return `${es.common.myLocation} (${location.latitude.toFixed(2)}, ${location.longitude.toFixed(2)})`;
   }
   return [location.name, location.admin1, location.country]
     .filter((part): part is string => typeof part === 'string' && part.trim().length > 0)
@@ -25,13 +26,13 @@ function formatLocationName(location: Location): string {
 }
 
 function displayMeasure(value: number | null, unit: string | null): string {
-  if (value === null || !Number.isFinite(value)) return 'N/D';
+  if (value === null || !Number.isFinite(value)) return es.common.notAvailable;
   return unit ? `${formatForecastNumber(value)} ${unit}` : formatForecastNumber(value);
 }
 
 function AirQualityPollutants({ data }: { data: AirQualityData }) {
   return (
-    <dl className="air-quality__pollutants" aria-label="Concentraciones actuales de contaminantes">
+    <dl className="air-quality__pollutants" aria-label={es.airQuality.pollutantGroup}>
       {POLLUTANTS.map(({ key, label, name }) => (
         <div className="air-quality__pollutant" key={key}>
           <dt><span className="air-quality__pollutant-code">{label}</span><span className="air-quality__pollutant-name">{name}</span></dt>
@@ -57,11 +58,11 @@ function AirQualityTrend({ data }: { data: AirQualityData }) {
           return (
             <li className="air-quality__hour" key={hour.time}>
               <h4><time dateTime={hour.time}>{formatAirQualityTime(hour.time)}</time></h4>
-              <p className="air-quality__hour-aqi">{hour.usAqi === null ? 'AQI: N/D' : `AQI: ${formatForecastNumber(hour.usAqi, 0)}`}</p>
-              <p>{category?.label ?? 'Categoría N/D'}</p>
+              <p className="air-quality__hour-aqi">{es.airQuality.aqi}: {hour.usAqi === null ? es.common.notAvailable : formatForecastNumber(hour.usAqi, 0)}</p>
+              <p>{category?.label ?? es.airQuality.unavailableCategory}</p>
               <dl>
-                <div><dt>PM2.5</dt><dd>{displayMeasure(hour.pm25, data.units.hourly.pm25)}</dd></div>
-                <div><dt>PM10</dt><dd>{displayMeasure(hour.pm10, data.units.hourly.pm10)}</dd></div>
+                <div><dt>{es.airQuality.pm25}</dt><dd>{displayMeasure(hour.pm25, data.units.hourly.pm25)}</dd></div>
+                <div><dt>{es.airQuality.pm10}</dt><dd>{displayMeasure(hour.pm10, data.units.hourly.pm10)}</dd></div>
               </dl>
             </li>
           );
@@ -78,18 +79,18 @@ export function AirQualityPanel({ activeLocation }: { activeLocation: Location |
     <section className="air-quality" aria-labelledby="air-quality-title">
       <header className="air-quality__header">
         <div>
-          <p className="air-quality__eyebrow">Atmósfera</p>
-          <h2 id="air-quality-title">Calidad del aire</h2>
+          <p className="air-quality__eyebrow">{es.airQuality.eyebrow}</p>
+          <h2 id="air-quality-title">{es.airQuality.title}</h2>
           {activeLocation && <p className="air-quality__location">{formatLocationName(activeLocation)}</p>}
         </div>
       </header>
 
       {state.status === 'idle' && <p className="air-quality__empty">{AIR_QUALITY_TEXT.noLocation}</p>}
-      {state.status === 'loading' && <p className="air-quality__status" role="status" aria-live="polite" aria-label="Carga de calidad del aire">{AIR_QUALITY_TEXT.loading}</p>}
+      {state.status === 'loading' && <p className="air-quality__status" role="status" aria-live="polite" aria-label={es.airQuality.loadingLabel}>{AIR_QUALITY_TEXT.loading}</p>}
       {state.status === 'error' && (
         <div className="air-quality__error" role="alert">
           <span>{APP_ERROR_MESSAGES[state.error.code]}</span>
-          <button type="button" className="air-quality__retry" onClick={retry}>Reintentar</button>
+          <button type="button" className="air-quality__retry" onClick={retry}>{es.common.retry}</button>
         </div>
       )}
       {state.status === 'success' && (
@@ -103,11 +104,11 @@ export function AirQualityPanel({ activeLocation }: { activeLocation: Location |
                 <div
                   className={`air-quality__aqi air-quality__aqi--${category?.level ?? 'unavailable'}`}
                   role="group"
-                  aria-label={`Índice de calidad del aire: ${formatForecastNumber(state.data.current.usAqi)}, categoría ${category?.label ?? 'N/D'}.`}
+                  aria-label={es.airQuality.aqiAnnouncement(formatForecastNumber(state.data.current.usAqi), category?.label ?? es.common.notAvailable)}
                 >
-                  <span className="air-quality__aqi-label">Índice de calidad del aire · US AQI</span>
+                  <span className="air-quality__aqi-label">{es.airQuality.aqiLabel}</span>
                   <strong>{formatForecastNumber(state.data.current.usAqi, 0)}</strong>
-                  <span className="air-quality__category">{category?.label ?? 'N/D'}</span>
+                  <span className="air-quality__category">{category?.label ?? es.common.notAvailable}</span>
                   {category && <p>{category.message}</p>}
                 </div>
               );
@@ -122,9 +123,9 @@ export function AirQualityPanel({ activeLocation }: { activeLocation: Location |
       <footer className="air-quality__attribution">
         <span>{AIR_QUALITY_TEXT.sourceAttribution}</span>
         {' '}
-        <a href="https://atmosphere.copernicus.eu/" target="_blank" rel="noopener noreferrer">CAMS ENSEMBLE</a>
+        <a href="https://atmosphere.copernicus.eu/" target="_blank" rel="noopener noreferrer">{es.airQuality.camsSource}</a>
         {' · '}
-        <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>
+        <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">{es.airQuality.openMeteoSource}</a>
       </footer>
     </section>
   );

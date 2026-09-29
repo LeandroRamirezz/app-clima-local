@@ -3,9 +3,11 @@ import { APP_ERROR_MESSAGES } from '../types/errors';
 import type { ForecastUnits } from '../types/forecast';
 import { HistoricalDateError } from '../types/historical';
 import type { Location } from '../types/location';
-import { getHistoricalDateLimits, getDefaultHistoricalRange, validateHistoricalDateRange, formatHistoricalDate } from '../utils/historical-dates';
+import { getHistoricalDateLimits, getDefaultHistoricalRange, validateHistoricalDateRange, formatHistoricalDate, addCalendarDays } from '../utils/historical-dates';
 import { formatForecastNumber, getForecastUnits } from '../utils/forecast-presentation';
 import { useHistoricalWeather } from '../hooks/useHistoricalWeather';
+import { formatHistoricalDifference, type HistoricalMetric } from '../utils/historical-comparison';
+import { es } from '../i18n/es';
 
 interface HistoricalWeatherProps {
   activeLocation: Location | null;
@@ -13,7 +15,7 @@ interface HistoricalWeatherProps {
 }
 
 function formatLocation(location: Location): string {
-  if (location.source === 'geolocation') return `Mi ubicación (${location.latitude.toFixed(2)}, ${location.longitude.toFixed(2)})`;
+  if (location.source === 'geolocation') return `${es.common.myLocation} (${location.latitude.toFixed(2)}, ${location.longitude.toFixed(2)})`;
   return [location.name, location.admin1, location.country]
     .filter((part): part is string => typeof part === 'string' && part.trim().length > 0)
     .join(', ');
@@ -25,7 +27,7 @@ function hasValidLocation(location: Location | null): location is Location {
 }
 
 function displayHistoricalValue(value: number | null, unit: string, fractionDigits = 1): string {
-  if (value === null || !Number.isFinite(value)) return 'N/D';
+  if (value === null || !Number.isFinite(value)) return es.common.notAvailable;
   return `${formatForecastNumber(value, fractionDigits)} ${unit}`;
 }
 
@@ -34,6 +36,10 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
   const [endDate, setEndDate] = useState(() => getDefaultHistoricalRange().endDate);
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
   const { state, submit, retry } = useHistoricalWeather(activeLocation, units);
+  const comparison = useHistoricalWeather(activeLocation, units);
+  const [comparisonDate, setComparisonDate] = useState(() => addCalendarDays(getDefaultHistoricalRange().endDate, -1) ?? getDefaultHistoricalRange().endDate);
+  const [comparisonBaseDate, setComparisonBaseDate] = useState<string | null>(null);
+  const [comparisonValidation, setComparisonValidation] = useState<string | null>(null);
   const locationIsValid = hasValidLocation(activeLocation);
   const dateLimits = getHistoricalDateLimits();
   const historicalUnits = getForecastUnits(units);
@@ -41,15 +47,35 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!locationIsValid) {
-      setValidationMessage('Seleccione una ubicación válida antes de consultar datos históricos.');
+      setValidationMessage(es.historical.invalidLocation);
       return;
     }
     try {
       validateHistoricalDateRange(startDate, endDate);
       setValidationMessage(null);
+      comparison.clear();
+      setComparisonBaseDate(null);
+      setComparisonValidation(null);
       submit({ startDate, endDate });
     } catch (error) {
-      setValidationMessage(error instanceof HistoricalDateError ? error.message : 'Ingrese fechas válidas para consultar el histórico.');
+      setValidationMessage(error instanceof HistoricalDateError ? error.message : es.historical.invalidDate);
+    }
+  }
+
+  function handleCompare(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (state.status !== 'success' || state.snapshot.startDate !== state.snapshot.endDate) return;
+    try {
+      validateHistoricalDateRange(comparisonDate, comparisonDate);
+      if (comparisonDate === state.snapshot.startDate) {
+        setComparisonValidation(es.historical.sameDate);
+        return;
+      }
+      setComparisonValidation(null);
+      setComparisonBaseDate(state.snapshot.startDate);
+      comparison.submit({ startDate: comparisonDate, endDate: comparisonDate });
+    } catch (error) {
+      setComparisonValidation(error instanceof HistoricalDateError ? error.message : es.historical.invalidDate);
     }
   }
 
@@ -59,24 +85,37 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
       ? formatHistoricalDate(querySnapshot.startDate)
       : `${formatHistoricalDate(querySnapshot.startDate)} – ${formatHistoricalDate(querySnapshot.endDate)}`
     : null;
-  const resultHeading = `Histórico — ${dateDescription ?? ''}`;
+  const resultHeading = `${es.historical.resultPrefix} — ${dateDescription ?? ''}`;
   const resultUnits = state.status === 'success' ? getForecastUnits(state.data.units) : historicalUnits;
+  const primaryDay = state.status === 'success' && state.snapshot.startDate === state.snapshot.endDate
+    ? state.data.days.find((day) => day.date === state.snapshot.startDate) : undefined;
+  const comparisonDay = comparison.state.status === 'success' && comparisonBaseDate === primaryDay?.date
+    && comparison.state.snapshot.startDate === comparisonDate
+    ? comparison.state.data.days.find((day) => day.date === comparisonDate) : undefined;
+  const comparisonMetrics: { key: HistoricalMetric; label: string; unit: string }[] = [
+    { key: 'temperatureMax', label: es.historical.max, unit: resultUnits.temperature },
+    { key: 'temperatureMin', label: es.historical.min, unit: resultUnits.temperature },
+    { key: 'temperatureMean', label: es.historical.mean, unit: resultUnits.temperature },
+    { key: 'precipitationSum', label: es.historical.precipitation, unit: resultUnits.precipitation },
+    { key: 'windSpeedMax', label: es.historical.maxWind, unit: resultUnits.windSpeed },
+    { key: 'humidity', label: es.historical.meanHumidity, unit: '%' },
+  ];
 
   return (
     <section className="historical-weather" aria-labelledby="historical-weather-title">
       <header className="historical-weather__header">
         <div>
-          <p className="historical-weather__eyebrow">Registro climático</p>
-          <h2 id="historical-weather-title">Históricos</h2>
-          <p>Consulta datos diarios de temperatura, precipitación, viento y humedad.</p>
+          <p className="historical-weather__eyebrow">{es.historical.eyebrow}</p>
+          <h2 id="historical-weather-title">{es.historical.title}</h2>
+          <p>{es.historical.description}</p>
         </div>
       </header>
 
-      {!locationIsValid && <p className="historical-weather__empty">Seleccione una ubicación antes de consultar datos históricos.</p>}
+      {!locationIsValid && <p className="historical-weather__empty">{es.historical.noLocation}</p>}
 
       <form className="historical-weather__form" onSubmit={handleSubmit} noValidate>
         <div className="historical-weather__date-field">
-          <label htmlFor="historical-start-date">Fecha inicial</label>
+          <label htmlFor="historical-start-date">{es.historical.startDate}</label>
           <input
             id="historical-start-date"
             lang="es-CO"
@@ -88,10 +127,10 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
             aria-invalid={Boolean(validationMessage)}
             aria-describedby={validationMessage ? 'historical-date-error' : 'historical-start-date-format'}
           />
-          <span id="historical-start-date-format" className="historical-weather__format-help">Formato: DD/MM/AAAA</span>
+          <span id="historical-start-date-format" className="historical-weather__format-help">{es.historical.dateFormat}</span>
         </div>
         <div className="historical-weather__date-field">
-          <label htmlFor="historical-end-date">Fecha final</label>
+          <label htmlFor="historical-end-date">{es.historical.endDate}</label>
           <input
             id="historical-end-date"
             lang="es-CO"
@@ -103,17 +142,17 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
             aria-invalid={Boolean(validationMessage)}
             aria-describedby={validationMessage ? 'historical-date-error' : 'historical-end-date-format'}
           />
-          <span id="historical-end-date-format" className="historical-weather__format-help">Formato: DD/MM/AAAA</span>
+          <span id="historical-end-date-format" className="historical-weather__format-help">{es.historical.dateFormat}</span>
         </div>
-        <button className="historical-weather__submit" type="submit" disabled={!locationIsValid}>Consultar histórico</button>
+        <button className="historical-weather__submit" type="submit" disabled={!locationIsValid}>{es.historical.query}</button>
       </form>
 
       {validationMessage && <p id="historical-date-error" className="historical-weather__validation" role="alert">{validationMessage}</p>}
 
-      {state.status === 'loading' && <p className="historical-weather__status" role="status" aria-live="polite">Consultando datos históricos…</p>}
+      {state.status === 'loading' && <p className="historical-weather__status" role="status" aria-live="polite">{es.historical.querying}</p>}
       {state.status === 'error' && <div className="historical-weather__error" role="alert">
         <span>{APP_ERROR_MESSAGES[state.error.code]}</span>
-        <button type="button" className="historical-weather__retry" onClick={retry}>Reintentar</button>
+        <button type="button" className="historical-weather__retry" onClick={retry}>{es.historical.retry}</button>
       </div>}
 
       {state.status === 'success' && locationIsValid && (
@@ -121,23 +160,23 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
           <div className="historical-weather__results-header">
             <div>
               <h3>{resultHeading}</h3>
-              <p>{formatLocation(activeLocation!)} · {state.data.days.length} {state.data.days.length === 1 ? 'día' : 'días'}</p>
+              <p>{formatLocation(activeLocation!)} · {es.historical.dayCount(state.data.days.length)}</p>
             </div>
             <span className="historical-weather__units">{resultUnits.temperature} · {resultUnits.windSpeed} · {resultUnits.precipitation}</span>
           </div>
-          <p className="historical-weather__result-status" role="status">Se encontraron {state.data.days.length} {state.data.days.length === 1 ? 'día' : 'días'} de datos históricos.</p>
-          <div className="historical-weather__table-scroll" role="region" aria-label="Resultados meteorológicos históricos" tabIndex={0}>
+          <p className="historical-weather__result-status" role="status">{es.historical.resultStatus(state.data.days.length)}</p>
+          <div className="historical-weather__table-scroll" role="region" aria-label={es.historical.resultRegion} tabIndex={0}>
             <table className="historical-weather__table">
-              <caption>Datos meteorológicos diarios de {formatLocation(activeLocation!)} entre {dateDescription}</caption>
+              <caption>{es.historical.resultCaption(formatLocation(activeLocation!), dateDescription ?? '')}</caption>
               <thead>
                 <tr>
-                  <th scope="col">Fecha</th>
-                  <th scope="col">Máxima</th>
-                  <th scope="col">Mínima</th>
-                  <th scope="col">Media</th>
-                  <th scope="col">Precipitación</th>
-                  <th scope="col">Viento máx.</th>
-                  <th scope="col">Humedad media</th>
+                  <th scope="col">{es.historical.date}</th>
+                  <th scope="col">{es.historical.max}</th>
+                  <th scope="col">{es.historical.min}</th>
+                  <th scope="col">{es.historical.mean}</th>
+                  <th scope="col">{es.historical.precipitation}</th>
+                  <th scope="col">{es.historical.maxWind}</th>
+                  <th scope="col">{es.historical.meanHumidity}</th>
                 </tr>
               </thead>
               <tbody>
@@ -155,6 +194,31 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
               </tbody>
             </table>
           </div>
+          {primaryDay ? <section className="historical-weather__comparison" aria-labelledby="historical-comparison-title">
+            <h4 id="historical-comparison-title">{es.historical.comparisonTitle}</h4>
+            <p>{es.historical.comparisonHelp}</p>
+            <form className="historical-weather__compare-form" onSubmit={handleCompare} noValidate>
+              <div className="historical-weather__date-field">
+                <label htmlFor="historical-comparison-date">{es.historical.comparisonDate}</label>
+                <input id="historical-comparison-date" type="date" lang="es-CO" min="1940-01-01" max={dateLimits.lastAvailableDate} value={comparisonDate} onChange={(event) => { setComparisonDate(event.currentTarget.value); setComparisonValidation(null); }} aria-invalid={Boolean(comparisonValidation)} aria-describedby={comparisonValidation ? 'historical-comparison-error' : undefined} />
+              </div>
+              <button type="submit" className="historical-weather__submit">{es.historical.compareAction}</button>
+            </form>
+            {comparisonValidation && <p id="historical-comparison-error" role="alert" className="historical-weather__validation">{comparisonValidation}</p>}
+            {comparison.state.status === 'loading' && <p role="status">{es.historical.comparisonLoading}</p>}
+            {comparison.state.status === 'error' && <div role="alert" className="historical-weather__error"><span>{APP_ERROR_MESSAGES[comparison.state.error.code]}</span><button type="button" className="historical-weather__retry" onClick={comparison.retry}>{es.historical.comparisonRetry}</button></div>}
+            {comparisonDay && comparison.state.status === 'success' && <>
+              <p role="status">{es.historical.comparisonStatus}</p>
+              <p className="historical-weather__format-help">{es.historical.differenceHelp}</p>
+              <div className="historical-weather__table-scroll" role="region" aria-label={es.historical.comparisonTitle} tabIndex={0}>
+                <table className="historical-weather__table">
+                  <caption>{es.historical.comparisonCaption}: {formatHistoricalDate(primaryDay.date)} y {formatHistoricalDate(comparisonDay.date)}</caption>
+                  <thead><tr><th scope="col">{es.historical.variable}</th><th scope="col">{formatHistoricalDate(primaryDay.date)}</th><th scope="col">{formatHistoricalDate(comparisonDay.date)}</th><th scope="col">{es.historical.difference}</th></tr></thead>
+                  <tbody>{comparisonMetrics.map(({ key, label, unit }) => <tr key={key}><th scope="row">{label}</th><td>{displayHistoricalValue(primaryDay[key], unit, key === 'humidity' ? 0 : 1)}</td><td>{displayHistoricalValue(comparisonDay[key], unit, key === 'humidity' ? 0 : 1)}</td><td>{formatHistoricalDifference(primaryDay, comparisonDay, key, unit)}</td></tr>)}</tbody>
+                </table>
+              </div>
+            </>}
+          </section> : state.data.days.length > 1 && <p className="historical-weather__format-help">{es.historical.comparisonUnavailable}</p>}
         </div>
       )}
     </section>
