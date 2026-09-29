@@ -1,0 +1,47 @@
+{
+  "id_caso": "TC-SS-004",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-05 (Datos históricos)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Consulta por rango de fechas: rango válido, límite de 31 días, rango invertido y valores nulos en el periodo. Verificar que el sistema permita consultar un rango de hasta 31 días mostrando un dato por cada día, rechace rangos de más de 31 días o con fecha inicial posterior a la final, y muestre \"N/D\" en los días o variables que la API devuelva nulos sin romper la vista.",
+  "precondiciones": "Ubicación activa: Neiva. Unidades por defecto. Para el escenario de nulos: interceptación de /v1/archive con Playwright (page.route) que devuelve nulos en posiciones específicas.",
+  "pasos_ejecutados": [
+    "0. Seleccionar Neiva, Huila como ubicación activa y abrir «Históricos» (unidades por defecto).",
+    "1. Consultar el rango A (01/08/2026 – 07/08/2026) y verificar 7 filas en orden, iguales a daily.time y demás arreglos.",
+    "2. Consultar el rango B (01/08/2026 – 31/08/2026) y verificar 31 filas iguales a la API.",
+    "3. Intentar el rango C (01/08/2026 – 01/09/2026, 32 días) y verificar mensaje y 0 solicitudes a /v1/archive.",
+    "4. Intentar el rango D (inicio 10/08/2026, fin 05/08/2026) y verificar mensaje y 0 solicitudes a /v1/archive.",
+    "5. Activar el mock de Playwright sobre /v1/archive (precipitation_sum[2] = null y relative_humidity_2m_mean = [null×7]) y consultar el rango A.",
+    "6. Verificar «N/D» en la precipitación del 03/08/2026 y en la humedad de los 7 días, y que el resto de valores se muestre normal."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-004 --project=ss"
+  ],
+  "resultado_esperado": "A: HTTP 200; 7 filas (01/08/2026 a 07/08/2026) con valores iguales a la API. B: HTTP 200; 31 filas. C: «El rango máximo permitido es de 31 días.» sin solicitud a la API. D: «La fecha inicial no puede ser posterior a la final.» sin solicitud a la API. E: «N/D» solo en las celdas nulas; los demás datos se ven normalmente. Nunca aparece «null», «NaN» ni una vista en blanco.",
+  "resultado_obtenido": "Los 5 escenarios cumplieron (1/1 test aprobado). A: HTTP 200, 7 filas de 01/08/2026 a 07/08/2026 en orden ascendente, 42/42 celdas iguales a la API. B: HTTP 200, 31 filas de 01/08/2026 a 31/08/2026, 186/186 celdas iguales a la API. C: mensaje «El rango máximo permitido es de 31 días.» y 0 solicitudes a /v1/archive. D: mensaje «La fecha inicial no puede ser posterior a la final.» y 0 solicitudes a /v1/archive. E (mock): HTTP 200, 7 filas; «N/D» exactamente en 8 celdas (precipitación del 03/08/2026 y humedad de los 7 días) y las 34 celdas restantes idénticas a las del escenario A. En ningún escenario apareció «null», «NaN», «undefined» ni una vista en blanco. Sin errores de consola.",
+  "tiempo_respuesta_ms": null,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-004__2026-09-28__run01/resumen-rangos.json",
+    "evidencias/TC-SS-004__2026-09-28__run01/escenario-A-7-dias.png",
+    "evidencias/TC-SS-004__2026-09-28__run01/escenario-B-31-dias.png",
+    "evidencias/TC-SS-004__2026-09-28__run01/escenario-C-32-dias.png",
+    "evidencias/TC-SS-004__2026-09-28__run01/escenario-D-invertido.png",
+    "evidencias/TC-SS-004__2026-09-28__run01/escenario-E-nulos.png"
+  ],
+  "observaciones": "El escenario E se simuló con page.route de Playwright: se obtiene la respuesta real de /v1/archive y se reemplazan solo daily.precipitation_sum[2] y daily.relative_humidity_2m_mean por null antes de entregarla a la app. En A y B las coordenadas enviadas fueron las de Geocoding para Neiva (2.93001, -75.27973), que difieren menos de 0,01° de las del diseño. No se midió tiempo de respuesta porque el caso es funcional."
+}
