@@ -1,0 +1,22 @@
+{
+  "escenario": "E-01",
+  "descripcion": "Sin conexión (context.setOffline(true))",
+  "mensaje_esperado": "No hay conexión a internet. Verifique su red e intente nuevamente.",
+  "mensaje_mostrado": "No hay conexión a internet. Verifique su red e intente nuevamente.",
+  "dentro_de_role_alert": true,
+  "boton_reintentar": true,
+  "tiempo_hasta_error_ms": 88,
+  "texto_crudo_detectado": null,
+  "reintentos_automaticos_en_10s": null,
+  "solicitudes_tras_reintentar": 1,
+  "datos_tras_reintentar": [
+    "37,8 °C",
+    "26,8 °C",
+    "32,6 °C",
+    "0 mm",
+    "16,3 km/h",
+    "40 %"
+  ],
+  "resto_app_operativo": true,
+  "errores_consola": []
+}

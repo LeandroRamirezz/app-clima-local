@@ -1,0 +1,60 @@
+{
+  "id_caso": "TC-SS-006",
+  "bloque_qa": "ss",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-05 (Datos históricos), RNF-12 (Resiliencia)",
+  "evaluador": {
+    "nombre": "Sara Sofía González Gómez",
+    "rol": "ss"
+  },
+  "fecha_ejecucion": "2026-09-28",
+  "numero_ejecucion": 1,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "66860ed (origin/main)"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Manejo de errores E-01 a E-05 en la consulta de históricos. Verificar que ante cada escenario del catálogo E-01 a E-05 aplicado a /v1/archive, la sección de históricos muestre el mensaje exacto en una región role=\"alert\", con botón Reintentar, sin texto crudo de la API y sin romper el resto de la aplicación.",
+  "precondiciones": "Ubicación activa: Neiva. Fecha válida seleccionada: 15/09/2026. Interceptación de red configurada en Playwright para /v1/archive, un escenario por ejecución.",
+  "pasos_ejecutados": [
+    "0. Seleccionar Neiva, Huila como ubicación activa, abrir «Históricos» y seleccionar 15/09/2026.",
+    "1. Para cada escenario (en una ejecución aislada), activar la interceptación de /v1/archive y pulsar «Consultar histórico».",
+    "2. Verificar el texto exacto del mensaje dentro del elemento role=\"alert\".",
+    "3. Verificar que el botón «Reintentar» esté visible y habilitado dentro de la alerta.",
+    "4. Verificar que la sección no muestre el «reason» de la API, el código HTTP ni trazas técnicas, y que no quede tabla de datos.",
+    "5. En E-03, esperar 10 s sin interactuar y contar las solicitudes a /v1/archive (reintentos automáticos).",
+    "6. Quitar la interceptación, pulsar «Reintentar» y verificar que se cargan los datos de 15/09/2026.",
+    "7. Verificar que la búsqueda, la geolocalización y las pestañas «Clima», «Calidad del aire» e «Históricos» siguen visibles y operativas."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/ss/TC-SS-006 --project=ss"
+  ],
+  "resultado_esperado": "E-01: «No hay conexión a internet. Verifique su red e intente nuevamente.» E-02: «La consulta tardó demasiado. Intente nuevamente.» E-03: «Se alcanzó el límite de consultas del servicio meteorológico. Espere unos minutos e intente de nuevo.» y ninguna solicitud automática adicional en los 10 s siguientes. E-04: «No fue posible procesar la consulta. Verifique los datos ingresados.» E-05 (a y b): «El servicio meteorológico no está disponible en este momento. Intente más tarde.» Todos en role=\"alert\", con botón Reintentar funcional, sin texto crudo, y el resto de la app operativa.",
+  "resultado_obtenido": "Los 6 escenarios cumplieron (6/6 tests aprobados). En todos, el mensaje exacto del catálogo apareció dentro de role=\"alert\" con el botón «Reintentar» visible y habilitado; no se mostró el reason de la API, códigos HTTP ni trazas técnicas; y no quedó tabla de datos. E-01 (offline): mensaje E-01 en 88 ms. E-02 (retraso 11 s): mensaje E-02 a los 10355 ms (corte por el timeout de 10 s). E-03 (HTTP 429): mensaje E-03 y 0 solicitudes automáticas en los 10 s siguientes. E-04 (HTTP 400 con reason): mensaje E-04, sin mostrar «Parameter start_date is out of allowed range». E-05a (HTTP 503) y E-05b (HTTP 200 con «{daily: [»): mensaje E-05. Tras quitar la interceptación, «Reintentar» envió 1 solicitud y cargó los datos de 15/09/2026 (37,8 °C · 26,8 °C · 32,6 °C · 0 mm · 16,3 km/h · 40 %) en los 6 escenarios. La búsqueda, «Usar mi ubicación» y las pestañas «Clima» (clima de Neiva cargado), «Calidad del aire» e «Históricos» siguieron operativas. Sin errores de consola.",
+  "tiempo_respuesta_ms": null,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-SS-006__2026-09-28__run01/e01-sin-conexion.json",
+    "evidencias/TC-SS-006__2026-09-28__run01/e01-sin-conexion__error.png",
+    "evidencias/TC-SS-006__2026-09-28__run01/e01-sin-conexion__reintento.png",
+    "evidencias/TC-SS-006__2026-09-28__run01/e02-timeout-11s.json",
+    "evidencias/TC-SS-006__2026-09-28__run01/e02-timeout-11s__error.png",
+    "evidencias/TC-SS-006__2026-09-28__run01/e02-timeout-11s__reintento.png",
+    "evidencias/TC-SS-006__2026-09-28__run01/e03-http-429.json",
+    "evidencias/TC-SS-006__2026-09-28__run01/e03-http-429__error.png",
+    "evidencias/TC-SS-006__2026-09-28__run01/e03-http-429__reintento.png",
+    "evidencias/TC-SS-006__2026-09-28__run01/e04-http-400.json",
+    "evidencias/TC-SS-006__2026-09-28__run01/e04-http-400__error.png",
+    "evidencias/TC-SS-006__2026-09-28__run01/e04-http-400__reintento.png",
+    "evidencias/TC-SS-006__2026-09-28__run01/e05a-http-503.json",
+    "evidencias/TC-SS-006__2026-09-28__run01/e05a-http-503__error.png",
+    "evidencias/TC-SS-006__2026-09-28__run01/e05a-http-503__reintento.png",
+    "evidencias/TC-SS-006__2026-09-28__run01/e05b-json-malformado.json",
+    "evidencias/TC-SS-006__2026-09-28__run01/e05b-json-malformado__error.png",
+    "evidencias/TC-SS-006__2026-09-28__run01/e05b-json-malformado__reintento.png"
+  ],
+  "observaciones": "Cada escenario se ejecutó como un test independiente (contexto de navegador propio). E-01 se simuló con context.setOffline(true); los demás con page.route de Playwright sobre /v1/archive. En E-02 la respuesta se retuvo 11 000 ms y la app cortó la solicitud a los ~10 s (timeout configurado de 10 000 ms). No se midió tiempo de respuesta de la API porque las respuestas son simuladas; tiempo_respuesta_ms no aplica."
+}
