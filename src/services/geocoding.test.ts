@@ -27,7 +27,7 @@ describe('searchCities', () => {
     const url = new URL(fetchMock.mock.calls[0]![0] as URL);
     expect(url.searchParams.get('name')).toBe('São Paulo & Cía'); expect(url.search).toContain('%26');
   });
-  it.each(['a', '   ', 'x'.repeat(101)])('rechaza consulta inválida sin petición', async (query) => {
+  it.each(['a', '   ', '!!!', 'A!', 'x'.repeat(101)])('rechaza consulta inválida sin petición', async (query) => {
     const fetchMock = vi.fn(); vi.stubGlobal('fetch', fetchMock);
     await expect(searchCities(query)).rejects.toMatchObject({ code: 'E-04' }); expect(fetchMock).not.toHaveBeenCalled();
   });

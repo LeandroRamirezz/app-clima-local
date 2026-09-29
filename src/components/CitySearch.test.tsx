@@ -678,6 +678,15 @@ describe('CitySearch', () => {
     expect(activeLocationText('Neiva, Colombia')).toBeTruthy();
   });
 
+  it('muestra validación para solo símbolos sin consultar ni anunciar cero resultados', async () => {
+    renderCitySearch();
+    await search('!!!');
+    expect(mockSearchCities).not.toHaveBeenCalled();
+    expect(screen.getByText('Ingrese al menos 2 caracteres válidos.')).toBeTruthy();
+    expect(screen.queryByText(/No se encontraron ubicaciones/)).toBeNull();
+    expect(screen.queryByRole('listbox')).toBeNull();
+  });
+
   it('limpia la búsqueda de inmediato y devuelve el foco al campo', async () => {
     renderCitySearch();
     await search('Neiva');
