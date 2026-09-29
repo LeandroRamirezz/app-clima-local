@@ -104,6 +104,8 @@ export const es = {
     numericModel: 'Modelo numérico',
     advancedOptions: 'Opciones avanzadas',
     activeModel: 'Modelo',
+    coverageUnavailable: (name: string) => `El modelo ${name} no tiene datos para esta ubicación. Se muestran los datos disponibles o puede volver a Automático.`,
+    backToAutomatic: 'Volver a Automático',
   },
   historical: {
     eyebrow: 'Registro climático',

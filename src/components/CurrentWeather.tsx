@@ -113,6 +113,10 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
   }, []);
   const forecastCallbacks = { onSuccess: handleForecastSuccess, onUnsupportedModel: handleUnsupportedModel };
   const { state, retry, isRefreshing } = useCurrentWeather(activeArea === 'climate' ? activeLocation : null, forecastDays, preferences.units, model, forecastCallbacks);
+  const modelCoverageUnavailable = model !== DEFAULT_FORECAST_MODEL
+    && state.status === 'success'
+    && state.data.current.temperature === null
+    && state.data.current.weatherCode === null;
 
   function addComparisonLocation(location: Location) {
     if (comparisonLocations.some((existing) => areSameLocation(existing, location))) {
@@ -205,6 +209,10 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
       )}
       {activeArea === 'climate' && activeLocation && state.status === 'success' && (
         <>
+          {modelCoverageUnavailable && <div className="current-weather__model-coverage" role="status">
+            <p>{es.model.coverageUnavailable(FORECAST_MODELS.find((option) => option.value === model)?.label ?? model)}</p>
+            <button type="button" onClick={() => setModel(DEFAULT_FORECAST_MODEL)}>{es.model.backToAutomatic}</button>
+          </div>}
           <CurrentWeatherDetails forecast={state.data} location={activeLocation} />
           <Suspense fallback={<p className="current-weather__status" role="status">{es.weather.loadingSection}</p>}>
             <ForecastPanel forecast={state.data} view={forecastView} />

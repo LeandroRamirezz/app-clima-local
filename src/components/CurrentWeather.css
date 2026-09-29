@@ -33,6 +33,11 @@
 .current-weather__advanced[open] .current-weather__forecast-setting { margin-top: .5rem; }
 .current-weather__model-label { flex-basis: 100%; margin: 0; color: #526b7b; font-size: .9rem; }
 .current-weather__model-fallback { margin: .5rem 0; color: #8d2020; }
+.current-weather__model-coverage { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem; min-width: 0; margin: 0 0 1rem; padding: .75rem 1rem; border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius-control); background: var(--soft); overflow-wrap: anywhere; }
+.current-weather__model-coverage p { flex: 1 1 20rem; min-width: 0; margin: 0; }
+.current-weather__model-coverage button { min-height: 2.75rem; padding: .45rem .75rem; border: 1px solid var(--accent); border-radius: var(--radius-control); color: var(--accent); background: var(--surface); font-weight: 650; }
+.current-weather__model-coverage button:hover { color: var(--surface); background: var(--accent-hover); }
+.current-weather__model-coverage button:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 .current-weather__solar { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin: 1rem 0 0; padding-top: 1rem; border-top: 1px solid #d7e2e9; }
 .current-weather__solar > div { min-width: 0; }
 .current-weather__solar dt { color: #526b7b; font-size: .9rem; }

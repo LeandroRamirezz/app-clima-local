@@ -122,3 +122,33 @@ test('BUG-002: Forecast HTTP 429 muestra E-03 sin botón Reintentar', async ({ p
   await expect(page.locator('.current-weather__retry')).toHaveCount(0);
   expect(forecastRequests).toBe(1);
 });
+
+test('BUG-003: ICON con datos nulos informa cobertura y permite volver a Automático', async ({ page }) => {
+  await mockApis(page);
+  const models: string[] = [];
+  await page.route(/https:\/\/api\.open-meteo\.com\/v1\/forecast/, async (route) => {
+    const url = new URL(route.request().url());
+    const model = url.searchParams.get('models') ?? '';
+    models.push(model);
+    const payload = forecastPayload(url);
+    await route.fulfill({ json: model === 'icon_seamless'
+      ? { ...payload, current: { ...payload.current, temperature_2m: null, weather_code: null } }
+      : payload });
+  });
+  await page.goto('/');
+  await selectCity(page, 'Neiva');
+  await expect(page.getByRole('heading', { name: 'Clima actual' })).toBeVisible();
+  await page.locator('.current-weather__preferences > summary').click();
+  await page.getByText('Opciones avanzadas').click();
+  await page.getByLabel('Modelo numérico').selectOption('icon_seamless');
+  await expect(page.getByText('El modelo ICON no tiene datos para esta ubicación. Se muestran los datos disponibles o puede volver a Automático.')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Volver a Automático' })).toBeVisible();
+  await expect(page.getByText('Condición no disponible')).toBeVisible();
+  await page.setViewportSize({ width: 320, height: 720 });
+  const width = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
+  expect(width.scroll).toBeLessThanOrEqual(width.client);
+  await page.getByRole('button', { name: 'Volver a Automático' }).click();
+  await expect(page.getByText('Modelo: Automático')).toBeVisible();
+  await expect(page.getByText(/El modelo ICON no tiene datos/)).toHaveCount(0);
+  expect(models).toEqual(['best_match', 'icon_seamless', 'best_match']);
+});

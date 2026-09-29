@@ -356,6 +356,41 @@ describe('CurrentWeather', () => {
     expect(localStorage.getItem(FORECAST_UNITS_STORAGE_KEY)).not.toContain('ecmwf_ifs025');
   });
 
+  it('avisa la falta de cobertura de ICON con HTTP 200 y permite volver a Automático', async () => {
+    mockGetForecast.mockResolvedValueOnce(forecast());
+    mockGetForecast.mockResolvedValueOnce(forecast({ temperature: null, weatherCode: null }));
+    mockGetForecast.mockResolvedValueOnce(forecast());
+    renderWeather();
+    await flushPromises();
+    fireEvent.click(screen.getByText('Opciones avanzadas'));
+    fireEvent.change(screen.getByLabelText('Modelo numérico'), { target: { value: 'icon_seamless' } });
+    await flushPromises();
+    expect(screen.getByRole('status').textContent).toContain('El modelo ICON no tiene datos para esta ubicación. Se muestran los datos disponibles o puede volver a Automático.');
+    expect(screen.getByText('Condición no disponible')).toBeTruthy();
+    expect(screen.getAllByText('N/D').length).toBeGreaterThan(0);
+    expect(screen.getByText('30,1 °C')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Volver a Automático' })).toBeTruthy();
+    expect(mockGetForecast).toHaveBeenCalledTimes(2);
+    fireEvent.click(screen.getByRole('button', { name: 'Volver a Automático' }));
+    await flushPromises();
+    expect(mockGetForecast).toHaveBeenCalledTimes(3);
+    expect(mockGetForecast.mock.calls[2]?.[0].model).toBe('best_match');
+    expect(screen.getByText('Modelo: Automático')).toBeTruthy();
+    expect(screen.queryByText(/El modelo ICON no tiene datos/)).toBeNull();
+  });
+
+  it('no informa falta total de cobertura por un único dato nulo o por Automático', async () => {
+    mockGetForecast.mockResolvedValueOnce(forecast({ temperature: null, weatherCode: null }));
+    mockGetForecast.mockResolvedValueOnce(forecast({ temperature: null }));
+    renderWeather();
+    await flushPromises();
+    expect(screen.queryByRole('button', { name: 'Volver a Automático' })).toBeNull();
+    fireEvent.click(screen.getByText('Opciones avanzadas'));
+    fireEvent.change(screen.getByLabelText('Modelo numérico'), { target: { value: 'icon_seamless' } });
+    await flushPromises();
+    expect(screen.queryByRole('button', { name: 'Volver a Automático' })).toBeNull();
+  });
+
   it('al cambiar de modelo actualiza solo el resultado más reciente y el modelo se reinicia al montar', async () => {
     const outdated = forecast({ temperature: 99 });
     const current = forecast({ temperature: 21 });
