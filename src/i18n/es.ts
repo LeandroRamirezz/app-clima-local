@@ -56,7 +56,7 @@ export const es = {
     prompt: 'Busca una ciudad o utiliza tu ubicación para consultar el clima.',
     forecastDays: 'Días de pronóstico', rangeError: 'El pronóstico admite entre 1 y 16 días.',
     forecastView: 'Vista del pronóstico', view: 'Vista', daily: 'Diario', hourly: 'Horario',
-    preferences: 'Preferencias del pronóstico', units: 'Unidades',
+    preferences: 'Preferencias del pronóstico', unitPreferences: 'Preferencias de unidades', units: 'Unidades',
     updating: 'Actualizando pronóstico…', loading: 'Consultando clima…', loadingSection: 'Cargando sección…',
     addCities: 'Agregar ciudades', compareSearch: 'Buscar una ciudad para comparar',
     comparisonCount: (count: number) => `${count} de 4 ubicaciones agregadas`,

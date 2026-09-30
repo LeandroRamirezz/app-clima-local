@@ -99,7 +99,9 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
   const [forecastView, setForecastView] = useState<ForecastView>('daily');
   const [rangeError, setRangeError] = useState(false);
   const [activeArea, setActiveArea] = useState<'climate' | 'compare' | 'history' | 'air'>('climate');
+  const [historyVisited, setHistoryVisited] = useState(false);
   const comparisonMode = activeArea === 'compare';
+  const historyMode = activeArea === 'history';
   const [comparisonLocations, setComparisonLocations] = useState<Location[]>([]);
   const [comparisonSearchKey, setComparisonSearchKey] = useState(0);
   const [comparisonFeedback, setComparisonFeedback] = useState<{ message: string; kind: 'error' | 'status' } | null>(null);
@@ -152,7 +154,7 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
       <nav className="current-weather__mode-buttons" aria-label={es.weather.areas}>
         <button type="button" aria-pressed={activeArea === 'climate'} onClick={() => setActiveArea('climate')}>{es.weather.climate}</button>
         <button type="button" aria-pressed={comparisonMode} onClick={() => setActiveArea('compare')}>{es.weather.compare}</button>
-        <button type="button" aria-pressed={activeArea === 'history'} onClick={() => setActiveArea('history')}>{es.weather.history}</button>
+        <button type="button" aria-pressed={historyMode} onClick={() => { setHistoryVisited(true); setActiveArea('history'); }}>{es.weather.history}</button>
         <button type="button" aria-pressed={activeArea === 'air'} onClick={() => setActiveArea('air')}>{es.weather.air}</button>
       </nav>
       {activeArea === 'climate' && !activeLocation && (
@@ -176,8 +178,8 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
           </div>}
         </div>
       )}
-      {(activeLocation || comparisonMode) && (activeArea === 'climate' || activeArea === 'compare') && <details className="current-weather__preferences" aria-label={es.weather.preferences}>
-        <summary>{es.weather.preferences} <span aria-hidden="true">·</span> {FORECAST_MODELS.find((option) => option.value === model)?.label ?? es.model.automatic.label}</summary>
+      {(activeLocation || comparisonMode) && (activeArea === 'climate' || comparisonMode || historyMode) && <details className="current-weather__preferences" aria-label={historyMode ? es.weather.unitPreferences : es.weather.preferences}>
+        <summary>{historyMode ? es.weather.unitPreferences : es.weather.preferences} {!historyMode && <><span aria-hidden="true">·</span> {FORECAST_MODELS.find((option) => option.value === model)?.label ?? es.model.automatic.label}</>}</summary>
         <div className="current-weather__preferences-content">
         <fieldset className="current-weather__unit-settings">
           <legend>{es.weather.units}</legend>
@@ -187,13 +189,13 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
             <div className="current-weather__forecast-setting"><label htmlFor="precipitation-unit">{es.weather.precipitation}</label><select id="precipitation-unit" value={preferences.units.precipitation} onChange={(event) => preferences.setPrecipitationUnit(event.currentTarget.value as PrecipitationUnit)}><option value="mm">{es.common.precipitationMm}</option><option value="inch">{es.common.precipitationInch}</option></select></div>
           </div>
         </fieldset>
-        <div className="current-weather__advanced-group">
+        {!historyMode && <div className="current-weather__advanced-group">
           <details className="current-weather__advanced">
             <summary>{es.model.advancedOptions}</summary>
             <div className="current-weather__forecast-setting"><label htmlFor="forecast-model">{es.model.numericModel}</label><select id="forecast-model" aria-describedby="forecast-model-description" value={model} onChange={(event) => { setModelFallbackError(null); setModel(event.currentTarget.value as ForecastModel); }}>{FORECAST_MODELS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select><p className="current-weather__model-description" id="forecast-model-description">{FORECAST_MODELS.find((option) => option.value === model)?.description}</p></div>
           </details>
           <p className="current-weather__model-label">{es.model.activeModel}: {FORECAST_MODELS.find((option) => option.value === model)?.label ?? es.model.automatic.label}</p>
-        </div>
+        </div>}
         </div>
       </details>}
       {activeArea === 'climate' && activeLocation && state.status === 'loading' && (
@@ -237,7 +239,7 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
           </Suspense>
         </section>
       )}
-      {activeArea === 'history' && <Suspense fallback={<p className="current-weather__status" role="status">{es.weather.loadingSection}</p>}><HistoricalWeather activeLocation={activeLocation} units={preferences.units} /></Suspense>}
+      {historyVisited && <div hidden={!historyMode}><Suspense fallback={<p className="current-weather__status" role="status">{es.weather.loadingSection}</p>}><HistoricalWeather activeLocation={activeLocation} units={preferences.units} /></Suspense></div>}
       {activeArea === 'air' && <Suspense fallback={<p className="current-weather__status" role="status">{es.weather.loadingSection}</p>}><AirQualityPanel activeLocation={activeLocation} /></Suspense>}
     </div>
   );

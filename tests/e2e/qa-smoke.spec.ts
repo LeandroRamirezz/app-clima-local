@@ -129,6 +129,60 @@ test('BUG-008: AQI no numérico muestra N/D sin categoría y conserva los contam
   await expect(page.getByText('Partículas finas')).toBeVisible();
 });
 
+test('BUG-009: conserva la fecha y reconsulta Archive al cambiar unidades entre áreas', async ({ page }) => {
+  await mockApis(page);
+  const archiveRequests: URL[] = [];
+  await page.route(/https:\/\/archive-api\.open-meteo\.com\/v1\/archive/, async (route) => {
+    const url = new URL(route.request().url());
+    archiveRequests.push(url);
+    const date = url.searchParams.get('start_date') ?? '';
+    const fahrenheit = url.searchParams.get('temperature_unit') === 'fahrenheit';
+    await route.fulfill({ json: {
+      latitude: 2.93, longitude: -75.28, timezone: 'America/Bogota',
+      daily: { time: [date], temperature_2m_max: [fahrenheit ? 88 : 31], temperature_2m_min: [fahrenheit ? 70 : 21],
+        temperature_2m_mean: [fahrenheit ? 79 : 26], precipitation_sum: [fahrenheit ? 0.08 : 2],
+        wind_speed_10m_max: [fahrenheit ? 7.5 : 12], relative_humidity_2m_mean: [64] },
+    } });
+  });
+
+  await page.goto('/');
+  await selectCity(page, 'Neiva');
+  await page.getByRole('button', { name: 'Históricos' }).click();
+  await page.getByLabel('Fecha inicial').fill('2026-09-15');
+  await page.getByLabel('Fecha final').fill('2026-09-15');
+  await page.getByRole('button', { name: 'Consultar histórico' }).click();
+  await expect(page.getByRole('heading', { name: 'Histórico — 15/09/2026' })).toBeVisible();
+  await expect(page.getByRole('table', { name: /Datos meteorológicos diarios/ })).toContainText('31 °C');
+  expect(archiveRequests).toHaveLength(1);
+
+  await page.getByRole('button', { name: 'Clima', exact: true }).click();
+  await page.locator('.current-weather__preferences > summary').click();
+  await page.getByLabel('Temperatura').selectOption('fahrenheit');
+  await page.getByLabel('Viento').selectOption('mph');
+  await page.getByLabel('Precipitación').selectOption('inch');
+  await expect.poll(() => archiveRequests.at(-1)?.searchParams.get('precipitation_unit')).toBe('inch');
+  await page.getByRole('button', { name: 'Históricos' }).click();
+  await expect(page.getByLabel('Fecha inicial')).toHaveValue('2026-09-15');
+  await expect(page.getByLabel('Fecha final')).toHaveValue('2026-09-15');
+  await expect(page.getByRole('heading', { name: 'Histórico — 15/09/2026' })).toBeVisible();
+  await expect(page.getByRole('table', { name: /Datos meteorológicos diarios/ })).toContainText('88 °F');
+  const latest = archiveRequests.at(-1)?.searchParams;
+  expect(latest?.get('start_date')).toBe('2026-09-15');
+  expect(latest?.get('end_date')).toBe('2026-09-15');
+  expect(latest?.get('temperature_unit')).toBe('fahrenheit');
+  expect(latest?.get('wind_speed_unit')).toBe('mph');
+  expect(latest?.get('precipitation_unit')).toBe('inch');
+
+  await expect(page.getByLabel('Temperatura')).toHaveValue('fahrenheit');
+  await page.getByLabel('Temperatura').selectOption('celsius');
+  await expect(page.getByRole('table', { name: /Datos meteorológicos diarios/ })).toContainText('31 °C');
+  await expect(page.getByLabel('Fecha inicial')).toHaveValue('2026-09-15');
+  await page.setViewportSize({ width: 320, height: 720 });
+  await expect(page.getByRole('heading', { name: 'Histórico — 15/09/2026' })).toBeVisible();
+  const pageWidth = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
+  expect(pageWidth.scroll).toBeLessThanOrEqual(pageWidth.client);
+});
+
 test('BUG-006: compara una fecha con otra histórica y con el clima actual', async ({ page }) => {
   const forecasts = await mockApis(page);
   const archiveRequests: URL[] = [];
