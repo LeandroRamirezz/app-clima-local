@@ -118,6 +118,9 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
     && state.status === 'success'
     && state.data.current.temperature === null
     && state.data.current.weatherCode === null;
+  const displayedForecast = state.status === 'success'
+    ? state.data
+    : state.status === 'error' ? state.previousData : null;
 
   function addComparisonLocation(location: Location) {
     if (comparisonLocations.some((existing) => areSameLocation(existing, location))) {
@@ -208,15 +211,18 @@ export function CurrentWeather({ activeLocation }: CurrentWeatherProps) {
           {state.error.code !== 'E-03' && <button className="current-weather__retry" type="button" onClick={retry}>{es.common.retry}</button>}
         </div>
       )}
-      {activeArea === 'climate' && activeLocation && state.status === 'success' && (
+      {activeArea === 'climate' && activeLocation && state.status === 'error' && state.previousData && (
+        <p className="current-weather__previous-data" role="status">{es.weather.previousData(getForecastUnits(state.previousData.units))}</p>
+      )}
+      {activeArea === 'climate' && activeLocation && displayedForecast && (
         <>
           {modelCoverageUnavailable && <div className="current-weather__model-coverage" role="status">
             <p>{es.model.coverageUnavailable(FORECAST_MODELS.find((option) => option.value === model)?.label ?? model)}</p>
             <button type="button" onClick={() => setModel(DEFAULT_FORECAST_MODEL)}>{es.model.backToAutomatic}</button>
           </div>}
-          <CurrentWeatherDetails forecast={state.data} location={activeLocation} />
+          <CurrentWeatherDetails forecast={displayedForecast} location={activeLocation} />
           <Suspense fallback={<p className="current-weather__status" role="status">{es.weather.loadingSection}</p>}>
-            <ForecastPanel forecast={state.data} view={forecastView} />
+            <ForecastPanel forecast={displayedForecast} view={forecastView} />
           </Suspense>
         </>
       )}

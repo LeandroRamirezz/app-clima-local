@@ -192,6 +192,7 @@ button:disabled { cursor: not-allowed; }
 .current-weather__advanced .current-weather__forecast-setting { max-width: 28rem; }
 .current-weather__range-error, .current-weather__model-fallback, .current-weather__error, .city-search__error, .historical-weather__validation, .historical-weather__error, .air-quality__error { color: var(--error); }
 .current-weather__error, .city-search__error, .historical-weather__error, .air-quality__error { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin: .75rem 0; padding: .85rem 1rem; border-left: 3px solid var(--error); background: #fff5f3; }
+.current-weather__previous-data { margin: .75rem 0; padding: .75rem 1rem; border-left: 3px solid var(--accent); color: var(--muted); background: var(--soft); line-height: 1.5; }
 
 /* One dominant reading, then instrument-like metrics and solar data. */
 .current-weather__card { position: relative; min-width: 0; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid var(--border); border-radius: var(--radius-panel); background: var(--surface); box-shadow: none; overflow: hidden; }

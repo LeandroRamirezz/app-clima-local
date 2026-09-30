@@ -183,6 +183,45 @@ test('BUG-009: conserva la fecha y reconsulta Archive al cambiar unidades entre 
   expect(pageWidth.scroll).toBeLessThanOrEqual(pageWidth.client);
 });
 
+test('BUG-010: E-05 al cambiar a °F conserva clima y pronóstico anteriores en °C', async ({ page }) => {
+  await mockApis(page);
+  const forecastRequests: URL[] = [];
+  let failedFahrenheit = false;
+  await page.route(/https:\/\/api\.open-meteo\.com\/v1\/forecast/, async (route) => {
+    const url = new URL(route.request().url());
+    forecastRequests.push(url);
+    if (url.searchParams.get('temperature_unit') === 'fahrenheit' && !failedFahrenheit) {
+      failedFahrenheit = true;
+      await route.fulfill({ status: 500, json: { error: true, reason: 'detalle técnico privado' } });
+      return;
+    }
+    const payload = forecastPayload(url);
+    if (url.searchParams.get('temperature_unit') === 'celsius') payload.current.temperature_2m = 24.6;
+    await route.fulfill({ json: payload });
+  });
+
+  await page.goto('/');
+  await selectCity(page, 'Neiva');
+  await expect(page.locator('.current-weather__temperature strong')).toHaveText('24,6 °C');
+  const daily = page.getByRole('region', { name: 'Pronóstico diario' });
+  await expect(daily).toContainText('30 °C');
+  await page.locator('.current-weather__preferences > summary').click();
+  await page.getByLabel('Temperatura').selectOption('fahrenheit');
+  await expect(page.getByRole('alert')).toContainText('El servicio meteorológico no está disponible en este momento. Intente más tarde.');
+  await expect(page.getByRole('button', { name: 'Reintentar' })).toBeVisible();
+  await expect(page.locator('.current-weather__temperature strong')).toHaveText('24,6 °C');
+  await expect(daily).toContainText('30 °C');
+  await expect(page.getByText(/Últimos datos disponibles en °C, km\/h y mm/)).toBeVisible();
+  await expect(page.getByLabel('Temperatura')).toHaveValue('fahrenheit');
+  expect(forecastRequests.at(-1)?.searchParams.get('temperature_unit')).toBe('fahrenheit');
+
+  await page.getByRole('button', { name: 'Reintentar' }).click();
+  await expect(page.locator('.current-weather__temperature strong')).toHaveText('82 °F');
+  await expect(daily).toContainText('84 °F');
+  await expect(page.getByText(/Últimos datos disponibles/)).toHaveCount(0);
+  await expect(page.getByRole('alert')).toHaveCount(0);
+});
+
 test('BUG-006: compara una fecha con otra histórica y con el clima actual', async ({ page }) => {
   const forecasts = await mockApis(page);
   const archiveRequests: URL[] = [];

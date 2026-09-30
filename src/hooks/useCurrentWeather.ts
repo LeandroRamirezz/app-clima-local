@@ -9,7 +9,14 @@ type CurrentWeatherState =
   | { status: 'idle'; requestKey: null }
   | { status: 'loading'; requestKey: string }
   | { status: 'success'; requestKey: string; data: ForecastData }
-  | { status: 'error'; requestKey: string; error: AppError };
+  | { status: 'error'; requestKey: string; error: AppError; previousData: ForecastData | null };
+
+interface LastSuccessfulForecast {
+  locationKey: string;
+  forecastDays: number;
+  model: ForecastModel;
+  data: ForecastData;
+}
 
 const IDLE_STATE: CurrentWeatherState = { status: 'idle', requestKey: null };
 type ForecastCallbacks = {
@@ -54,6 +61,7 @@ export function useCurrentWeather(
   const [state, setState] = useState<CurrentWeatherState>(IDLE_STATE);
   const [retryVersion, setRetryVersion] = useState(0);
   const requestId = useRef(0);
+  const lastSuccessRef = useRef<LastSuccessfulForecast | null>(null);
   const locationKey = makeLocationKey(activeLocation);
   const requestKey = locationKey === null ? null : JSON.stringify([locationKey, forecastDays, units, model]);
   const { onUnsupportedModel } = callbacks;
@@ -76,12 +84,21 @@ export function useCurrentWeather(
     }, { signal: controller.signal })
       .then((data) => {
         if (currentRequestId !== requestId.current || controller.signal.aborted) return;
+        lastSuccessRef.current = { locationKey, forecastDays, model, data };
         setState({ status: 'success', requestKey, data });
       })
       .catch((cause: unknown) => {
         if (currentRequestId !== requestId.current || controller.signal.aborted || isAbortError(cause)) return;
         const error = cause instanceof AppError ? cause : new AppError('E-05', cause);
-        setState({ status: 'error', requestKey, error });
+        const previous = lastSuccessRef.current;
+        const previousData = previous?.locationKey === locationKey
+          && previous.forecastDays === forecastDays
+          && previous.model === model
+          && (previous.data.units.temperature !== units.temperature
+            || previous.data.units.windSpeed !== units.windSpeed
+            || previous.data.units.precipitation !== units.precipitation)
+          ? previous.data : null;
+        setState({ status: 'error', requestKey, error, previousData });
         if (error.code === 'E-04' && model !== 'best_match') onUnsupportedModel?.(error);
       });
 

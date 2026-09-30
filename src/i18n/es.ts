@@ -58,6 +58,7 @@ export const es = {
     forecastView: 'Vista del pronóstico', view: 'Vista', daily: 'Diario', hourly: 'Horario',
     preferences: 'Preferencias del pronóstico', unitPreferences: 'Preferencias de unidades', units: 'Unidades',
     updating: 'Actualizando pronóstico…', loading: 'Consultando clima…', loadingSection: 'Cargando sección…',
+    previousData: (units: { temperature: string; windSpeed: string; precipitation: string }) => `Últimos datos disponibles en ${units.temperature}, ${units.windSpeed} y ${units.precipitation}. Reintentar aplicará las unidades seleccionadas.`,
     addCities: 'Agregar ciudades', compareSearch: 'Buscar una ciudad para comparar',
     comparisonCount: (count: number) => `${count} de 4 ubicaciones agregadas`,
     addSelected: (name: string) => `Agregar ubicación seleccionada (${name})`,

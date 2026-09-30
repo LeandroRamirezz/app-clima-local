@@ -299,7 +299,7 @@ describe('CurrentWeather', () => {
     expect(screen.getByRole('region', { name: 'Clima actual' })).toBeTruthy();
   });
 
-  it('muestra un error al fallar el cambio de unidades sin etiquetar datos previos con la unidad nueva', async () => {
+  it('conserva los últimos datos en sus unidades originales cuando falla el cambio de unidades', async () => {
     mockGetForecast.mockResolvedValueOnce(forecast());
     mockGetForecast.mockRejectedValueOnce(new AppError('E-01'));
     mockGetForecast.mockResolvedValue(forecast({}, { temperature: 'fahrenheit', windSpeed: 'kmh', precipitation: 'mm' }));
@@ -308,12 +308,53 @@ describe('CurrentWeather', () => {
     fireEvent.change(screen.getByLabelText('Temperatura'), { target: { value: 'fahrenheit' } });
     await flushPromises();
     expect(screen.getByRole('alert').textContent).toContain(APP_ERROR_MESSAGES['E-01']);
-    expect(screen.queryByText('28,4 °C')).toBeNull();
+    expect(screen.getByText('28,4 °C')).toBeTruthy();
+    expect(screen.queryByText('28,4 °F')).toBeNull();
+    expect(screen.getByText(/Últimos datos disponibles/).textContent).toContain('°C, km/h y mm');
     expect((screen.getByLabelText('Temperatura') as HTMLSelectElement).value).toBe('fahrenheit');
     fireEvent.click(screen.getByRole('button', { name: 'Reintentar' }));
     await flushPromises();
     expect(mockGetForecast.mock.calls.at(-1)?.[0]).toMatchObject({ temperatureUnit: 'fahrenheit' });
     expect(screen.getByText('28,4 °F')).toBeTruthy();
+    expect(screen.queryByText(/Últimos datos disponibles/)).toBeNull();
+  });
+
+  it('BUG-010: ante E-05 mantiene current y pronóstico previos sin mezclarlos con °F', async () => {
+    const day: DailyForecast = {
+      date: '2026-09-25', weatherCode: 2, temperatureMax: 29, temperatureMin: 20,
+      precipitationSum: 2, precipitationProbabilityMax: 40, windSpeedMax: 15, uvIndexMax: 6,
+      sunrise: null, sunset: null, daylightDuration: null,
+    };
+    mockGetForecast.mockResolvedValueOnce(forecast({ temperature: 24.6 }, undefined, { daily: [day] }));
+    mockGetForecast.mockRejectedValueOnce(new AppError('E-05'));
+    mockGetForecast.mockResolvedValueOnce(forecast({ temperature: 76.3 }, { temperature: 'fahrenheit', windSpeed: 'kmh', precipitation: 'mm' }, { daily: [{ ...day, temperatureMax: 84 }] }));
+    renderWeather();
+    await screen.findByText('24,6 °C');
+    await screen.findByText('29 °C');
+    fireEvent.change(screen.getByLabelText('Temperatura'), { target: { value: 'fahrenheit' } });
+    await flushPromises();
+    expect(screen.getByRole('alert').textContent).toContain(APP_ERROR_MESSAGES['E-05']);
+    expect(screen.getByText('24,6 °C')).toBeTruthy();
+    expect(screen.getByText('29 °C')).toBeTruthy();
+    expect(screen.queryByText('24,6 °F')).toBeNull();
+    expect(screen.getByText(/Últimos datos disponibles en °C, km\/h y mm/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Reintentar' }));
+    await screen.findByText('76,3 °F');
+    expect(screen.getByText('84 °F')).toBeTruthy();
+    expect(screen.queryByText('24,6 °C')).toBeNull();
+  });
+
+  it('no presenta datos de otra ubicación tras fallar un cambio combinado de ciudad y unidades', async () => {
+    mockGetForecast.mockResolvedValueOnce(forecast());
+    mockGetForecast.mockRejectedValueOnce(new AppError('E-05')).mockRejectedValueOnce(new AppError('E-05'));
+    const view = renderWeather(neiva);
+    await screen.findByText('28,4 °C');
+    fireEvent.change(screen.getByLabelText('Temperatura'), { target: { value: 'fahrenheit' } });
+    view.rerender(<CurrentWeather activeLocation={bogota} />);
+    await flushPromises();
+    expect(screen.getByRole('alert').textContent).toContain(APP_ERROR_MESSAGES['E-05']);
+    expect(screen.queryByText('28,4 °C')).toBeNull();
+    expect(screen.queryByText(/Últimos datos disponibles/)).toBeNull();
   });
 
   it('cambia modelo en Opciones avanzadas y conserva ubicación, unidades, días y vista', async () => {
