@@ -84,6 +84,26 @@ describe('AirQualityPanel', () => {
     expect(screen.getByRole('link', { name: 'Open-Meteo' })).toBeTruthy();
   });
 
+  it.each([
+    [42, 'Buena'],
+    [58, 'Moderada'],
+    [125, 'Dañina para grupos sensibles'],
+    [175, 'Dañina'],
+    [250, 'Muy dañina'],
+    [350, 'Peligrosa'],
+  ])('acompaña la categoría AQI %i (%s) con un icono visible y decorativo', async (aqi, label) => {
+    mockGetAirQuality.mockResolvedValueOnce(airData(aqi));
+    render(<AirQualityPanel activeLocation={bogota} />);
+    await flushPromises();
+    const indicator = screen.getByRole('group', { name: `Índice de calidad del aire: ${aqi}, categoría ${label}.` });
+    expect(indicator.textContent).toContain(label);
+    const icon = indicator.querySelector('.air-quality__category svg');
+    expect(icon).not.toBeNull();
+    expect(icon?.getAttribute('aria-hidden')).toBe('true');
+    expect(icon?.getAttribute('focusable')).toBe('false');
+    expect(icon?.getAttribute('viewBox')).toBe('0 0 24 24');
+  });
+
   it('muestra N/D por contaminante nulo y no calcula una categoría si falta US AQI', async () => {
     const result = airData(null);
     result.current.pm10 = null;

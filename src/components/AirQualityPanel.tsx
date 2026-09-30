@@ -6,6 +6,7 @@ import { useAirQuality } from '../hooks/useAirQuality';
 import { formatForecastNumber } from '../utils/forecast-presentation';
 import { formatAirQualityTime, getNextAirQualityHours, getUsAqiCategory } from '../utils/air-quality';
 import { es } from '../i18n/es';
+import { AirQualityCategoryIcon } from './AirQualityCategoryIcon';
 
 const POLLUTANTS: Array<{ key: Exclude<AirQualityVariable, 'usAqi'>; label: string; name: string }> = [
   { key: 'pm25', label: es.airQuality.pm25, name: es.airQuality.pm25Name },
@@ -108,7 +109,10 @@ export function AirQualityPanel({ activeLocation }: { activeLocation: Location |
                 >
                   <span className="air-quality__aqi-label">{es.airQuality.aqiLabel}</span>
                   <strong>{formatForecastNumber(state.data.current.usAqi, 0)}</strong>
-                  <span className="air-quality__category">{category?.label ?? es.common.notAvailable}</span>
+                  <span className="air-quality__category">
+                    {category && <AirQualityCategoryIcon level={category.level} />}
+                    {category?.label ?? es.common.notAvailable}
+                  </span>
                   {category && <p>{category.message}</p>}
                 </div>
               );

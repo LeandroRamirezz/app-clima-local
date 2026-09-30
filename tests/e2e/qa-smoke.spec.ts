@@ -28,7 +28,7 @@ function forecastPayload(url: URL) {
   };
 }
 
-async function mockApis(page: Page) {
+async function mockApis(page: Page, airAqi = 42) {
   const forecastRequests: URL[] = [];
   await page.route(/https:\/\/.*open-meteo\.com\/v1\//, async (route) => {
     const url = new URL(route.request().url());
@@ -49,7 +49,7 @@ async function mockApis(page: Page) {
       await route.fulfill({ json: {
         latitude: 2.93, longitude: -75.28, timezone: 'America/Bogota',
         current_units: { us_aqi: 'USAQI', pm2_5: 'μg/m³', pm10: 'μg/m³', ozone: 'μg/m³', nitrogen_dioxide: 'μg/m³', sulphur_dioxide: 'μg/m³', carbon_monoxide: 'μg/m³' },
-        current: { time: '2026-09-25T10:00', us_aqi: 42, pm2_5: 8, pm10: 15, ozone: 32, nitrogen_dioxide: 4, sulphur_dioxide: 1, carbon_monoxide: 180 },
+        current: { time: '2026-09-25T10:00', us_aqi: airAqi, pm2_5: 8, pm10: 15, ozone: 32, nitrogen_dioxide: 4, sulphur_dioxide: 1, carbon_monoxide: 180 },
         hourly: { time: ['2026-09-25T10:00', '2026-09-25T11:00'], us_aqi: [42, 43], pm2_5: [8, 9], pm10: [15, 16], ozone: [32, 33], nitrogen_dioxide: [4, 5], sulphur_dioxide: [1, 2], carbon_monoxide: [180, 181] },
         hourly_units: { us_aqi: 'USAQI', pm2_5: 'μg/m³', pm10: 'μg/m³', ozone: 'μg/m³', nitrogen_dioxide: 'μg/m³', sulphur_dioxide: 'μg/m³', carbon_monoxide: 'μg/m³' },
       } });
@@ -95,6 +95,25 @@ test('smoke funcional: clima, comparación, histórico, aire, unidades y modelo'
   await page.getByLabel('Modelo numérico').selectOption('ncep_gfs_seamless');
   await expect(page.getByText('Modelo: GFS')).toBeVisible();
   await expect.poll(() => forecasts.at(-1)?.searchParams.get('models')).toBe('ncep_gfs_seamless');
+});
+
+test('BUG-007: Bogotá con AQI 58 muestra categoría Moderada con icono y texto', async ({ page }) => {
+  await mockApis(page, 58);
+  await page.goto('/');
+  await selectCity(page, 'Bogotá');
+  await page.getByRole('button', { name: 'Calidad del aire' }).click();
+  const indicator = page.getByRole('group', { name: 'Índice de calidad del aire: 58, categoría Moderada.' });
+  await expect(indicator).toBeVisible();
+  await expect(indicator.locator('.air-quality__category')).toContainText('Moderada');
+  const icon = indicator.locator('.air-quality__category svg');
+  await expect(icon).toBeVisible();
+  await expect(icon).toHaveAttribute('aria-hidden', 'true');
+  await expect(icon).toHaveAttribute('focusable', 'false');
+  await page.setViewportSize({ width: 320, height: 720 });
+  await expect(indicator).toBeVisible();
+  await expect(icon).toBeVisible();
+  const pageWidth = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
+  expect(pageWidth.scroll).toBeLessThanOrEqual(pageWidth.client);
 });
 
 test('BUG-006: compara una fecha con otra histórica y con el clima actual', async ({ page }) => {
