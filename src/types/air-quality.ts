@@ -12,6 +12,7 @@ export type AirQualityUnits = Record<AirQualityVariable, string | null>;
 
 export interface AirQualityCurrent extends AirQualityMetrics {
   time: string;
+  usAqiValidity: 'valid' | 'missing' | 'invalid';
 }
 
 export interface AirQualityHourly extends AirQualityMetrics {

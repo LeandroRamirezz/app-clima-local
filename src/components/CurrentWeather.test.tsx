@@ -33,7 +33,7 @@ function forecast(
 
 function airQuality(): AirQualityData {
   const current = {
-    time: '2026-09-24T10:00', usAqi: 42, pm25: 8.4, pm10: 15.3, ozone: 32,
+    time: '2026-09-24T10:00', usAqi: 42, usAqiValidity: 'valid' as const, pm25: 8.4, pm10: 15.3, ozone: 32,
     nitrogenDioxide: 4.5, sulphurDioxide: .9, carbonMonoxide: 180,
   };
   const units = {

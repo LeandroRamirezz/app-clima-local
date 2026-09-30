@@ -28,7 +28,7 @@ function forecastPayload(url: URL) {
   };
 }
 
-async function mockApis(page: Page, airAqi = 42) {
+async function mockApis(page: Page, airAqi: number | string = 42) {
   const forecastRequests: URL[] = [];
   await page.route(/https:\/\/.*open-meteo\.com\/v1\//, async (route) => {
     const url = new URL(route.request().url());
@@ -114,6 +114,19 @@ test('BUG-007: Bogotá con AQI 58 muestra categoría Moderada con icono y texto'
   await expect(icon).toBeVisible();
   const pageWidth = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
   expect(pageWidth.scroll).toBeLessThanOrEqual(pageWidth.client);
+});
+
+test('BUG-008: AQI no numérico muestra N/D sin categoría y conserva los contaminantes', async ({ page }) => {
+  await mockApis(page, 'abc');
+  await page.goto('/');
+  await selectCity(page, 'Neiva');
+  await page.getByRole('button', { name: 'Calidad del aire' }).click();
+  const indicator = page.getByRole('group', { name: 'Índice de calidad del aire: N/D.' });
+  await expect(indicator).toBeVisible();
+  await expect(indicator.locator('strong')).toHaveText('N/D');
+  await expect(indicator.locator('.air-quality__category')).toHaveCount(0);
+  await expect(page.getByText('La calidad del aire no está disponible para esta ubicación.')).toHaveCount(0);
+  await expect(page.getByText('Partículas finas')).toBeVisible();
 });
 
 test('BUG-006: compara una fecha con otra histórica y con el clima actual', async ({ page }) => {

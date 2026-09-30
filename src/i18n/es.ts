@@ -75,6 +75,7 @@ export const es = {
     carbonMonoxide: 'Monóxido de carbono (CO)', carbonMonoxideName: 'Monóxido de carbono',
     aqi: 'AQI', unavailableCategory: 'Categoría N/D', aqiLabel: 'Índice de calidad del aire · US AQI',
     aqiAnnouncement: (value: string, category: string) => `Índice de calidad del aire: ${value}, categoría ${category}.`,
+    aqiInvalidAnnouncement: 'Índice de calidad del aire: N/D.',
     camsSource: 'CAMS ENSEMBLE', openMeteoSource: 'Open-Meteo',
   },
   comparison: {

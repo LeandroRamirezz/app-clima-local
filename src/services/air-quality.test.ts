@@ -75,7 +75,7 @@ describe('getAirQuality', () => {
     const result = await getAirQuality(params);
     expect(result.location).toEqual({ latitude: 2.94, longitude: -75.27, timezone: 'America/Bogota' });
     expect(result.current).toEqual({
-      time: '2026-09-25T10:15', usAqi: 42, pm25: 8.4, pm10: 15.3, ozone: 32,
+      time: '2026-09-25T10:15', usAqi: 42, usAqiValidity: 'valid', pm25: 8.4, pm10: 15.3, ozone: 32,
       nitrogenDioxide: 4.5, sulphurDioxide: 0.9, carbonMonoxide: 180.4,
     });
     expect(result.hourly).toHaveLength(28);
@@ -102,6 +102,28 @@ describe('getAirQuality', () => {
     expect(result.hourly[1]?.pm10).toBeNull();
     expect(result.hourly[1]?.ozone).toBeNull();
     expect(result.hourly[0]?.nitrogenDioxide).not.toBeNaN();
+  });
+
+  it.each([
+    ['abc', null, 'invalid'],
+    [-1, null, 'invalid'],
+    [null, null, 'missing'],
+    [0, 0, 'valid'],
+  ] as const)('distingue us_aqi %s de un valor ausente en el modelo normalizado', (raw, value, validity) => {
+    const payload = airQualityResponse();
+    (payload.current as Record<string, unknown>).us_aqi = raw;
+    const result = normalizeAirQuality(payload, params);
+    expect(result.current.usAqi).toBe(value);
+    expect(result.current.usAqiValidity).toBe(validity);
+    expect(result.current.pm25).toBe(8.4);
+  });
+
+  it('normaliza AQI horario negativo y no numérico como null sin perder el resto de la hora', () => {
+    const payload = airQualityResponse();
+    (payload.hourly as Record<string, unknown>).us_aqi = [-1, 'abc', 58];
+    const result = normalizeAirQuality(payload, params);
+    expect(result.hourly.slice(0, 3).map((hour) => hour.usAqi)).toEqual([null, null, 58]);
+    expect(result.hourly[0]?.pm25).toBe(1.1);
   });
 
   it.each([

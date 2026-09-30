@@ -12,7 +12,7 @@ function data(currentTime = '2026-09-25T10:15', hours = Array.from({ length: 30 
 })): AirQualityData {
   return {
     location: { latitude: 2.93, longitude: -75.28, timezone: 'America/Bogota' },
-    current: { ...hourlyAt(currentTime), time: currentTime },
+    current: { ...hourlyAt(currentTime), time: currentTime, usAqiValidity: 'valid' },
     hourly: hours,
     units: {
       current: { usAqi: 'USAQI', pm25: 'μg/m³', pm10: 'μg/m³', ozone: 'μg/m³', nitrogenDioxide: 'μg/m³', sulphurDioxide: 'μg/m³', carbonMonoxide: 'μg/m³' },

@@ -97,7 +97,7 @@ export function AirQualityPanel({ activeLocation }: { activeLocation: Location |
       {state.status === 'success' && (
         <>
           <div className="air-quality__current">
-            {state.data.current.usAqi === null ? (
+            {state.data.current.usAqiValidity === 'missing' ? (
               <p className="air-quality__unavailable">{AIR_QUALITY_TEXT.noAqi}</p>
             ) : (() => {
               const category = getUsAqiCategory(state.data.current.usAqi);
@@ -105,14 +105,16 @@ export function AirQualityPanel({ activeLocation }: { activeLocation: Location |
                 <div
                   className={`air-quality__aqi air-quality__aqi--${category?.level ?? 'unavailable'}`}
                   role="group"
-                  aria-label={es.airQuality.aqiAnnouncement(formatForecastNumber(state.data.current.usAqi), category?.label ?? es.common.notAvailable)}
+                  aria-label={category
+                    ? es.airQuality.aqiAnnouncement(formatForecastNumber(state.data.current.usAqi), category.label)
+                    : es.airQuality.aqiInvalidAnnouncement}
                 >
                   <span className="air-quality__aqi-label">{es.airQuality.aqiLabel}</span>
                   <strong>{formatForecastNumber(state.data.current.usAqi, 0)}</strong>
-                  <span className="air-quality__category">
-                    {category && <AirQualityCategoryIcon level={category.level} />}
-                    {category?.label ?? es.common.notAvailable}
-                  </span>
+                  {category && <span className="air-quality__category">
+                    <AirQualityCategoryIcon level={category.level} />
+                    {category.label}
+                  </span>}
                   {category && <p>{category.message}</p>}
                 </div>
               );
