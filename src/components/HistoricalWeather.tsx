@@ -8,6 +8,7 @@ import { formatForecastNumber, getForecastUnits } from '../utils/forecast-presen
 import { useHistoricalWeather } from '../hooks/useHistoricalWeather';
 import { formatHistoricalDifference, type HistoricalMetric } from '../utils/historical-comparison';
 import { es } from '../i18n/es';
+import { HistoricalCurrentComparison } from './HistoricalCurrentComparison';
 
 interface HistoricalWeatherProps {
   activeLocation: Location | null;
@@ -40,6 +41,8 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
   const [comparisonDate, setComparisonDate] = useState(() => addCalendarDays(getDefaultHistoricalRange().endDate, -1) ?? getDefaultHistoricalRange().endDate);
   const [comparisonBaseDate, setComparisonBaseDate] = useState<string | null>(null);
   const [comparisonValidation, setComparisonValidation] = useState<string | null>(null);
+  const [comparisonMode, setComparisonMode] = useState<'historical' | 'current'>('historical');
+  const [compareWithCurrent, setCompareWithCurrent] = useState(false);
   const locationIsValid = hasValidLocation(activeLocation);
   const dateLimits = getHistoricalDateLimits();
   const historicalUnits = getForecastUnits(units);
@@ -54,6 +57,7 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
       validateHistoricalDateRange(startDate, endDate);
       setValidationMessage(null);
       comparison.clear();
+      setCompareWithCurrent(false);
       setComparisonBaseDate(null);
       setComparisonValidation(null);
       submit({ startDate, endDate });
@@ -196,6 +200,19 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
           </div>
           {primaryDay ? <section className="historical-weather__comparison" aria-labelledby="historical-comparison-title">
             <h4 id="historical-comparison-title">{es.historical.comparisonTitle}</h4>
+            <div className="historical-weather__compare-mode">
+              <label htmlFor="historical-comparison-mode">{es.historical.comparisonMode}</label>
+              <select id="historical-comparison-mode" value={comparisonMode} onChange={(event) => {
+                setComparisonMode(event.currentTarget.value as 'historical' | 'current');
+                setComparisonValidation(null);
+                setCompareWithCurrent(false);
+                comparison.clear();
+              }}>
+                <option value="historical">{es.historical.comparisonHistoricalOption}</option>
+                <option value="current">{es.historical.comparisonCurrentOption}</option>
+              </select>
+            </div>
+            {comparisonMode === 'historical' && <>
             <p>{es.historical.comparisonHelp}</p>
             <form className="historical-weather__compare-form" onSubmit={handleCompare} noValidate>
               <div className="historical-weather__date-field">
@@ -217,6 +234,11 @@ export function HistoricalWeather({ activeLocation, units }: HistoricalWeatherPr
                   <tbody>{comparisonMetrics.map(({ key, label, unit }) => <tr key={key}><th scope="row">{label}</th><td>{displayHistoricalValue(primaryDay[key], unit, key === 'humidity' ? 0 : 1)}</td><td>{displayHistoricalValue(comparisonDay[key], unit, key === 'humidity' ? 0 : 1)}</td><td>{formatHistoricalDifference(primaryDay, comparisonDay, key, unit)}</td></tr>)}</tbody>
                 </table>
               </div>
+            </>}
+            </>}
+            {comparisonMode === 'current' && <>
+              <button type="button" className="historical-weather__submit" onClick={() => setCompareWithCurrent(true)}>{es.historical.compareCurrentAction}</button>
+              {compareWithCurrent && <HistoricalCurrentComparison historicalDay={primaryDay} location={activeLocation} units={units} />}
             </>}
           </section> : state.data.days.length > 1 && <p className="historical-weather__format-help">{es.historical.comparisonUnavailable}</p>}
         </div>

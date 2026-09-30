@@ -97,6 +97,51 @@ test('smoke funcional: clima, comparación, histórico, aire, unidades y modelo'
   await expect.poll(() => forecasts.at(-1)?.searchParams.get('models')).toBe('ncep_gfs_seamless');
 });
 
+test('BUG-006: compara una fecha con otra histórica y con el clima actual', async ({ page }) => {
+  const forecasts = await mockApis(page);
+  const archiveRequests: URL[] = [];
+  await page.route(/https:\/\/archive-api\.open-meteo\.com\/v1\/archive/, async (route) => {
+    const url = new URL(route.request().url());
+    archiveRequests.push(url);
+    const date = url.searchParams.get('start_date') ?? '';
+    const isBase = date === '2026-09-15';
+    await route.fulfill({ json: {
+      latitude: 2.93, longitude: -75.28, timezone: 'America/Bogota',
+      daily: { time: [date], temperature_2m_max: [isBase ? 31 : 29], temperature_2m_min: [21],
+        temperature_2m_mean: [isBase ? 26 : 24], precipitation_sum: [2], wind_speed_10m_max: [12],
+        relative_humidity_2m_mean: [64] },
+    } });
+  });
+  await page.goto('/');
+  await selectCity(page, 'Neiva');
+  await page.getByRole('button', { name: 'Históricos' }).click();
+  await page.getByLabel('Fecha inicial').fill('2026-09-15');
+  await page.getByLabel('Fecha final').fill('2026-09-15');
+  await page.getByRole('button', { name: 'Consultar histórico' }).click();
+  await expect(page.getByRole('heading', { name: 'Histórico — 15/09/2026' })).toBeVisible();
+  await page.getByLabel('Fecha para comparar').fill('2025-09-15');
+  await page.getByRole('button', { name: 'Comparar fechas' }).click();
+  const historicalTable = page.getByRole('table', { name: /Comparación de dos fechas históricas/ });
+  await expect(historicalTable).toContainText('15/09/2025');
+  await expect(historicalTable).toContainText('+2 °C');
+  expect(archiveRequests.map((url) => url.searchParams.get('start_date'))).toEqual(['2026-09-15', '2025-09-15']);
+
+  await page.getByLabel('Comparar con').selectOption('current');
+  const forecastCount = forecasts.length;
+  await page.getByRole('button', { name: 'Comparar con clima actual' }).click();
+  const currentTable = page.getByRole('table', { name: /Comparación con clima actual/ });
+  await expect(currentTable).toContainText('15/09/2026');
+  await expect(currentTable).toContainText('Clima actual · 2026-09-24 10:00');
+  await expect(currentTable).toContainText('-2 °C');
+  await expect(page.getByText(/no representa el mismo periodo/)).toBeVisible();
+  expect(forecasts.length).toBeGreaterThan(forecastCount);
+  expect(forecasts.at(-1)?.searchParams.get('forecast_days')).toBe('1');
+  await page.setViewportSize({ width: 320, height: 720 });
+  await expect(currentTable).toBeVisible();
+  const pageWidth = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, client: document.documentElement.clientWidth }));
+  expect(pageWidth.scroll).toBeLessThanOrEqual(pageWidth.client);
+});
+
 test('accesibilidad automática y layout a 320 px', async ({ page }) => {
   await mockApis(page);
   await page.setViewportSize({ width: 320, height: 720 });
