@@ -1,0 +1,43 @@
+{
+  "id_caso": "TC-JS-001",
+  "bloque_qa": "js",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-02",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-10-03",
+  "numero_ejecucion": 2,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "main-preview"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Reevaluación de búsqueda de ciudad: entradas válidas, homónimos, sin resultados, texto corto, símbolos especiales y campo vacío.",
+  "precondiciones": "App cargada y accesible en ambiente de QA https://app-clima-local.vercel.app; conexión a internet; despliegue con corrección de validación de caracteres especiales.",
+  "pasos_ejecutados": [
+    "1. Escribir «Bogotá» y validar selección y carga de clima actual.",
+    "2. Escribir «San» y validar lista de homónimos múltiples con región y país.",
+    "3. Escribir «Xyzabc123» y validar mensaje de ausencia de resultados.",
+    "4. Escribir «a» y validar mensaje de mínimo 2 caracteres.",
+    "5. Escribir «!!!» y validar mensaje de caracteres válidos.",
+    "6. Limpiar campo o enviar vacío y validar mensaje de ayuda/estabilidad.",
+    "7. Ejecutar ciclo de búsquedas consecutivas y validar operabilidad general."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/js/TC-JS-001/TC-JS-001.spec.ts --project=js"
+  ],
+  "resultado_esperado": "1. «Bogotá»: muestra resultados y clima. 2. «San»: lista de homónimos con región y país. 3. «Xyzabc123»: mensaje exacto «No se encontraron ubicaciones para «Xyzabc123». Verifique la ortografía o pruebe con otro nombre.». 4. «a» o «!!!»: mensaje «Ingrese al menos 2 caracteres válidos.». 5. Campo vacío: mensaje «Escriba al menos 2 caracteres para buscar.» / texto de ayuda. 6. La interfaz permanece operativa.",
+  "resultado_obtenido": "Las 6 pruebas automatizadas pasaron satisfactoriamente (6/6). Al ingresar «!!!», la aplicación valida correctamente la entrada en cliente mostrando el mensaje «Ingrese al menos 2 caracteres válidos.» en la región de estado sin despachar llamadas innecesarias a la API de Geocoding. El defecto BUG-JS-001 ha sido solventado.",
+  "tiempo_respuesta_ms": 5400,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JS-001__2026-10-03__run02/01_validacion_simbolos_exclamacion.png",
+    "evidencias/TC-JS-001__2026-10-03__run02/02_busqueda_bogota_exitosa.png"
+  ],
+  "observaciones": "Reevaluación Run 02 exitosa. Se verificó en el ambiente desplegado que la validación en cliente intercepta de manera efectiva cadenas que contienen únicamente símbolos, mostrando la alerta adecuada y manteniendo la estabilidad de la interfaz."
+}

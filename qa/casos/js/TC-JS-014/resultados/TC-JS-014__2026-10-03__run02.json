@@ -1,0 +1,43 @@
+{
+  "id_caso": "TC-JS-014",
+  "bloque_qa": "js",
+  "tipo_prueba": "Accesibilidad",
+  "rf_relacionado": "RNF-04",
+  "evaluador": {
+    "nombre": "Juan Sebastián Gutiérrez Tobar",
+    "rol": "js"
+  },
+  "fecha_ejecucion": "2026-10-03",
+  "numero_ejecucion": 2,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "main-preview"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Reevaluación de accesibilidad operativa: teclado, foco visible, skip link funcional, áreas táctiles y alternativas textuales para íconos.",
+  "precondiciones": "App cargada y accesible en ambiente de QA https://app-clima-local.vercel.app; conexión a internet activa.",
+  "pasos_ejecutados": [
+    "1. Cargar la aplicación y tabular (Tab) inicialmente para comprobar si existe enlace 'saltar al contenido' (skip link) y verificar que recibe el primer foco.",
+    "2. Navegar con Tab, Shift+Tab, flechas de dirección (ArrowUp/ArrowDown) y Enter por el combobox y las pestañas de área.",
+    "3. Verificar el indicador de foco visible (:focus-visible), su estilo (solid 3px) y contraste adecuado en los controles interactivos.",
+    "4. Medir las áreas táctiles (bounding box en px) de los botones principales y controles secundarios frente a WCAG 2.1 / 2.2.",
+    "5. Inspeccionar todos los elementos SVG de la vista para validar alternativas textuales o atributo aria-hidden='true'."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test --config=qa/playwright.config.ts qa/casos/js/TC-JS-014/TC-JS-014.spec.ts --project=js"
+  ],
+  "resultado_esperado": "100% de elementos interactivos alcanzables y operables solo con teclado, sin trampas de foco; foco visible >= 3:1; skip link funcional; áreas táctiles conformes; íconos con alternativa textual.",
+  "resultado_obtenido": "La prueba pasó satisfactoriamente (1/1). Se confirmó que el enlace 'Saltar al contenido principal' existe y es el primer elemento enfocado al tabular (href='#main-content'). Toda la navegación por teclado transcurre sin trampas de foco, el foco visible es sólido de 3px con alto contraste, y los íconos SVG cumplen con las pautas de accesibilidad. El defecto BUG-005 ha sido subsanado en el ambiente desplegado.",
+  "tiempo_respuesta_ms": 4700,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JS-014__2026-10-03__run02/01-primer-foco-skip-link.png",
+    "evidencias/TC-JS-014__2026-10-03__run02/02-navegacion-teclado.png",
+    "evidencias/TC-JS-014__2026-10-03__run02/03-foco-visible.png",
+    "evidencias/TC-JS-014__2026-10-03__run02/operational-accessibility-summary.txt"
+  ],
+  "observaciones": "Reevaluación Run 02 exitosa. La incorporación del Skip Link al inicio del DOM resuelve la no conformidad previa con WCAG 2.1 Criterio 2.4.1 (Bypass Blocks). Las dimensiones táctiles de los botones principales superan 44x44 px y los controles secundarios superan el mínimo mandatorio de 24x24 px (WCAG 2.5.8)."
+}
