@@ -33,7 +33,7 @@ function forecast(
 
 function airQuality(): AirQualityData {
   const current = {
-    time: '2026-09-24T10:00', usAqi: 42, pm25: 8.4, pm10: 15.3, ozone: 32,
+    time: '2026-09-24T10:00', usAqi: 42, usAqiValidity: 'valid' as const, pm25: 8.4, pm10: 15.3, ozone: 32,
     nitrogenDioxide: 4.5, sulphurDioxide: .9, carbonMonoxide: 180,
   };
   const units = {
@@ -81,11 +81,11 @@ describe('CurrentWeather', () => {
     expect(await screen.findByRole('region', { name: 'Clima actual' })).toBeTruthy();
 
     fireEvent.click(within(navigation).getByRole('button', { name: 'Históricos' }));
-    expect(screen.getByRole('heading', { name: 'Históricos' })).toBeTruthy();
+    expect(await screen.findByRole('heading', { name: 'Históricos' })).toBeTruthy();
     expect(screen.queryByRole('region', { name: 'Clima actual' })).toBeNull();
 
     fireEvent.click(within(navigation).getByRole('button', { name: 'Calidad del aire' }));
-    expect(screen.getByRole('heading', { name: 'Calidad del aire' })).toBeTruthy();
+    expect(await screen.findByRole('heading', { name: 'Calidad del aire' })).toBeTruthy();
     expect(screen.queryByRole('heading', { name: 'Históricos' })).toBeNull();
 
     fireEvent.click(within(navigation).getByRole('button', { name: 'Clima' }));
@@ -183,7 +183,7 @@ describe('CurrentWeather', () => {
     renderWeather(gps);
     fireEvent.click(screen.getByRole('button', { name: 'Comparar ciudades' }));
     fireEvent.click(screen.getByRole('button', { name: 'Agregar ubicación seleccionada (Mi ubicación)' }));
-    expect(screen.getByRole('button', { name: 'Quitar Mi ubicación de la comparación' })).toBeTruthy();
+    expect(await screen.findByRole('button', { name: 'Quitar Mi ubicación de la comparación' })).toBeTruthy();
     expect(screen.getByText('Agregue al menos dos ciudades para comparar.')).toBeTruthy();
   });
 
@@ -299,7 +299,7 @@ describe('CurrentWeather', () => {
     expect(screen.getByRole('region', { name: 'Clima actual' })).toBeTruthy();
   });
 
-  it('muestra un error al fallar el cambio de unidades sin etiquetar datos previos con la unidad nueva', async () => {
+  it('conserva los últimos datos en sus unidades originales cuando falla el cambio de unidades', async () => {
     mockGetForecast.mockResolvedValueOnce(forecast());
     mockGetForecast.mockRejectedValueOnce(new AppError('E-01'));
     mockGetForecast.mockResolvedValue(forecast({}, { temperature: 'fahrenheit', windSpeed: 'kmh', precipitation: 'mm' }));
@@ -308,12 +308,53 @@ describe('CurrentWeather', () => {
     fireEvent.change(screen.getByLabelText('Temperatura'), { target: { value: 'fahrenheit' } });
     await flushPromises();
     expect(screen.getByRole('alert').textContent).toContain(APP_ERROR_MESSAGES['E-01']);
-    expect(screen.queryByText('28,4 °C')).toBeNull();
+    expect(screen.getByText('28,4 °C')).toBeTruthy();
+    expect(screen.queryByText('28,4 °F')).toBeNull();
+    expect(screen.getByText(/Últimos datos disponibles/).textContent).toContain('°C, km/h y mm');
     expect((screen.getByLabelText('Temperatura') as HTMLSelectElement).value).toBe('fahrenheit');
     fireEvent.click(screen.getByRole('button', { name: 'Reintentar' }));
     await flushPromises();
     expect(mockGetForecast.mock.calls.at(-1)?.[0]).toMatchObject({ temperatureUnit: 'fahrenheit' });
     expect(screen.getByText('28,4 °F')).toBeTruthy();
+    expect(screen.queryByText(/Últimos datos disponibles/)).toBeNull();
+  });
+
+  it('BUG-010: ante E-05 mantiene current y pronóstico previos sin mezclarlos con °F', async () => {
+    const day: DailyForecast = {
+      date: '2026-09-25', weatherCode: 2, temperatureMax: 29, temperatureMin: 20,
+      precipitationSum: 2, precipitationProbabilityMax: 40, windSpeedMax: 15, uvIndexMax: 6,
+      sunrise: null, sunset: null, daylightDuration: null,
+    };
+    mockGetForecast.mockResolvedValueOnce(forecast({ temperature: 24.6 }, undefined, { daily: [day] }));
+    mockGetForecast.mockRejectedValueOnce(new AppError('E-05'));
+    mockGetForecast.mockResolvedValueOnce(forecast({ temperature: 76.3 }, { temperature: 'fahrenheit', windSpeed: 'kmh', precipitation: 'mm' }, { daily: [{ ...day, temperatureMax: 84 }] }));
+    renderWeather();
+    await screen.findByText('24,6 °C');
+    await screen.findByText('29 °C');
+    fireEvent.change(screen.getByLabelText('Temperatura'), { target: { value: 'fahrenheit' } });
+    await flushPromises();
+    expect(screen.getByRole('alert').textContent).toContain(APP_ERROR_MESSAGES['E-05']);
+    expect(screen.getByText('24,6 °C')).toBeTruthy();
+    expect(screen.getByText('29 °C')).toBeTruthy();
+    expect(screen.queryByText('24,6 °F')).toBeNull();
+    expect(screen.getByText(/Últimos datos disponibles en °C, km\/h y mm/)).toBeTruthy();
+    fireEvent.click(screen.getByRole('button', { name: 'Reintentar' }));
+    await screen.findByText('76,3 °F');
+    expect(screen.getByText('84 °F')).toBeTruthy();
+    expect(screen.queryByText('24,6 °C')).toBeNull();
+  });
+
+  it('no presenta datos de otra ubicación tras fallar un cambio combinado de ciudad y unidades', async () => {
+    mockGetForecast.mockResolvedValueOnce(forecast());
+    mockGetForecast.mockRejectedValueOnce(new AppError('E-05')).mockRejectedValueOnce(new AppError('E-05'));
+    const view = renderWeather(neiva);
+    await screen.findByText('28,4 °C');
+    fireEvent.change(screen.getByLabelText('Temperatura'), { target: { value: 'fahrenheit' } });
+    view.rerender(<CurrentWeather activeLocation={bogota} />);
+    await flushPromises();
+    expect(screen.getByRole('alert').textContent).toContain(APP_ERROR_MESSAGES['E-05']);
+    expect(screen.queryByText('28,4 °C')).toBeNull();
+    expect(screen.queryByText(/Últimos datos disponibles/)).toBeNull();
   });
 
   it('cambia modelo en Opciones avanzadas y conserva ubicación, unidades, días y vista', async () => {
@@ -327,30 +368,74 @@ describe('CurrentWeather', () => {
     fireEvent.click(screen.getByText('Opciones avanzadas'));
     const modelControl = screen.getByLabelText('Modelo numérico');
     expect((modelControl as HTMLSelectElement).options.length).toBe(4);
+    expect(modelControl.getAttribute('aria-describedby')).toBe('forecast-model-description');
+    expect(screen.getByText(/Open-Meteo elige el modelo con mejor cobertura/)).toBeTruthy();
     fireEvent.change(modelControl, { target: { value: 'ncep_gfs_seamless' } });
     await flushPromises();
+    expect(screen.getByText(/Modelo global de la NOAA/)).toBeTruthy();
     expect(mockGetForecast.mock.calls.at(-1)?.[0]).toMatchObject({ latitude: neiva.latitude, longitude: neiva.longitude, forecastDays: 10, temperatureUnit: 'fahrenheit', windSpeedUnit: 'kmh', precipitationUnit: 'mm', model: 'ncep_gfs_seamless' });
     expect(screen.getByText('Modelo: GFS')).toBeTruthy();
     expect(screen.getByRole('button', { name: 'Horario' }).getAttribute('aria-pressed')).toBe('true');
     expect(localStorage.getItem(FORECAST_UNITS_STORAGE_KEY)).not.toContain('ncep_gfs_seamless');
   });
 
-  it('restablece Automático tras HTTP 400 de un modelo sin repetir el fallo ni persistir el modelo', async () => {
+  it('conserva E-04 visible tras el fallback exitoso a Automático y lo limpia al elegir otro modelo', async () => {
     mockGetForecast.mockResolvedValueOnce(forecast());
-    mockGetForecast.mockRejectedValueOnce(new AppError('E-04'));
+    mockGetForecast.mockRejectedValueOnce(new AppError('E-04', { reason: 'detalle privado' }));
+    mockGetForecast.mockResolvedValueOnce(forecast()).mockResolvedValueOnce(forecast());
+    renderWeather();
+    await flushPromises();
+    fireEvent.click(screen.getByText('Opciones avanzadas'));
+    fireEvent.change(screen.getByLabelText('Modelo numérico'), { target: { value: 'icon_seamless' } });
+    await flushPromises();
+    await flushPromises();
+    expect(mockGetForecast).toHaveBeenCalledTimes(3);
+    expect(mockGetForecast.mock.calls[1]?.[0].model).toBe('icon_seamless');
+    expect(mockGetForecast.mock.calls[2]?.[0].model).toBe('best_match');
+    expect(screen.getByText('Modelo: Automático')).toBeTruthy();
+    expect(screen.getByRole('region', { name: 'Clima actual' })).toBeTruthy();
+    expect(screen.getByRole('alert').textContent).toBe(APP_ERROR_MESSAGES['E-04']);
+    expect(screen.getByRole('alert').textContent).not.toContain('detalle privado');
+    expect(localStorage.getItem(FORECAST_UNITS_STORAGE_KEY)).not.toContain('icon_seamless');
+    fireEvent.change(screen.getByLabelText('Modelo numérico'), { target: { value: 'ncep_gfs_seamless' } });
+    await flushPromises();
+    expect(screen.queryByRole('alert')).toBeNull();
+    expect(mockGetForecast.mock.calls[3]?.[0].model).toBe('ncep_gfs_seamless');
+  });
+
+  it('avisa la falta de cobertura de ICON con HTTP 200 y permite volver a Automático', async () => {
+    mockGetForecast.mockResolvedValueOnce(forecast());
+    mockGetForecast.mockResolvedValueOnce(forecast({ temperature: null, weatherCode: null }));
     mockGetForecast.mockResolvedValueOnce(forecast());
     renderWeather();
     await flushPromises();
     fireEvent.click(screen.getByText('Opciones avanzadas'));
-    fireEvent.change(screen.getByLabelText('Modelo numérico'), { target: { value: 'ecmwf_ifs025' } });
+    fireEvent.change(screen.getByLabelText('Modelo numérico'), { target: { value: 'icon_seamless' } });
     await flushPromises();
+    expect(screen.getByRole('status').textContent).toContain('El modelo ICON no tiene datos para esta ubicación. Se muestran los datos disponibles o puede volver a Automático.');
+    expect(screen.getByText('Condición no disponible')).toBeTruthy();
+    expect(screen.getAllByText('N/D').length).toBeGreaterThan(0);
+    expect(screen.getByText('30,1 °C')).toBeTruthy();
+    expect(screen.getByRole('button', { name: 'Volver a Automático' })).toBeTruthy();
+    expect(mockGetForecast).toHaveBeenCalledTimes(2);
+    fireEvent.click(screen.getByRole('button', { name: 'Volver a Automático' }));
     await flushPromises();
     expect(mockGetForecast).toHaveBeenCalledTimes(3);
-    expect(mockGetForecast.mock.calls[1]?.[0].model).toBe('ecmwf_ifs025');
     expect(mockGetForecast.mock.calls[2]?.[0].model).toBe('best_match');
     expect(screen.getByText('Modelo: Automático')).toBeTruthy();
-    expect(screen.getByRole('region', { name: 'Clima actual' })).toBeTruthy();
-    expect(localStorage.getItem(FORECAST_UNITS_STORAGE_KEY)).not.toContain('ecmwf_ifs025');
+    expect(screen.queryByText(/El modelo ICON no tiene datos/)).toBeNull();
+  });
+
+  it('no informa falta total de cobertura por un único dato nulo o por Automático', async () => {
+    mockGetForecast.mockResolvedValueOnce(forecast({ temperature: null, weatherCode: null }));
+    mockGetForecast.mockResolvedValueOnce(forecast({ temperature: null }));
+    renderWeather();
+    await flushPromises();
+    expect(screen.queryByRole('button', { name: 'Volver a Automático' })).toBeNull();
+    fireEvent.click(screen.getByText('Opciones avanzadas'));
+    fireEvent.change(screen.getByLabelText('Modelo numérico'), { target: { value: 'icon_seamless' } });
+    await flushPromises();
+    expect(screen.queryByRole('button', { name: 'Volver a Automático' })).toBeNull();
   });
 
   it('al cambiar de modelo actualiza solo el resultado más reciente y el modelo se reinicia al montar', async () => {
@@ -413,7 +498,7 @@ describe('CurrentWeather', () => {
     expect(within(screen.getByRole('region', { name: 'Clima actual' })).getByText('Mi ubicación (2.93, -75.28)')).toBeTruthy();
   });
 
-  it.each(['E-01', 'E-02', 'E-03', 'E-04', 'E-05'] as AppErrorCode[])(
+  it.each(['E-01', 'E-02', 'E-04', 'E-05'] as AppErrorCode[])(
     'muestra el mensaje seguro %s y permite reintentar para la ubicación activa', async (code) => {
       mockGetForecast.mockRejectedValueOnce(new AppError(code, { reason: 'detalle privado' }));
       renderWeather(neiva);
@@ -428,6 +513,17 @@ describe('CurrentWeather', () => {
       expect(screen.getByRole('region', { name: 'Clima actual' })).toBeTruthy();
     },
   );
+
+  it('presenta E-03 como alerta sin ofrecer Reintentar ni repetir Forecast', async () => {
+    mockGetForecast.mockRejectedValueOnce(new AppError('E-03', { reason: 'detalle privado' }));
+    renderWeather(neiva);
+    await flushPromises();
+    expect(screen.getByRole('alert').textContent).toContain(APP_ERROR_MESSAGES['E-03']);
+    expect(screen.getByRole('alert').textContent).not.toContain('detalle privado');
+    expect(screen.queryByRole('button', { name: 'Reintentar' })).toBeNull();
+    expect(document.querySelector('.current-weather__retry')).toBeNull();
+    expect(mockGetForecast).toHaveBeenCalledTimes(1);
+  });
 
   it('cancela la consulta anterior y mantiene solo los datos de la ubicación más reciente', async () => {
     mockGetForecast.mockImplementation(() => mockGetForecast.mock.calls.length === 1

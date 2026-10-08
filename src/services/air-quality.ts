@@ -9,6 +9,7 @@ import {
 import { AppError, RequestAbortedError } from '../types/errors';
 import type {
   AirQualityData,
+  AirQualityCurrent,
   AirQualityMetrics,
   AirQualityParams,
   AirQualityOptions,
@@ -82,6 +83,11 @@ function nullableNumber(value: unknown): number | null {
   return typeof value === 'number' && Number.isFinite(value) ? value : null;
 }
 
+function getUsAqiValidity(value: unknown): AirQualityCurrent['usAqiValidity'] {
+  if (value === null || value === undefined) return 'missing';
+  return typeof value === 'number' && Number.isFinite(value) && value >= 0 ? 'valid' : 'invalid';
+}
+
 function nullableString(value: unknown): string | null {
   return typeof value === 'string' && value.length > 0 ? value : null;
 }
@@ -122,9 +128,10 @@ function normalizeMetrics(block: Record<string, unknown>, index?: number): AirQu
   const metrics = {} as AirQualityMetrics;
   for (const key of API_KEYS) {
     const raw = block[AIR_QUALITY_VARIABLES[key]];
-    metrics[key] = index === undefined
+    const value = index === undefined
       ? nullableNumber(raw)
       : nullableNumber(Array.isArray(raw) ? raw[index] : null);
+    metrics[key] = key === 'usAqi' && value !== null && value < 0 ? null : value;
   }
   return metrics;
 }
@@ -158,7 +165,11 @@ export function normalizeAirQuality(
       longitude: longitude !== null && longitude >= -180 && longitude <= 180 ? longitude : requested.longitude,
       timezone: nullableString(payload.timezone),
     },
-    current: { time: current.time as string, ...normalizeMetrics(current) },
+    current: {
+      time: current.time as string,
+      ...normalizeMetrics(current),
+      usAqiValidity: getUsAqiValidity(current[AIR_QUALITY_VARIABLES.usAqi]),
+    },
     hourly: normalizedHourly,
     units: {
       current: normalizeUnits(payload.current_units),

@@ -5,7 +5,7 @@ export type CityQueryValidation =
 export function validateCityQuery(query: unknown): CityQueryValidation {
   if (typeof query !== 'string') return { valid: false, reason: 'invalid-type' };
   const normalized = query.trim();
-  if ([...normalized].length < CITY_QUERY_MIN_LENGTH) return { valid: false, reason: 'too-short' };
+  if ((normalized.match(/\p{L}/gu)?.length ?? 0) < CITY_QUERY_MIN_LENGTH) return { valid: false, reason: 'too-short' };
   if ([...normalized].length > CITY_QUERY_MAX_LENGTH) return { valid: false, reason: 'too-long' };
   return { valid: true, normalized };
 }

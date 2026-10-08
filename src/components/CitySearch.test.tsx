@@ -678,6 +678,15 @@ describe('CitySearch', () => {
     expect(activeLocationText('Neiva, Colombia')).toBeTruthy();
   });
 
+  it('muestra validación para solo símbolos sin consultar ni anunciar cero resultados', async () => {
+    renderCitySearch();
+    await search('!!!');
+    expect(mockSearchCities).not.toHaveBeenCalled();
+    expect(screen.getByText('Ingrese al menos 2 caracteres válidos.')).toBeTruthy();
+    expect(screen.queryByText(/No se encontraron ubicaciones/)).toBeNull();
+    expect(screen.queryByRole('listbox')).toBeNull();
+  });
+
   it('limpia la búsqueda de inmediato y devuelve el foco al campo', async () => {
     renderCitySearch();
     await search('Neiva');
@@ -711,8 +720,10 @@ describe('CitySearch', () => {
     ];
     mockSearchCities.mockResolvedValue(comparisonResults);
     render(<App />);
+    vi.useRealTimers();
     fireEvent.click(screen.getByRole('button', { name: 'Comparar ciudades' }));
-    expect(screen.getByText('Agregue al menos dos ciudades para comparar.')).toBeTruthy();
+    expect(await screen.findByText('Agregue al menos dos ciudades para comparar.')).toBeTruthy();
+    vi.useFakeTimers();
     const comparisonInput = () => screen.getAllByRole('combobox', { name: 'Nombre de la ciudad' })[1]!;
     async function findAndAdd(name: string) {
       fireEvent.change(comparisonInput(), { target: { value: name } });

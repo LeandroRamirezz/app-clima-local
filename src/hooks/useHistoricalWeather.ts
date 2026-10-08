@@ -116,6 +116,14 @@ export function useHistoricalWeather(activeLocation: Location | null, units: For
     execute(lastQuery, activeLocation, units, locationKey);
   }, [activeLocation, execute, locationKey, units]);
 
+  const clear = useCallback(() => {
+    requestId.current += 1;
+    controllerRef.current?.abort();
+    controllerRef.current = null;
+    lastQueryRef.current = null;
+    setState(IDLE_STATE);
+  }, []);
+
   let visibleState: HistoricalState = state;
   if (!locationKey || !activeLocation) visibleState = IDLE_STATE;
   else if (state.status !== 'idle' && state.snapshot.locationKey !== locationKey) visibleState = IDLE_STATE;
@@ -124,5 +132,5 @@ export function useHistoricalWeather(activeLocation: Location | null, units: For
     visibleState = { status: 'loading', requestKey: makeRequestKey(snapshot), snapshot };
   }
 
-  return { state: visibleState, submit, retry };
+  return { state: visibleState, submit, retry, clear };
 }

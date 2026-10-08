@@ -24,7 +24,7 @@ function airData(aqi: number | null = 42, locationName: 'neiva' | 'bogota' = 'ne
   return {
     location: { latitude, longitude, timezone: 'America/Bogota' },
     current: {
-      time: '2026-09-25T10:15', usAqi: aqi, pm25: 8.4, pm10: 15.3, ozone: 32,
+      time: '2026-09-25T10:15', usAqi: aqi, usAqiValidity: aqi === null ? 'missing' : aqi < 0 ? 'invalid' : 'valid', pm25: 8.4, pm10: 15.3, ozone: 32,
       nitrogenDioxide: 4.5, sulphurDioxide: 0.9, carbonMonoxide: 180.4,
     },
     hourly: times.map((time, index) => ({
@@ -84,6 +84,26 @@ describe('AirQualityPanel', () => {
     expect(screen.getByRole('link', { name: 'Open-Meteo' })).toBeTruthy();
   });
 
+  it.each([
+    [42, 'Buena'],
+    [58, 'Moderada'],
+    [125, 'Dañina para grupos sensibles'],
+    [175, 'Dañina'],
+    [250, 'Muy dañina'],
+    [350, 'Peligrosa'],
+  ])('acompaña la categoría AQI %i (%s) con un icono visible y decorativo', async (aqi, label) => {
+    mockGetAirQuality.mockResolvedValueOnce(airData(aqi));
+    render(<AirQualityPanel activeLocation={bogota} />);
+    await flushPromises();
+    const indicator = screen.getByRole('group', { name: `Índice de calidad del aire: ${aqi}, categoría ${label}.` });
+    expect(indicator.textContent).toContain(label);
+    const icon = indicator.querySelector('.air-quality__category svg');
+    expect(icon).not.toBeNull();
+    expect(icon?.getAttribute('aria-hidden')).toBe('true');
+    expect(icon?.getAttribute('focusable')).toBe('false');
+    expect(icon?.getAttribute('viewBox')).toBe('0 0 24 24');
+  });
+
   it('muestra N/D por contaminante nulo y no calcula una categoría si falta US AQI', async () => {
     const result = airData(null);
     result.current.pm10 = null;
@@ -94,6 +114,19 @@ describe('AirQualityPanel', () => {
     expect(screen.getByText(AIR_QUALITY_TEXT.noAqi)).toBeTruthy();
     expect(screen.queryByRole('group', { name: /Índice de calidad del aire/ })).toBeNull();
     expect(screen.getAllByText('N/D').length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText('8,4 μg/m³').length).toBeGreaterThan(0);
+  });
+
+  it('muestra N/D sin categoría para AQI inválido y conserva los contaminantes', async () => {
+    const result = airData(null);
+    result.current.usAqiValidity = 'invalid';
+    mockGetAirQuality.mockResolvedValueOnce(result);
+    render(<AirQualityPanel activeLocation={neiva} />);
+    await flushPromises();
+    const indicator = screen.getByRole('group', { name: 'Índice de calidad del aire: N/D.' });
+    expect(indicator.querySelector('strong')?.textContent).toBe('N/D');
+    expect(indicator.querySelector('.air-quality__category')).toBeNull();
+    expect(screen.queryByText(AIR_QUALITY_TEXT.noAqi)).toBeNull();
     expect(screen.getAllByText('8,4 μg/m³').length).toBeGreaterThan(0);
   });
 

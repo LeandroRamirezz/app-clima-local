@@ -1,51 +1,35 @@
-# Resultados y defectos — Etapa 13
+# Informe de ejecución de pruebas
 
-## Baseline previo a cambios QA
+**Corte:** 29/09/2026, árbol local posterior a `66860ed`. Las cifras son ejecuciones observadas; pruebas con mocks, contrato en vivo y auditorías se reportan por separado.
 
-Fecha: 26/09/2026. Sin archivos funcionales modificados antes de esta línea base.
+Una repetición de `npm test` posterior a añadir Playwright falló: Vitest recogió por defecto `tests/e2e/qa-smoke.spec.ts` (Playwright no puede ejecutarse en Vitest) y dos workers agotaron el tiempo de inicio en esa corrida. Se corrigió la selección con `include: ['src/**/*.test.{ts,tsx}']` en `vite.config.ts`. El E2E conserva su runner separado. La repetición completa tras la corrección se registra abajo; el fallo previo no se elimina del historial.
 
-| Medida | Resultado |
-|---|---|
-| `npm test` | PASS — 14 archivos, 340/340 tests; 79,03 s en este runner Windows/OneDrive |
-| `npm run lint` | PASS — sin errores |
-| `npm run build` | PASS — `tsc -b` y Vite; 53 módulos transformados |
-| `npm run typecheck` | No existe; `tsc -b` sí se ejecuta durante build |
-| `npm run test:coverage` | No existe; proveedor de coverage no está instalado |
-| `npm run test:e2e` | No existe; Playwright/Cypress no están instalados |
-| Pruebas live/contrato | No estaban configuradas antes de esta etapa |
-| P95 / concurrencia | No había script ni medición previa |
+| Validación | Resultado observado | Estado |
+|---|---|---|
+| `npm test` | Última corrida: 16/16 archivos; **348/348** pruebas; 66.17 s; exit code 0. La primera corrida tras la carga diferida falló 3/348 por esperas síncronas en pruebas; se adaptaron a la aparición visible de los módulos y la repetición completa pasó. | APROBADO en repetición |
+| `npm run test:coverage -- --reporter=dot` | 16/16 archivos; **348/348** pruebas; exit code 0. V8: statements **93.52 % (1185/1267)**, branches **87.59 % (1116/1274)**, functions **98.27 % (341/347)**, lines **97.01 % (1039/1071)**. | APROBADO |
+| `npm run lint` | Sin diagnósticos; exit code 0. | APROBADO |
+| TypeScript | No hay `typecheck` separado; `tsc -b` pasó dentro de `npm run build`. | APROBADO en build |
+| `npm run build` | TypeScript/Vite; 56 módulos; JS inicial **267.21 kB**, CSS 43.77 kB y cuatro chunks de vistas bajo demanda (4.81, 9.20, 10.63 y 16.72 kB); exit code 0. | APROBADO |
+| `npm run test:e2e` | Última corrida: **2/2** casos en Edge, 17.5 s, exit code 0, con APIs interceptadas. Flujo funcional completo y clima a 320 px con axe. Un intento anterior se interrumpió por bloqueo del webServer propio del runner; la repetición con `vite preview` ya activo terminó correctamente. | APROBADO en repetición |
+| `npm run test:contract` | Primer intento en sandbox sin red: 9/9 fallaron con E-01; repetición con acceso de red: **9/9 aprobaron**, 1/1 archivo, 7.46 s, exit code 0. | APROBADO en repetición con red |
+| `npm audit --audit-level=high` | Primer intento sin red: error del endpoint; repetición con acceso de red: `found 0 vulnerabilities`, exit code 0. Variante offline: también 0. | APROBADO con red |
 
-## Suite preexistente
+## Auditorías Lighthouse y axe
 
-14 archivos de test bajo `src`: servicios de Forecast, Geocoding, Archive e Air Quality; componentes de búsqueda, ubicación, comparación, históricos, clima y AQ; y utilidades de fecha histórica, AQI, luz diurna e identidad de ubicación. Vitest expande tests parametrizados a **340 casos ejecutados**. Los servicios reemplazan `fetch`; los datos y builders viven principalmente junto a los tests por servicio. No se eliminaron pruebas.
+| Perfil | Performance | Accessibility | Best Practices | FCP | TBT |
+|---|---:|---:|---:|---:|---:|
+| Móvil, build anterior a división de vistas, 1 | 66 | 100 | 96 | 2.0 s | 1560 ms |
+| Móvil, build anterior a división de vistas, 2 | 69 | 100 | 96 | 1.8 s | 1640 ms |
+| Móvil, build anterior a división de vistas, 3 | 71 | 100 | 96 | 2.0 s | 1249 ms |
+| Móvil, build actual con vistas bajo demanda, 1 | 100 | 100 | 96 | 1.4 s | 7 ms |
+| Móvil, build actual con vistas bajo demanda, 2 | 68 | 100 | 96 | 1.8 s | 1759 ms |
+| Escritorio, build anterior | 100 | 100 | 96 | 0.4 s | 0 ms |
 
-La ejecución de `npm test` sin reporter alternativo se quedó en espera prolongada durante el arranque de trabajadores y fue cancelada. La repetición con `--reporter=dot` completó 340/340; una ejecución por archivo de Forecast también pasó 64/64 y CurrentWeather 53/53. Esto se registra como comportamiento lento del runner, no como defecto funcional.
+Los JSON de Lighthouse se generaron sin `runtimeError`; el CLI terminó con error `EPERM` al limpiar el perfil temporal en Windows **después** de escribir los resultados. Por tanto, las puntuaciones se reportan como mediciones válidas con limitación de ejecución, no como comandos exitosos. El build actual produjo tanto 100 como 68 en Performance móvil bajo la misma emulación y throttling: **RNF-04 no se demuestra de manera estable**. axe en E2E a 320 px no encontró infracciones WCAG 2.0/2.1 A/AA en la vista de clima cargada. Un intento adicional de auditar las otras tres secciones se bloqueó y se interrumpió; **NO EJECUTADA** para esas vistas.
 
-## Resultado final
+## Alcance y límites
 
-Las pruebas contractuales y de rendimiento son opt-in y no se suman a la suite determinística.
+La suite local cubre servicio, utilidades, componentes, integración simulada, errores E-01 a E-05, cancelación y reintento. El E2E prueba los flujos principales con respuestas deterministas; el contrato **9/9** usa API real y fue repetido en este corte. El commit funcional `0ac5709` se publicó en Vercel: HTML HTTP 200, JS/CSS idénticos al build local por SHA-256. Un smoke Edge en la URL pública con APIs reales aprobó búsqueda y selección, clima actual/diario/horario, comparación de Neiva y Bogotá, Archive y comparación de dos fechas, US AQI/contaminantes, cambio a °F y GFS. No constituye una comprobación numérica exhaustiva de precisión. El [ensayo HTTP previo](performance.md) registró p95 >500 ms en los cuatro endpoints y cinco 429 en ráfaga; el solicitante aprobó la [desviación RNF-01](rnf-01-approved-deviation.md).
 
-| Medida | Resultado final |
-|---|---|
-| `npm test -- --reporter=dot` | PASS — 14 archivos, 340/340 tests; 160,94 s en corrida final concurrente con lint/build |
-| `npm run test:contract` | PASS — 1 archivo, 9/9 tests live; 9,16 s |
-| `npm run test:performance` (10×2) | EJECUTADO; criterio de rendimiento FAIL — 40/40 respuestas, 0 HTTP error, pero p95 >500 ms en 4/4 endpoints |
-| `npm run test:performance -- --samples=50 --concurrency=50` | EJECUTADO; prueba concurrente FAIL — 192/200 respuestas; 8 fallos Forecast, 5 HTTP 429; ver performance.md |
-| `npm run lint` | PASS — sin errores |
-| `npm run build` | PASS — `tsc -b` + Vite; 53 módulos transformados |
-| Code coverage | NO MEDIDA: no hay proveedor instalado ni script. Umbral RNF-05 >80% no verificado |
-| Functional coverage | NO MEDIDA: los casos trazados se ejecutan, pero falta un inventario exhaustivo con denominador aceptado. RNF-15 ≥95% no verificado |
-| Casos críticos definidos | 12 |
-| Casos críticos PASS (suite baseline) | 12 trazados a tests existentes; no equivalen a contrato live |
-| Casos críticos FAIL | 0 observados en baseline determinístico |
-| Casos críticos BLOCKED/NOT RUN | E2E de navegador no ejecutado; cobertura de código y funcional no medida |
-| Respuestas HTTP 429 observadas | Ninguna en tests mockeados; 5 en Forecast durante concurrencia 50 |
-
-## Defectos
-
-| ID | RF | Caso | Esperado / obtenido | Severidad | Causa / corrección | Estado |
-|---|---|---|---|---|---|---|
-| QA-ENV-01 | Transversal | Vitest full-suite en runner actual | Completar; una ejecución sin reporter quedó esperando el inicio de workers. Con dot finalizó 340/340 en 79,03 s | Media, entorno | Arranque/aislamiento de workers; no se cambió configuración productiva | Observación, no bug |
-| QA-DOC-01 | Trazabilidad | Número de RF para modelo/elevación/sol | La fuente asigna RF-08/09/10; un bloque de la instrucción Etapa 13 desplaza estos números | Baja, documental | Matriz sigue la especificación fuente y marca RF-07 como retirado | Documentado |
-
-No se detectaron defectos funcionales en la regresión determinística ni en los contratos live. El ensayo de concurrencia evidenció que la ráfaga Forecast supera la capacidad disponible en ese momento y activó 429; el servicio debe presentar E-03, ya cubierto por pruebas mockeadas. No se atribuye el p95 alto únicamente a la aplicación. E2E de navegador y umbrales de cobertura siguen sin verificarse.
+Memoria de dos horas, 50 usuarios, compatibilidad completa entre navegadores, lector de pantalla y UAT: **NO EJECUTADA** o **SIN EVIDENCIA**. La [trazabilidad](traceability.md) precisa el estado por RF/RNF.

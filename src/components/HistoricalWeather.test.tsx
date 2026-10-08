@@ -2,13 +2,14 @@
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { APP_ERROR_MESSAGES, AppError, RequestAbortedError } from '../types/errors';
-import type { ForecastUnits } from '../types/forecast';
+import type { ForecastData, ForecastParams, ForecastUnits } from '../types/forecast';
 import type { HistoricalParams, HistoricalWeatherData } from '../types/historical';
 import type { Location } from '../types/location';
 import { HistoricalWeather } from './HistoricalWeather';
 
-const { mockGetHistoricalWeather } = vi.hoisted(() => ({ mockGetHistoricalWeather: vi.fn() }));
+const { mockGetHistoricalWeather, mockGetForecast } = vi.hoisted(() => ({ mockGetHistoricalWeather: vi.fn(), mockGetForecast: vi.fn() }));
 vi.mock('../services/historical', () => ({ getHistoricalWeather: mockGetHistoricalWeather }));
+vi.mock('../services/forecast', () => ({ getForecast: mockGetForecast }));
 
 const location: Location = { id: 1, name: 'Neiva', admin1: 'Huila', country: 'Colombia', latitude: 2.93, longitude: -75.28 };
 const bogota: Location = { id: 2, name: 'Bogotá', admin1: 'Bogotá D.C.', country: 'Colombia', latitude: 4.71, longitude: -74.07 };
@@ -36,6 +37,15 @@ function historicalData(params: HistoricalParams = defaultParams): HistoricalWea
   };
 }
 
+function forecastData(params?: ForecastParams): ForecastData {
+  return {
+    location: { latitude: location.latitude, longitude: location.longitude, elevation: 442, timezone: 'America/Bogota', timezoneAbbreviation: '-05' },
+    current: { time: '2026-09-25T12:00', temperature: 28, apparentTemperature: 29, relativeHumidity: 60, precipitation: 0.1, weatherCode: 1, windSpeed: 8, windDirection: 120, uvIndex: 5 },
+    hourly: [], daily: [],
+    units: { temperature: params?.temperatureUnit ?? 'celsius', windSpeed: params?.windSpeedUnit ?? 'kmh', precipitation: params?.precipitationUnit ?? 'mm' },
+  };
+}
+
 async function flushPromises() {
   await act(async () => { await Promise.resolve(); await Promise.resolve(); await Promise.resolve(); });
 }
@@ -55,6 +65,7 @@ beforeEach(() => {
   vi.useFakeTimers({ toFake: ['Date'] });
   vi.setSystemTime(new Date(2026, 8, 25, 12));
   mockGetHistoricalWeather.mockReset().mockImplementation((params?: HistoricalParams) => Promise.resolve(historicalData(params)));
+  mockGetForecast.mockReset().mockImplementation((params?: ForecastParams) => Promise.resolve(forecastData(params)));
 });
 afterEach(() => { cleanup(); vi.useRealTimers(); vi.restoreAllMocks(); });
 
@@ -208,5 +219,152 @@ describe('HistoricalWeather', () => {
     expect(capturedSignal?.aborted).toBe(false);
     view.unmount();
     expect(capturedSignal?.aborted).toBe(true);
+  });
+
+  it('compara dos fechas explícitas y presenta valores y diferencias con signo', async () => {
+    render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange('2026-08-10', '2026-08-10');
+    expect(mockGetHistoricalWeather).toHaveBeenCalledTimes(1);
+    fireEvent.change(screen.getByLabelText('Fecha para comparar'), { target: { value: '2026-08-09' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar fechas' }));
+    await flushPromises();
+    expect(mockGetHistoricalWeather).toHaveBeenCalledTimes(2);
+    expect(mockGetHistoricalWeather.mock.calls[1]?.[0]).toMatchObject({
+      latitude: 2.93, longitude: -75.28, startDate: '2026-08-09', endDate: '2026-08-09',
+      temperatureUnit: 'celsius', windSpeedUnit: 'kmh', precipitationUnit: 'mm',
+    });
+    const table = screen.getByRole('table', { name: /Comparación de dos fechas históricas/ });
+    expect(table.textContent).toContain('10/08/2026');
+    expect(table.textContent).toContain('09/08/2026');
+    expect(table.textContent).toContain('Diferencia');
+    expect(table.textContent).toContain('0 °C');
+  });
+
+  it('rechaza una comparación con la misma fecha sin llamada adicional', async () => {
+    render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange();
+    fireEvent.change(screen.getByLabelText('Fecha para comparar'), { target: { value: '2026-08-10' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar fechas' }));
+    expect(screen.getByRole('alert').textContent).toContain('Seleccione una fecha distinta');
+    expect(mockGetHistoricalWeather).toHaveBeenCalledTimes(1);
+  });
+
+  it('reconsulta ambas fechas con nuevas unidades y no muestra datos de unidades anteriores', async () => {
+    const view = render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange();
+    fireEvent.change(screen.getByLabelText('Fecha para comparar'), { target: { value: '2026-08-09' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar fechas' }));
+    await flushPromises();
+    view.rerender(<HistoricalWeather activeLocation={location} units={fahrenheit} />);
+    await flushPromises();
+    expect(mockGetHistoricalWeather).toHaveBeenCalledTimes(4);
+    expect(mockGetHistoricalWeather.mock.calls.slice(2).map((call) => call[0].temperatureUnit)).toEqual(['fahrenheit', 'fahrenheit']);
+    expect(screen.queryByText('31,5 °C')).toBeNull();
+    expect(screen.getAllByText('31,5 °F').length).toBeGreaterThan(0);
+  });
+
+  it('no presenta como actual una respuesta tardía de comparación anterior', async () => {
+    let resolveOld: ((data: HistoricalWeatherData) => void) | undefined;
+    mockGetHistoricalWeather.mockImplementationOnce((params: HistoricalParams) => Promise.resolve(historicalData(params)))
+      .mockImplementationOnce(() => new Promise<HistoricalWeatherData>((resolve) => { resolveOld = resolve; }))
+      .mockImplementationOnce((params: HistoricalParams) => Promise.resolve(historicalData(params)));
+    render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange();
+    fireEvent.change(screen.getByLabelText('Fecha para comparar'), { target: { value: '2026-08-09' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar fechas' }));
+    const oldSignal: AbortSignal = mockGetHistoricalWeather.mock.calls[1]?.[1]?.signal;
+    fireEvent.change(screen.getByLabelText('Fecha para comparar'), { target: { value: '2026-08-08' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar fechas' }));
+    await flushPromises();
+    expect(oldSignal.aborted).toBe(true);
+    expect(screen.getByRole('table', { name: /Comparación de dos fechas históricas/ }).textContent).toContain('08/08/2026');
+    await act(async () => { resolveOld?.(historicalData({ ...defaultParams, startDate: '2026-08-09', endDate: '2026-08-09' })); });
+    expect(screen.getByRole('table', { name: /Comparación de dos fechas históricas/ }).textContent).not.toContain('09/08/2026');
+  });
+
+  it('ofrece ambas comparaciones y consulta Forecast solo al pedir clima actual', async () => {
+    render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange();
+    expect(screen.getByLabelText('Comparar con')).toBeTruthy();
+    expect(mockGetForecast).not.toHaveBeenCalled();
+    fireEvent.change(screen.getByLabelText('Comparar con'), { target: { value: 'current' } });
+    expect(mockGetForecast).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar con clima actual' }));
+    await flushPromises();
+    expect(mockGetForecast).toHaveBeenCalledTimes(1);
+    expect(mockGetForecast).toHaveBeenCalledWith(expect.objectContaining({
+      latitude: location.latitude, longitude: location.longitude, forecastDays: 1,
+      temperatureUnit: 'celsius', windSpeedUnit: 'kmh', precipitationUnit: 'mm', model: 'best_match',
+    }), { signal: expect.any(AbortSignal) });
+    const table = screen.getByRole('table', { name: /Comparación con clima actual/ });
+    expect(table.textContent).toContain('10/08/2026');
+    expect(table.textContent).toContain('Clima actual · 2026-09-25 12:00');
+    expect(table.textContent).toContain('-2,8 °C');
+    expect(table.textContent).toContain('+4 %');
+    expect(table.textContent).toContain('+2 mm');
+    expect(table.textContent).toContain('+2 km/h');
+    expect(screen.getByText(/no representa el mismo periodo/)).toBeTruthy();
+  });
+
+  it('mantiene N/D para datos ausentes y no los convierte en cero', async () => {
+    mockGetForecast.mockImplementationOnce((params: ForecastParams) => Promise.resolve({
+      ...forecastData(params), current: { ...forecastData(params).current, relativeHumidity: null, precipitation: null },
+    }));
+    render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange();
+    fireEvent.change(screen.getByLabelText('Comparar con'), { target: { value: 'current' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar con clima actual' }));
+    await flushPromises();
+    const table = screen.getByRole('table', { name: /Comparación con clima actual/ });
+    expect(table.textContent).toContain('N/D');
+    expect(table.textContent).toContain('-2,8 °C');
+    const humidityRow = screen.getByRole('row', { name: /Humedad media histórica/ });
+    expect(humidityRow.textContent).toContain('N/D');
+  });
+
+  it('reconsulta clima actual con nuevas unidades sin mezclar los resultados anteriores', async () => {
+    const view = render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange();
+    fireEvent.change(screen.getByLabelText('Comparar con'), { target: { value: 'current' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar con clima actual' }));
+    await flushPromises();
+    view.rerender(<HistoricalWeather activeLocation={location} units={fahrenheit} />);
+    await flushPromises();
+    expect(mockGetHistoricalWeather).toHaveBeenCalledTimes(2);
+    expect(mockGetForecast).toHaveBeenCalledTimes(2);
+    expect(mockGetForecast.mock.calls[1]?.[0]).toMatchObject({ temperatureUnit: 'fahrenheit', windSpeedUnit: 'mph', precipitationUnit: 'inch' });
+    const table = screen.getByRole('table', { name: /Comparación con clima actual/ });
+    expect(table.textContent).toContain('°F');
+    expect(table.textContent).not.toContain('°C');
+  });
+
+  it('cancela la consulta actual al cambiar de modo y no presenta una respuesta tardía', async () => {
+    let resolveOld: ((data: ForecastData) => void) | undefined;
+    mockGetForecast.mockImplementationOnce(() => new Promise<ForecastData>((resolve) => { resolveOld = resolve; }));
+    render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange();
+    fireEvent.change(screen.getByLabelText('Comparar con'), { target: { value: 'current' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar con clima actual' }));
+    const oldSignal: AbortSignal = mockGetForecast.mock.calls[0]?.[1]?.signal;
+    expect(oldSignal.aborted).toBe(false);
+    fireEvent.change(screen.getByLabelText('Comparar con'), { target: { value: 'historical' } });
+    expect(oldSignal.aborted).toBe(true);
+    await act(async () => { resolveOld?.(forecastData()); });
+    expect(screen.queryByRole('table', { name: /Comparación con clima actual/ })).toBeNull();
+    expect(screen.queryByRole('alert')).toBeNull();
+  });
+
+  it('muestra un error seguro y permite reintentar la comparación actual', async () => {
+    mockGetForecast.mockRejectedValueOnce(new AppError('E-01'));
+    render(<HistoricalWeather activeLocation={location} units={celsius} />);
+    await submitRange();
+    fireEvent.change(screen.getByLabelText('Comparar con'), { target: { value: 'current' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Comparar con clima actual' }));
+    await flushPromises();
+    expect(screen.getByRole('alert').textContent).toContain(APP_ERROR_MESSAGES['E-01']);
+    fireEvent.click(screen.getByRole('button', { name: 'Reintentar comparación' }));
+    await flushPromises();
+    expect(mockGetForecast).toHaveBeenCalledTimes(2);
+    expect(screen.getByRole('table', { name: /Comparación con clima actual/ })).toBeTruthy();
   });
 });
