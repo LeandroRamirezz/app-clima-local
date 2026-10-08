@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const evidenciasDir = path.join(__dirname, 'evidencias', 'TC-JC-004__2026-09-28__run01');
+const evidenciasDir = path.join(__dirname, 'evidencias', 'TC-JC-004__2026-10-08__run02');
 
 /**
  * CASO DE PRUEBA: TC-JC-004

@@ -1,0 +1,39 @@
+{
+  "id_caso": "TC-JC-006",
+  "bloque_qa": "jc",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-07",
+  "evaluador": {
+    "nombre": "Juan Camilo La Rotta",
+    "rol": "QA Lead / Tester JC"
+  },
+  "fecha_ejecucion": "2026-10-08",
+  "numero_ejecucion": 2,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "v1.0.0"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar que, si el modelo seleccionado no tiene cobertura o devuelve variables nulas para la ubicación, la aplicación informe la situación y ofrezca volver a 'Automático' sin romper la interfaz.",
+  "precondiciones": "Mock configurado para simular el modelo ICON devolviendo variables nulas para la ubicación de prueba.",
+  "pasos_ejecutados": [
+    "1. Seleccionar el modelo ICON (icon_seamless) para la ubicación Neiva cuya respuesta simulada contiene variables nulas.",
+    "2. Verificar la presencia del mensaje informativo 'El modelo ICON no tiene datos para esta ubicación. Se muestran los datos disponibles o puede volver a Automático.'",
+    "3. Verificar la presencia del botón / opción 'Volver a Automático'.",
+    "4. Activar la opción 'Volver a Automático' y confirmar la restauración de los datos con el modelo por defecto."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test qa/casos/jc/TC-JC-006/TC-JC-006.spec.ts --config=qa/playwright.config.ts --project=jc"
+  ],
+  "resultado_esperado": "Se muestra: 'El modelo [NOMBRE] no tiene datos para esta ubicación. Se muestran los datos disponibles o puede volver a Automático.' La opción 'Volver a Automático' funciona correctamente y restaura los datos. La interfaz no se rompe en ningún momento del flujo.",
+  "resultado_obtenido": "La prueba se ejecutó exitosamente. Al seleccionar el modelo ICON (icon_seamless) con variables nulas, la aplicación desplegó el mensaje informativo indicando la falta de cobertura y presentó el botón 'Volver a Automático'. Al hacer clic en el botón, la interfaz restauró correctamente los datos meteorológicos por defecto (best_match) sin romperse en ningún momento del flujo.",
+  "tiempo_respuesta_ms": 3000,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JC-006__2026-10-08__run02/01_modelo_icon_variables_nulas_sin_mensaje_ni_boton.png"
+  ],
+  "observaciones": "Reevaluación tras la solución de BUG-003 / BUG-JC-006. Se confirma que la interfaz notifica la falta de cobertura del modelo numérico y provee el mecanismo interactivo para volver a Automático. El caso se aprueba satisfactoriamente."
+}

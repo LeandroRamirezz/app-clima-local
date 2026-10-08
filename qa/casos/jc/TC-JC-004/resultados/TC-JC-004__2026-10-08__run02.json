@@ -1,0 +1,44 @@
+{
+  "id_caso": "TC-JC-004",
+  "bloque_qa": "jc",
+  "tipo_prueba": "Funcional",
+  "rf_relacionado": "RF-01",
+  "evaluador": {
+    "nombre": "Juan Camilo La Rotta",
+    "rol": "QA Lead / Tester JC"
+  },
+  "fecha_ejecucion": "2026-10-08",
+  "numero_ejecucion": 2,
+  "ambiente": {
+    "nombre": "QA",
+    "url": "https://app-clima-local.vercel.app",
+    "commit_o_version": "v1.0.0"
+  },
+  "herramienta": "Playwright",
+  "descripcion_caso": "Verificar que, ante cada uno de los 5 escenarios de falla del catálogo E-01–E-05 aplicados a /v1/forecast, la aplicación muestre el mensaje correspondiente en una región role='alert', con botón Reintentar (salvo la excepción de E-03), sin exponer errores técnicos crudos.",
+  "precondiciones": "Ubicación activa (Neiva). Interceptación de red configurada en Playwright para cada uno de los 5 escenarios.",
+  "pasos_ejecutados": [
+    "1. Interceptar /v1/forecast con simulación de fallo de red (E-01) y verificar mensaje 'No hay conexión a internet. Verifique su red e intente nuevamente.' + botón Reintentar.",
+    "2. Interceptar /v1/forecast con retardo mayor a 10 s (E-02) y verificar mensaje 'La consulta tardó demasiado. Intente nuevamente.' + botón Reintentar.",
+    "3. Interceptar /v1/forecast con HTTP 429 (E-03) y verificar mensaje 'Se alcanzó el límite de consultas del servicio meteorológico. Espere unos minutos e intente de nuevo.' y confirmar la ausencia del botón Reintentar.",
+    "4. Interceptar /v1/forecast con HTTP 400 (E-04) y verificar mensaje 'No fue posible procesar la consulta. Verifique los datos ingresados.' + botón Reintentar.",
+    "5. Interceptar /v1/forecast con HTTP 500 (E-05) y verificar mensaje 'El servicio meteorológico no está disponible en este momento. Intente más tarde.' + botón Reintentar."
+  ],
+  "comandos_ejecucion": [
+    "npx playwright test qa/casos/jc/TC-JC-004/TC-JC-004.spec.ts --config=qa/playwright.config.ts --project=jc"
+  ],
+  "resultado_esperado": "E-01: 'No hay conexión a internet. Verifique su red e intente nuevamente.' + botón Reintentar. E-02: 'La consulta tardó demasiado. Intente nuevamente.' + botón Reintentar. E-03: 'Se alcanzó el límite de consultas del servicio meteorológico. Espere unos minutos e intente de nuevo.' Sin botón de Reintentar visible (el sistema no debe permitir un reintento manual inmediato tras un HTTP 429). E-04: 'No fue posible procesar la consulta. Verifique los datos ingresados.' + botón Reintentar. E-05: 'El servicio meteorológico no está disponible en este momento. Intente más tarde.' + botón Reintentar. Todos los mensajes en role='alert' sin trazas técnicas.",
+  "resultado_obtenido": "Todos los 5 escenarios (E-01 a E-05) se ejecutaron exitosamente. En particular, en el escenario E-03 (HTTP 429), la interfaz mostró correctamente el mensaje asignado y el botón Reintentar se mantuvo oculto tal como exige el criterio de aceptación. En los escenarios E-01, E-02, E-04 y E-05 los mensajes en role='alert' aparecieron junto al botón Reintentar, sin exponer trazas ni JSONs crudos.",
+  "tiempo_respuesta_ms": 14300,
+  "estado": "Aprobado",
+  "bug_id": null,
+  "incidente_id": null,
+  "evidencias": [
+    "evidencias/TC-JC-004__2026-10-08__run02/01_E-01_sin_conexion.png",
+    "evidencias/TC-JC-004__2026-10-08__run02/02_E-02_timeout.png",
+    "evidencias/TC-JC-004__2026-10-08__run02/03_E-03_http_429.png",
+    "evidencias/TC-JC-004__2026-10-08__run02/04_E-04_http_400.png",
+    "evidencias/TC-JC-004__2026-10-08__run02/05_E-05_http_500.png"
+  ],
+  "observaciones": "Reevaluación tras solución de BUG-002 / BUG-JC-004. Se confirma que el botón Reintentar se oculta adecuadamente en el escenario E-03 (HTTP 429). El caso se aprueba satisfactoriamente."
+}
